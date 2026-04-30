@@ -10,6 +10,7 @@ export const ProductSchema = z.object({
   brand: z.string().min(1, 'Brand is required'),
   price: z.number().positive('Price must be positive'),
   discountPrice: z.number().positive().optional(),
+  discountPercent: z.number().optional(),
   images: z.array(z.string().url()).min(1, 'At least one image is required'),
   sizes: z.array(z.string()).min(1, 'At least one size is required'),
   colors: z.array(
@@ -28,4 +29,4 @@ export const ProductSchema = z.object({
   seoDescription: z.string().max(160).optional(),
 });
 
-export type ProductInput = z.infer<typeof ProductSchema>;
+export type ProductInput = z.input<typeof ProductSchema>;

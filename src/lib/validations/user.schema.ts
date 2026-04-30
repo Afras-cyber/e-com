@@ -12,5 +12,5 @@ export const CreateStaffSchema = z.object({
   phone: z.string().optional(),
 });
 
-export type UserLoginInput = z.infer<typeof UserLoginSchema>;
-export type CreateStaffInput = z.infer<typeof CreateStaffSchema>;
+export type UserLoginInput = z.input<typeof UserLoginSchema>;
+export type CreateStaffInput = z.input<typeof CreateStaffSchema>;

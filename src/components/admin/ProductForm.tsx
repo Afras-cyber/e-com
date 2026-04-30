@@ -24,8 +24,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       sizes: [],
       colors: [],
       isOnSale: false,
-      isActive: true,
-      inStock: true,
+      isAvailable: true,
+      stock: 10,
     }
   });
 
@@ -120,7 +120,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium">Stock Count</label>
-              <input type="number" {...register('stockCount', { valueAsNumber: true })} className="w-full p-2 border rounded-md mt-1" />
+              <input type="number" {...register('stock', { valueAsNumber: true })} className="w-full p-2 border rounded-md mt-1" />
             </div>
             <div className="flex items-end gap-4 pb-2">
               <label className="flex items-center gap-2 cursor-pointer">
@@ -128,7 +128,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 <span className="text-sm">Featured</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" {...register('isActive')} />
+                <input type="checkbox" {...register('isAvailable')} />
                 <span className="text-sm">Active</span>
               </label>
             </div>

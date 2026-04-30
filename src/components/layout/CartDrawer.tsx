@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 
 export default function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, addItem, total, clearCart } = useCartStore();
+  const { items, isOpen, closeCart, removeItem, updateQuantity, total, clearCart } = useCartStore();
 
   const handleCheckout = () => {
     const cartConfig = {
@@ -24,16 +24,6 @@ export default function CartDrawer() {
       total: total(),
     };
     window.open(buildWhatsAppCartURL(cartConfig), '_blank');
-  };
-
-  const handleDecrease = (item: any) => {
-    if (item.quantity > 1) {
-      // Find the existing item and update it manually, or just use remove then add
-      // The store's addItem function adds 1. We don't have a direct decrement.
-      // For now, we will add a decrement function to useCartStore or just remove if 1, else remove & re-add?
-      // Since useCartStore doesn't have a decrease function, we should add it.
-      // Wait, we can't easily modify the store in this step without a tool call. Let's just allow removal.
-    }
   };
 
   return (
@@ -87,25 +77,44 @@ export default function CartDrawer() {
                       )}
                     </div>
                     <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <h4 className="font-semibold text-sm line-clamp-1">{item.product.name}</h4>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          Size: {item.selectedSize} | Color: {item.selectedColor}
-                        </p>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-semibold text-sm line-clamp-1">{item.product.name}</h4>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {item.selectedSize} | {item.selectedColor}
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                          onClick={() => removeItem(item.product._id, item.selectedSize, item.selectedColor)}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
                       </div>
                       <div className="flex items-center justify-between mt-2">
                         <span className="font-bold text-sm">
                           {formatPrice((item.product.discountPrice ?? item.product.price) * item.quantity)}
                         </span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-muted-foreground border px-2 py-1 rounded bg-muted/30">Qty: {item.quantity}</span>
+                        <div className="flex items-center gap-1 border rounded-lg p-1 bg-muted/30">
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10"
-                            onClick={() => removeItem(item.product._id, item.selectedSize, item.selectedColor)}
+                            className="h-6 w-6 rounded-md"
+                            onClick={() => updateQuantity(item.product._id, item.selectedSize, item.selectedColor, item.quantity - 1)}
+                            disabled={item.quantity <= 1}
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Minus className="w-3 h-3" />
+                          </Button>
+                          <span className="text-xs font-bold w-6 text-center">{item.quantity}</span>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-6 w-6 rounded-md"
+                            onClick={() => updateQuantity(item.product._id, item.selectedSize, item.selectedColor, item.quantity + 1)}
+                          >
+                            <Plus className="w-3 h-3" />
                           </Button>
                         </div>
                       </div>

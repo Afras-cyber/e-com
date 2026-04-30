@@ -3,6 +3,7 @@ import Product from '@/lib/db/models/Product';
 import { notFound } from 'next/navigation';
 import ProductGallery from '@/components/shop/ProductGallery';
 import ProductInfo from '@/components/shop/ProductInfo';
+import RelatedProducts from '@/components/shop/RelatedProducts';
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -41,6 +42,13 @@ export default async function ProductDetailPage({
           <p className="whitespace-pre-wrap">{serializedProduct.description}</p>
         </div>
       </div>
+
+      <Suspense fallback={<div className="mt-20 h-64 bg-muted animate-pulse rounded-xl" />}>
+        <RelatedProducts 
+          category={serializedProduct.category} 
+          currentProductId={serializedProduct._id} 
+        />
+      </Suspense>
     </div>
   );
 }

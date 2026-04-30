@@ -42,16 +42,7 @@ export default function ProductInfo({ product }: { product: any }) {
       return;
     }
 
-    addToCart({
-      productId: product._id,
-      name: product.name,
-      slug: product.slug,
-      price: product.discountPrice || product.price,
-      image: product.images?.[0] || "",
-      selectedSize,
-      selectedColor,
-      quantity: 1,
-    });
+    addToCart(product, selectedSize, selectedColor);
 
     alert("Added to cart!");
   };

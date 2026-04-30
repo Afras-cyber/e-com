@@ -16,6 +16,7 @@ interface CartStore {
   isOpen: boolean;
 
   addItem: (product: IProduct, size: string, color: string) => void;
+  updateQuantity: (productId: string, size: string, color: string, quantity: number) => void;
   removeItem: (productId: string, size: string, color: string) => void;
   clearCart: () => void;
   toggleCart: () => void;
@@ -55,6 +56,18 @@ export const useCartStore = create<CartStore>()(
             items: [...state.items, { product, selectedSize, selectedColor, quantity: 1 }],
           };
         });
+      },
+      
+      updateQuantity: (productId, size, color, quantity) => {
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.product._id === productId &&
+            i.selectedSize === size &&
+            i.selectedColor === color
+              ? { ...i, quantity: Math.max(1, quantity) }
+              : i
+          ),
+        }));
       },
 
       removeItem: (productId, size, color) => {

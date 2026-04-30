@@ -38,7 +38,7 @@ export default function ProductTable() {
       const res = await fetch(`/api/products/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isActive: !currentStatus }),
+        body: JSON.stringify({ isAvailable: !currentStatus }),
       });
       if (res.ok) refetch();
     } catch (error) {
@@ -94,13 +94,13 @@ export default function ProductTable() {
                   )}
                 </td>
                 <td className="p-4 align-middle">
-                  <span className={product.stockCount < 10 ? "text-orange-600 font-medium" : ""}>
-                    {product.stockCount}
+                  <span className={product.stock < 10 ? "text-orange-600 font-medium" : ""}>
+                    {product.stock}
                   </span>
                 </td>
                 <td className="p-4 align-middle">
-                  <button onClick={() => toggleStatus(product._id, product.isActive)}>
-                    {product.isActive ? (
+                  <button onClick={() => toggleStatus(product._id, product.isAvailable)}>
+                    {product.isAvailable ? (
                       <div className="flex items-center text-green-600 gap-1">
                         <CheckCircle2 className="h-4 w-4" />
                         <span>Active</span>
