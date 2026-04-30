@@ -22,10 +22,9 @@ const dummyProducts = [
       { name: "Black", hex: "#000000" },
       { name: "Navy", hex: "#000080" }
     ],
-    inStock: true,
-    stockCount: 50,
+    stock: 50,
     isFeatured: true,
-    isActive: true,
+    isAvailable: true,
   },
   {
     name: "Classic Action Lifestyle Trainers",
@@ -44,10 +43,9 @@ const dummyProducts = [
       { name: "White", hex: "#FFFFFF" },
       { name: "Grey", hex: "#808080" }
     ],
-    inStock: true,
-    stockCount: 30,
+    stock: 30,
     isFeatured: true,
-    isActive: true,
+    isAvailable: true,
   },
   {
     name: "Urban Style Casual Loafers",
@@ -63,10 +61,9 @@ const dummyProducts = [
     colors: [
       { name: "Brown", hex: "#8B4513" }
     ],
-    inStock: true,
-    stockCount: 20,
+    stock: 20,
     isFeatured: false,
-    isActive: true,
+    isAvailable: true,
   }
 ];
 

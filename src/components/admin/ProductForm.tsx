@@ -8,6 +8,7 @@ import { ProductSchema, ProductInput } from '@/lib/validations/product.schema';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '../shared/ImageUpload';
 import { X, Plus } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ProductFormProps {
   initialData?: any;
@@ -53,11 +54,11 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         router.refresh();
       } else {
         const err = await res.json();
-        alert(err.error || 'Something went wrong');
+        toast.error(err.error || 'Something went wrong');
       }
     } catch (error) {
       console.error(error);
-      alert('Error saving product');
+      toast.error('Error saving product');
     } finally {
       setLoading(false);
     }

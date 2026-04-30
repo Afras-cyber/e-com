@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { UserPlus, Shield, User as UserIcon, CheckCircle, XCircle, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 
 export default function StaffTable() {
   const { data: staff, isLoading, isError, refetch } = useQuery({
@@ -34,7 +35,7 @@ export default function StaffTable() {
       if (res.ok) refetch();
       else {
         const err = await res.json();
-        alert(err.error || 'Failed to delete');
+        toast.error(err.error || 'Failed to delete');
       }
     } catch (error) {
       console.error(error);

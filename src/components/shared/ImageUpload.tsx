@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Upload, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
   value: string[];
@@ -45,11 +46,11 @@ export default function ImageUpload({
       if (uploadRes.ok) {
         onChange([...value, fileUrl]);
       } else {
-        alert('Upload failed');
+        toast.error('Upload failed');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Upload error');
+      toast.error('Upload error');
     } finally {
       setLoading(false);
     }

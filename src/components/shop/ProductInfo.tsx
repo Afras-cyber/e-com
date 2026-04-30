@@ -8,6 +8,7 @@ import { Check, MessageCircle, ShoppingCart } from "lucide-react";
 import { buildWhatsAppURL } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
+import { toast } from "sonner";
 
 export default function ProductInfo({ product }: { product: any }) {
   const [selectedSize, setSelectedSize] = useState<string>(
@@ -21,7 +22,7 @@ export default function ProductInfo({ product }: { product: any }) {
 
   const handleWhatsAppOrder = () => {
     if (!selectedSize || !selectedColor) {
-      alert("Please select a size and color first.");
+      toast.error("Please select a size and color first.");
       return;
     }
 
@@ -38,13 +39,13 @@ export default function ProductInfo({ product }: { product: any }) {
 
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
-      alert("Please select a size and color first.");
+      toast.error("Please select a size and color first.");
       return;
     }
 
     addToCart(product, selectedSize, selectedColor);
 
-    alert("Added to cart!");
+    toast.success("Added to cart!");
   };
 
   return (

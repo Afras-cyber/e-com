@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 export default function OrderManager({ id }: { id: string }) {
   const router = useRouter();
@@ -40,8 +41,9 @@ export default function OrderManager({ id }: { id: string }) {
       if (res.ok) {
         setNote('');
         refetch();
+        toast.success(`Order status updated to ${newStatus}`);
       } else {
-        alert('Failed to update status');
+        toast.error('Failed to update status');
       }
     } catch (error) {
       console.error(error);

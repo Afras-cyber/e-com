@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateStaffSchema, CreateStaffInput } from '@/lib/validations/user.schema';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function AddStaffForm({ onSuccess }: { onSuccess: () => void }) {
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ export default function AddStaffForm({ onSuccess }: { onSuccess: () => void }) {
         onSuccess();
       } else {
         const err = await res.json();
-        alert(err.error || 'Failed to add staff');
+        toast.error(err.error || 'Failed to add staff');
       }
     } catch (error) {
       console.error(error);

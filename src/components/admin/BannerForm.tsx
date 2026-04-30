@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '../shared/ImageUpload';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function BannerForm({ initialData, onSuccess }: { initialData?: any, onSuccess: () => void }) {
   const [loading, setLoading] = useState(false);
@@ -33,9 +34,10 @@ export default function BannerForm({ initialData, onSuccess }: { initialData?: a
       });
 
       if (res.ok) {
+        toast.success(`Banner ${initialData ? 'updated' : 'created'} successfully`);
         onSuccess();
       } else {
-        alert('Failed to save banner');
+        toast.error('Failed to save banner');
       }
     } catch (error) {
       console.error(error);

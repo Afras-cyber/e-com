@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export default function ProductTable() {
   const { data, isLoading, isError, refetch } = useProducts({ page: 1 });
@@ -23,10 +24,10 @@ export default function ProductTable() {
     try {
       const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        alert('Product deleted successfully');
+        toast.success('Product deleted successfully');
         refetch();
       } else {
-        alert('Failed to delete product');
+        toast.error('Failed to delete product');
       }
     } catch (error) {
       console.error('Delete error:', error);
