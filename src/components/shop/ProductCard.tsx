@@ -2,8 +2,33 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { IProduct } from '@/types/product';
 import { formatPrice } from '@/lib/format-price';
+import { Heart } from 'lucide-react';
+import { useWishlist } from '@/store/useWishlist';
+import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 export default function ProductCard({ product }: { product: IProduct }) {
+  const { addItem, removeItem, isInWishlist } = useWishlist();
+  const active = isInWishlist(product._id);
+
+  const toggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (active) {
+      removeItem(product._id);
+      toast.info('Removed from wishlist');
+    } else {
+      addItem({
+        id: product._id,
+        name: product.name,
+        price: product.isOnSale && product.discountPrice ? product.discountPrice : product.price,
+        image: product.images[0],
+        slug: product.slug
+      });
+      toast.success('Added to wishlist');
+    }
+  };
+
   return (
     <Link href={`/shop/${product.slug}`} className="group relative rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col transition-all hover:shadow-md">
       <div className="aspect-[4/5] relative overflow-hidden bg-muted/20">
@@ -34,6 +59,14 @@ export default function ProductCard({ product }: { product: IProduct }) {
             </span>
           )}
         </div>
+
+        {/* Wishlist Button */}
+        <button 
+          onClick={toggleWishlist}
+          className="absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-sm transition-all hover:bg-white hover:scale-110 active:scale-95 z-10"
+        >
+          <Heart className={cn("w-4 h-4 transition-colors", active ? "fill-red-500 text-red-500" : "text-muted-foreground")} />
+        </button>
       </div>
       
       <div className="p-4 flex flex-col flex-1">

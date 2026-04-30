@@ -1,10 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, Menu, Search } from 'lucide-react';
+import { ShoppingCart, Menu, Search, Heart } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useCartStore } from '@/store/useCartStore';
+import { useWishlist } from '@/store/useWishlist';
 import { useUIStore } from '@/store/useUIStore';
+import { cn } from '@/lib/utils';
 import CartDrawer from './CartDrawer';
 import MobileMenu from './MobileMenu';
 import SearchDialog from './SearchDialog';
@@ -12,6 +14,7 @@ import { useEffect, useState } from 'react';
 
 export default function Navbar() {
   const { itemCount, openCart } = useCartStore();
+  const { items } = useWishlist();
   const { toggleMobileMenu } = useUIStore();
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -91,6 +94,22 @@ export default function Navbar() {
                 </kbd>
               </Button>
             </div>
+
+            <Link href="/wishlist">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-foreground/70 hover:text-primary relative group"
+              >
+                <Heart className={cn("h-5 w-5 transition-colors", mounted && items.length > 0 ? "fill-red-500 text-red-500" : "")} />
+                <span className="sr-only">Wishlist</span>
+                {mounted && items.length > 0 && (
+                  <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[9px] font-black text-white flex items-center justify-center border-2 border-background">
+                    {items.length}
+                  </span>
+                )}
+              </Button>
+            </Link>
             
             <Button 
               variant="ghost" 

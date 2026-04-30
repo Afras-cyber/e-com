@@ -10,14 +10,17 @@ import {
   Loader2, 
   MessageSquare, 
   Quote,
-  ShieldCheck,
-  Zap
+  Zap,
+  CheckSquare,
+  Square
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 export default function AdminTestimonialsPage() {
   const queryClient = useQueryClient();
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const { data: testimonials, isLoading } = useQuery({
     queryKey: ['admin-testimonials'],
@@ -60,6 +63,56 @@ export default function AdminTestimonialsPage() {
     onError: () => toast.error('Failed to delete')
   });
 
+  const bulkUpdateMutation = useMutation({
+    mutationFn: async ({ ids, update }: { ids: string[], update: any }) => {
+      const res = await fetch('/api/admin/testimonials', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids, update }),
+      });
+      if (!res.ok) throw new Error('Bulk update failed');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-testimonials'] });
+      setSelectedIds([]);
+      toast.success('Bulk update successful');
+    },
+    onError: () => toast.error('Bulk update failed')
+  });
+
+  const bulkDeleteMutation = useMutation({
+    mutationFn: async (ids: string[]) => {
+      const res = await fetch('/api/admin/testimonials', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids }),
+      });
+      if (!res.ok) throw new Error('Bulk delete failed');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-testimonials'] });
+      setSelectedIds([]);
+      toast.success('Bulk deletion successful');
+    },
+    onError: () => toast.error('Bulk deletion failed')
+  });
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.length === testimonials?.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(testimonials?.map((t: any) => t._id) || []);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -70,20 +123,91 @@ export default function AdminTestimonialsPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Testimonials</h1>
-        <p className="text-muted-foreground">Manage customer reviews and social proof</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Testimonials</h1>
+          <p className="text-muted-foreground">Manage customer reviews and social proof</p>
+        </div>
+        
+        {testimonials && testimonials.length > 0 && (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={toggleSelectAll}
+            className="w-fit gap-2 h-10 px-4"
+          >
+            {selectedIds.length === testimonials.length ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+            {selectedIds.length === testimonials.length ? 'Deselect All' : 'Select All'}
+          </Button>
+        )}
       </div>
+
+      {/* Floating Bulk Actions Bar */}
+      {selectedIds.length > 0 && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-zinc-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="flex flex-col pr-6 border-r border-white/10">
+            <span className="text-xs font-bold text-white/50 uppercase tracking-widest">Selected</span>
+            <span className="text-lg font-black">{selectedIds.length} items</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              className="bg-emerald-600 hover:bg-emerald-700 h-10 px-4 gap-2 rounded-xl"
+              onClick={() => bulkUpdateMutation.mutate({ ids: selectedIds, update: { isApproved: true } })}
+              disabled={bulkUpdateMutation.isPending}
+            >
+              <CheckCircle2 className="w-4 h-4" /> Approve
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline"
+              className="bg-white/10 hover:bg-white/20 border-white/10 text-white h-10 px-4 gap-2 rounded-xl"
+              onClick={() => bulkUpdateMutation.mutate({ ids: selectedIds, update: { isFeatured: true } })}
+              disabled={bulkUpdateMutation.isPending}
+            >
+              <Zap className="w-4 h-4 fill-current text-indigo-400" /> Feature
+            </Button>
+            <Button 
+              size="sm" 
+              variant="destructive"
+              className="h-10 px-4 gap-2 rounded-xl"
+              onClick={() => {
+                if (confirm(`Are you sure you want to delete ${selectedIds.length} testimonials?`)) {
+                  bulkDeleteMutation.mutate(selectedIds);
+                }
+              }}
+              disabled={bulkDeleteMutation.isPending}
+            >
+              <Trash2 className="w-4 h-4" /> Delete
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white/50 hover:text-white hover:bg-transparent"
+              onClick={() => setSelectedIds([])}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {testimonials?.map((t: any) => (
-          <div key={t._id} className="bg-card border rounded-2xl p-6 shadow-sm flex flex-col gap-4 relative overflow-hidden group">
-            {!t.isApproved && (
-              <div className="absolute top-0 right-0 bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-tighter">
-                Pending Approval
-              </div>
-            )}
-            
+          <div 
+            key={t._id} 
+            onClick={() => toggleSelect(t._id)}
+            className={`bg-card border rounded-2xl p-6 shadow-sm flex flex-col gap-4 relative overflow-hidden group cursor-pointer transition-all ${
+              selectedIds.includes(t._id) ? 'ring-2 ring-primary border-primary bg-primary/5' : 'hover:border-primary/50'
+            }`}
+          >
+            <div className="absolute top-4 right-4 z-20">
+              {selectedIds.includes(t._id) ? (
+                <CheckSquare className="w-5 h-5 text-primary fill-current bg-white rounded-sm" />
+              ) : (
+                <Square className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors bg-white/50 rounded-sm" />
+              )}
+            </div>
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">

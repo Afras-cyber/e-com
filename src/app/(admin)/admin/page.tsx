@@ -61,6 +61,12 @@ export default async function AdminDashboard() {
     .limit(5)
     .lean();
 
+  // Fetch trending products
+  const trendingProducts = await Product.find()
+    .sort({ viewCount: -1 })
+    .limit(5)
+    .lean();
+
   return (
     <div className="flex flex-col gap-8">
       <div>
@@ -154,7 +160,7 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-1">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
         <div className="rounded-xl border bg-card text-card-foreground shadow">
           <div className="p-6">
             <h3 className="font-semibold leading-none tracking-tight mb-4">
@@ -169,9 +175,6 @@ export default async function AdminDashboard() {
                     </th>
                     <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground">
                       Customer
-                    </th>
-                    <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground">
-                      Amount
                     </th>
                     <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground">
                       Status
@@ -191,11 +194,6 @@ export default async function AdminDashboard() {
                         {order.customer.name}
                       </td>
                       <td className="p-2 align-middle">
-                        {formatPrice(
-                          order.product.negotiatedPrice || order.product.price,
-                        )}
-                      </td>
-                      <td className="p-2 align-middle">
                         <span
                           className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                             order.status === "delivered"
@@ -210,16 +208,6 @@ export default async function AdminDashboard() {
                       </td>
                     </tr>
                   ))}
-                  {recentOrders.length === 0 && (
-                    <tr>
-                      <td
-                        colSpan={4}
-                        className="p-8 text-center text-muted-foreground"
-                      >
-                        No orders found
-                      </td>
-                    </tr>
-                  )}
                 </tbody>
               </table>
             </div>
@@ -229,6 +217,46 @@ export default async function AdminDashboard() {
                 className="text-sm text-blue-600 hover:underline flex items-center gap-1"
               >
                 View all orders <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-xl border bg-card text-card-foreground shadow">
+          <div className="p-6">
+            <h3 className="font-semibold leading-none tracking-tight mb-4">
+              Trending Products
+            </h3>
+            <div className="space-y-4">
+              {trendingProducts.map((product: any) => (
+                <div key={product._id.toString()} className="flex items-center gap-4">
+                  <div className="h-12 w-12 rounded-lg border bg-muted overflow-hidden flex-shrink-0">
+                    {product.images?.[0] ? (
+                      <img src={product.images[0]} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center text-[10px]">No img</div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold truncate">{product.name}</p>
+                    <p className="text-xs text-muted-foreground">{product.brand}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-black">{product.viewCount || 0}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase">Views</p>
+                  </div>
+                </div>
+              ))}
+              {trendingProducts.length === 0 && (
+                <p className="text-sm text-center text-muted-foreground py-8">No data yet</p>
+              )}
+            </div>
+            <div className="mt-4 border-t pt-4">
+              <Link
+                href="/admin/products"
+                className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+              >
+                View all products <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
           </div>

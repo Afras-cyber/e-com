@@ -88,6 +88,17 @@ We need to build the interactive UI components for the store and the admin panel
 4. [x] **Data Seeding**: Created and executed testimonial seeder for initial social proof
 5. [x] **Final Smoke Test**: Completed automated verification of order flow and inventory sync
 6. [x] **Premium Feedback System**: Replaced all native `alert()` calls with non-blocking `sonner` toasts for a premium UX
+7. [x] **Next.js 16 Compatibility**: Resolved breaking changes related to asynchronous route `params` and `searchParams`
+8. [x] **Admin Social Proof**: Implemented full Testimonial management system (Approve/Reject/Feature/Delete)
+9. [x] **Build Optimization**: Configured `force-dynamic` markers for admin APIs to ensure stable production builds
+10. [x] **Product Management**: Completed the missing Product Edit interface for admins
+
+## Phase 9 — Scaling & Growth (In Progress)
+1. [x] **Advanced Filtering**: Add brand, price range, and category filters to the `/shop` sidebar
+2. [x] **Email Campaigns**: Create an admin tool to send newsletters to all subscribers via Resend
+3. [x] **Engagement Analytics**: Track product views and click-through rates for the admin dashboard
+4. [x] **Wishlist System**: Allow customers to save items for later (local storage persistence)
+5. [x] **Bulk Actions**: Add multi-select and bulk delete/approve actions to admin tables
 
 ---
 **Note to Developer:** Check this file to see what to implement next!

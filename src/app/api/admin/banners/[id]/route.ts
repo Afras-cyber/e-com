@@ -3,6 +3,8 @@ import connectDB from '@/lib/db/mongoose';
 import Banner from '@/lib/db/models/Banner';
 import { auth } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await auth();

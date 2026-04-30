@@ -2,8 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { Mail, Loader2, Download } from 'lucide-react';
+import { Mail, Loader2, Download, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function AdminNewsletterPage() {
   const { data: subscribers, isLoading } = useQuery({
@@ -37,10 +38,18 @@ export default function AdminNewsletterPage() {
           <h1 className="text-3xl font-bold tracking-tight">Newsletter Subscriptions</h1>
           <p className="text-muted-foreground">Manage and export your newsletter audience</p>
         </div>
-        <Button onClick={exportCSV} disabled={!subscribers || subscribers.length === 0} className="gap-2">
-          <Download className="h-4 w-4" />
-          Export CSV
-        </Button>
+        <div className="flex gap-2">
+          <Link href="/admin/newsletter/new">
+            <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
+              <Send className="h-4 w-4" />
+              New Campaign
+            </Button>
+          </Link>
+          <Button onClick={exportCSV} variant="outline" disabled={!subscribers || subscribers.length === 0} className="gap-2">
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
       </div>
 
       <div className="rounded-xl border bg-card shadow-sm overflow-hidden">

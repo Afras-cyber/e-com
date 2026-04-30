@@ -42,7 +42,11 @@ export default async function ProductDetailPage({
   const resolvedParams = await params;
   
   await connectDB();
-  const product = await Product.findOne({ slug: resolvedParams.slug, isAvailable: true }).lean();
+  const product = await Product.findOneAndUpdate(
+    { slug: resolvedParams.slug, isAvailable: true },
+    { $inc: { viewCount: 1 } },
+    { new: true }
+  ).lean();
 
   if (!product) {
     notFound();

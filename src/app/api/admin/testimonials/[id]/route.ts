@@ -3,6 +3,8 @@ import connectDB from "@/lib/db/mongoose";
 import Testimonial from "@/lib/db/models/Testimonial";
 import { auth } from "@/lib/auth";
 
+export const dynamic = 'force-dynamic';
+
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },

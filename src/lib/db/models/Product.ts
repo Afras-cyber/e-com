@@ -23,6 +23,8 @@ export interface IProductDocument extends Document {
   seoDescription?: string;
   rating: number;
   reviewCount: number;
+  viewCount: number;
+  clickCount: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -64,6 +66,8 @@ const ProductSchema = new Schema<IProductDocument>(
     seoDescription: { type: String },
     rating: { type: Number, default: 0, min: 0, max: 5 },
     reviewCount: { type: Number, default: 0, min: 0 },
+    viewCount: { type: Number, default: 0, min: 0 },
+    clickCount: { type: Number, default: 0, min: 0 },
   },
   { timestamps: true }
 );
