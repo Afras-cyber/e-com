@@ -16,6 +16,7 @@ export default function CartDrawer() {
     const cartConfig = {
       items: items.map(item => ({
         productName: item.product.name,
+        productSlug: item.product.slug,
         size: item.selectedSize,
         color: item.selectedColor,
         price: item.product.discountPrice ?? item.product.price,

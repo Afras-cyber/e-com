@@ -1,76 +1,87 @@
+'use client';
+
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ShoppingBag, Footprints, Sparkles, Percent } from "lucide-react";
+import { ShoppingBag, Footprints, Sparkles, Percent, ArrowRight } from "lucide-react";
 
 const categories = [
   {
     name: "Sneakers",
     slug: "shoes",
     icon: Footprints,
-    color: "bg-blue-500",
+    gradient: "from-blue-600 to-blue-800",
+    emoji: "👟",
     description: "Premium kicks for every style"
   },
   {
     name: "Luxury Bags",
     slug: "bags",
     icon: ShoppingBag,
-    color: "bg-purple-500",
+    gradient: "from-purple-600 to-purple-800",
+    emoji: "👜",
     description: "Elegant bags for all occasions"
   },
   {
     name: "New Arrivals",
     slug: "new",
     icon: Sparkles,
-    color: "bg-amber-500",
+    gradient: "from-amber-500 to-orange-600",
+    emoji: "✨",
     description: "Latest trends just landed"
   },
   {
     name: "Special Offers",
     slug: "sale",
     icon: Percent,
-    color: "bg-rose-500",
+    gradient: "from-rose-500 to-red-600",
+    emoji: "🔥",
     description: "Unbeatable deals & discounts"
   }
 ];
 
 export default function CategorySection() {
   return (
-    <section className="py-20 px-4">
+    <section className="py-16 sm:py-24 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-14 gap-3">
           <div>
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-4">
-              Shop by <span className="text-primary">Category</span>
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-xl">
-              Explore our curated collections designed to match your unique personality and lifestyle.
+            <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.3em] text-muted-foreground mb-2">
+              Browse
             </p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">
+              Shop by <span className="italic text-primary">Category</span>
+            </h2>
           </div>
           <Link 
             href="/shop" 
-            className="text-primary font-bold hover:underline underline-offset-4 flex items-center gap-1"
+            className="text-sm text-primary font-bold hover:underline underline-offset-4 flex items-center gap-1 w-fit"
           >
-            View All Collections
+            View All <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((cat, index) => (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          {categories.map((cat) => (
             <Link key={cat.slug} href={`/shop?category=${cat.slug}`}>
-              <div className="group relative overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                <div className={`mb-6 inline-flex p-4 rounded-2xl ${cat.color} text-white shadow-lg`}>
-                  <cat.icon size={32} />
+              <div className={`group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br ${cat.gradient} p-5 sm:p-8 text-white min-h-[140px] sm:min-h-[220px] flex flex-col justify-between transition-all hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98]`}>
+                {/* Decorative circle */}
+                <div className="absolute -top-8 -right-8 w-32 h-32 sm:w-40 sm:h-40 bg-white/10 rounded-full blur-2xl" />
+                <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full blur-xl" />
+                
+                <div className="relative z-10">
+                  <span className="text-2xl sm:text-4xl mb-2 sm:mb-4 block">{cat.emoji}</span>
                 </div>
-                <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
-                  {cat.name}
-                </h3>
-                <p className="text-muted-foreground">
-                  {cat.description}
-                </p>
-                <div className="absolute bottom-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                    →
-                  </div>
+                <div className="relative z-10">
+                  <h3 className="text-base sm:text-xl font-black mb-0 sm:mb-1 tracking-tight leading-tight">
+                    {cat.name}
+                  </h3>
+                  <p className="text-[11px] sm:text-sm text-white/70 hidden sm:block">
+                    {cat.description}
+                  </p>
+                </div>
+                
+                {/* Hover arrow */}
+                <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
               </div>
             </Link>
