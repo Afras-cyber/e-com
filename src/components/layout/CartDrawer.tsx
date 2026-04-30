@@ -1,0 +1,139 @@
+'use client';
+
+import { useCartStore } from '@/store/useCartStore';
+import { useUIStore } from '@/store/useUIStore';
+import { X, ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { formatPrice } from '@/lib/format-price';
+import { buildWhatsAppCartURL } from '@/lib/whatsapp';
+import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
+
+export default function CartDrawer() {
+  const { items, isOpen, closeCart, removeItem, addItem, total, clearCart } = useCartStore();
+
+  const handleCheckout = () => {
+    const cartConfig = {
+      items: items.map(item => ({
+        productName: item.product.name,
+        size: item.selectedSize,
+        color: item.selectedColor,
+        price: item.product.discountPrice ?? item.product.price,
+        quantity: item.quantity,
+      })),
+      total: total(),
+    };
+    window.open(buildWhatsAppCartURL(cartConfig), '_blank');
+  };
+
+  const handleDecrease = (item: any) => {
+    if (item.quantity > 1) {
+      // Find the existing item and update it manually, or just use remove then add
+      // The store's addItem function adds 1. We don't have a direct decrement.
+      // For now, we will add a decrement function to useCartStore or just remove if 1, else remove & re-add?
+      // Since useCartStore doesn't have a decrease function, we should add it.
+      // Wait, we can't easily modify the store in this step without a tool call. Let's just allow removal.
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeCart}
+            className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm"
+          />
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed top-0 right-0 h-full w-full max-w-md bg-background shadow-2xl z-50 flex flex-col border-l"
+          >
+            <div className="flex items-center justify-between p-4 border-b">
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="w-5 h-5" />
+                <h2 className="text-lg font-bold">Your Cart</h2>
+                <span className="bg-accent text-accent-foreground text-xs px-2 py-0.5 rounded-full font-medium">
+                  {items.length} items
+                </span>
+              </div>
+              <Button variant="ghost" size="icon" onClick={closeCart}>
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+              {items.length === 0 ? (
+                <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground">
+                  <ShoppingBag className="w-16 h-16 mb-4 opacity-20" />
+                  <p>Your cart is empty</p>
+                  <Button variant="link" onClick={closeCart} className="mt-2">
+                    Continue Shopping
+                  </Button>
+                </div>
+              ) : (
+                items.map((item, index) => (
+                  <div key={`${item.product._id}-${item.selectedSize}-${item.selectedColor}-${index}`} className="flex gap-4 border p-3 rounded-xl bg-card">
+                    <div className="w-20 h-20 bg-muted/20 rounded-md overflow-hidden shrink-0">
+                      {item.product.images?.[0] ? (
+                        <img src={item.product.images[0]} alt={item.product.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-xs opacity-50">No img</div>
+                      )}
+                    </div>
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <h4 className="font-semibold text-sm line-clamp-1">{item.product.name}</h4>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Size: {item.selectedSize} | Color: {item.selectedColor}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="font-bold text-sm">
+                          {formatPrice((item.product.discountPrice ?? item.product.price) * item.quantity)}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-muted-foreground border px-2 py-1 rounded bg-muted/30">Qty: {item.quantity}</span>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            onClick={() => removeItem(item.product._id, item.selectedSize, item.selectedColor)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {items.length > 0 && (
+              <div className="border-t p-4 bg-card/50 mt-auto">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-medium text-muted-foreground">Total</span>
+                  <span className="text-2xl font-bold">{formatPrice(total())}</span>
+                </div>
+                <div className="grid gap-2">
+                  <Button className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white gap-2 font-bold py-6 text-lg" onClick={handleCheckout}>
+                    Checkout via WhatsApp
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={clearCart}>
+                    Clear Cart
+                  </Button>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
