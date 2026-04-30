@@ -7,6 +7,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { useUIStore } from '@/store/useUIStore';
 import CartDrawer from './CartDrawer';
 import MobileMenu from './MobileMenu';
+import SearchDialog from './SearchDialog';
 import { useEffect, useState } from 'react';
 
 export default function Navbar() {
@@ -14,14 +15,27 @@ export default function Navbar() {
   const { toggleMobileMenu } = useUIStore();
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   return (
@@ -42,8 +56,7 @@ export default function Navbar() {
             </Link>
             <nav className="flex items-center space-x-8 text-sm font-bold uppercase tracking-widest">
               <Link href="/shop" className="transition-colors hover:text-primary text-foreground/70">Shop</Link>
-              <Link href="/shop?category=shoes" className="transition-colors hover:text-primary text-foreground/70">Shoes</Link>
-              <Link href="/shop?category=bags" className="transition-colors hover:text-primary text-foreground/70">Bags</Link>
+              <Link href="/track" className="transition-colors hover:text-primary text-foreground/70">Track</Link>
               <Link href="/about" className="transition-colors hover:text-primary text-foreground/70">About</Link>
             </nav>
           </div>
@@ -64,12 +77,19 @@ export default function Navbar() {
           </Link>
 
           <div className="flex items-center justify-end space-x-2">
-            <div className="hidden lg:block">
-              <Link href="/shop">
-                <Button variant="ghost" size="icon" className="text-foreground/70 hover:text-primary">
-                  <Search className="h-5 w-5" />
-                </Button>
-              </Link>
+            <div>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-foreground/70 hover:text-primary relative group"
+                onClick={() => setSearchOpen(true)}
+              >
+                <Search className="h-5 w-5" />
+                <span className="sr-only">Search</span>
+                <kbd className="hidden lg:inline-flex absolute -bottom-8 left-1/2 -translate-x-1/2 pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-xs">⌘</span>K
+                </kbd>
+              </Button>
             </div>
             
             <Button 
@@ -91,6 +111,7 @@ export default function Navbar() {
       </header>
       <CartDrawer />
       <MobileMenu />
+      <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }

@@ -3,15 +3,18 @@
 import { useProducts } from '@/hooks/useProducts';
 import { ProductFilters } from '@/types/product';
 import ProductCard from './ProductCard';
-import { PackageX, Loader2 } from 'lucide-react';
+import ProductSkeleton from './ProductSkeleton';
+import { PackageX } from 'lucide-react';
 
 export default function ProductGrid({ filters }: { filters: ProductFilters }) {
   const { data, isLoading, isError } = useProducts(filters);
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {[...Array(8)].map((_, i) => (
+          <ProductSkeleton key={i} />
+        ))}
       </div>
     );
   }

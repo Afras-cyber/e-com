@@ -18,7 +18,11 @@ export async function GET(request: Request) {
       .limit(20)
       .lean();
 
-    return NextResponse.json(testimonials);
+    return NextResponse.json(testimonials, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200',
+      },
+    });
   } catch (error) {
     console.error('Error fetching testimonials:', error);
     return NextResponse.json({ error: 'Failed to fetch testimonials' }, { status: 500 });

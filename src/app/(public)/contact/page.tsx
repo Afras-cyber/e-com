@@ -1,8 +1,7 @@
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { Instagram, Facebook } from "@/components/shared/BrandIcons";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import ContactForm from "@/components/contact/ContactForm";
 
 export default function ContactPage() {
   return (
@@ -82,52 +81,24 @@ export default function ContactPage() {
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 shadow-sm">
-              <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Name</label>
-                    <Input placeholder="John Doe" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Email</label>
-                    <Input type="email" placeholder="john@example.com" />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Subject</label>
-                  <Input placeholder="Order Inquiry" />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Message</label>
-                  <Textarea 
-                    placeholder="How can we help you?" 
-                    className="min-h-[150px] resize-none"
-                  />
-                </div>
-
-                <Button className="w-full h-12 gap-2 text-lg">
-                  <Send size={18} />
-                  Send Message
-                </Button>
-              </form>
-            </div>
+            <ContactForm />
 
           </div>
         </div>
       </section>
 
-      {/* Map Placeholder */}
-      <section className="h-[400px] bg-zinc-200 dark:bg-zinc-800 w-full relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center text-zinc-500 font-medium">
-          <div className="text-center">
-            <MapPin className="mx-auto h-12 w-12 mb-2 opacity-20" />
-            <p>Interactive Map Integration Coming Soon</p>
-          </div>
-        </div>
+      {/* Live Map */}
+      <section className="h-[450px] w-full relative">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63371.81536311406!2d79.82118591953123!3d6.9218335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2594000000001%3A0x67530e16345d045d!2sColombo!5e0!3m2!1sen!2slk!4v1714500000000!5m2!1sen!2slk" 
+          width="100%" 
+          height="100%" 
+          style={{ border: 0 }} 
+          allowFullScreen 
+          loading="lazy" 
+          referrerPolicy="no-referrer-when-downgrade"
+          className="grayscale dark:invert contrast-125"
+        ></iframe>
       </section>
     </div>
   );

@@ -24,9 +24,9 @@ export default function MobileMenu() {
   const navLinks = [
     { label: 'Home', href: '/' },
     { label: 'Shop All', href: '/shop' },
+    { label: 'Track Order', href: '/track' },
     { label: 'Sneakers', href: '/shop?category=shoes' },
     { label: 'Bags', href: '/shop?category=bags' },
-    { label: 'Accessories', href: '/shop?category=accessories' },
     { label: 'About Us', href: '/about' },
   ];
 

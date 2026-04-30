@@ -5,6 +5,7 @@ import {
   Users,
   Image as ImageIcon,
   ArrowRight,
+  Send,
 } from "lucide-react";
 import Link from "next/link";
 import connectDB from "@/lib/db/mongoose";
@@ -12,6 +13,8 @@ import Order from "@/lib/db/models/Order";
 import Product from "@/lib/db/models/Product";
 import { formatPrice } from "@/lib/format-price";
 import { Button } from "@/components/ui/button";
+import DashboardCharts from "@/components/admin/DashboardCharts";
+import { startOfDay, subDays, format } from "date-fns";
 
 export default async function AdminDashboard() {
   const session = await auth();
@@ -28,6 +31,29 @@ export default async function AdminDashboard() {
   const revenue = deliveredOrders.reduce((sum, order) => {
     return sum + (order.product.negotiatedPrice || order.product.price);
   }, 0);
+
+  // Generate chart data for last 7 days
+  const last7DaysData = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = subDays(new Date(), i);
+    const dayStart = startOfDay(d);
+    const dayEnd = new Date(dayStart);
+    dayEnd.setHours(23, 59, 59, 999);
+
+    const dayOrders = await Order.find({
+      status: "delivered",
+      updatedAt: { $gte: dayStart, $lte: dayEnd }
+    }).lean();
+
+    const dayRevenue = dayOrders.reduce((sum, order) => 
+      sum + (order.product.negotiatedPrice || order.product.price), 0
+    );
+
+    last7DaysData.push({
+      label: format(d, 'EEE'),
+      value: dayRevenue
+    });
+  }
 
   // Fetch recent orders
   const recentOrders = await Order.find()
@@ -93,7 +119,43 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <div className="col-span-4 rounded-xl border bg-card text-card-foreground shadow">
+        <div className="col-span-4 rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
+          <DashboardCharts data={last7DaysData} />
+        </div>
+        <div className="col-span-3 rounded-xl border bg-card text-card-foreground shadow">
+          <div className="p-6">
+            <h3 className="font-semibold leading-none tracking-tight mb-4">
+              Quick Actions
+            </h3>
+            <div className="grid gap-2">
+              <Link href="/admin/products/new">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2"
+                >
+                  <Package className="h-4 w-4" /> Add New Product
+                </Button>
+              </Link>
+              <Link href="/admin/banners">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2"
+                >
+                  <ImageIcon className="h-4 w-4" /> Manage Banners
+                </Button>
+              </Link>
+              <Link href="/admin/newsletter">
+                <Button variant="outline" className="w-full justify-start gap-2">
+                  <Send className="h-4 w-4" /> Newsletter Subscriptions
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-1">
+        <div className="rounded-xl border bg-card text-card-foreground shadow">
           <div className="p-6">
             <h3 className="font-semibold leading-none tracking-tight mb-4">
               Recent Orders
@@ -167,40 +229,6 @@ export default async function AdminDashboard() {
                 className="text-sm text-blue-600 hover:underline flex items-center gap-1"
               >
                 View all orders <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-span-3 rounded-xl border bg-card text-card-foreground shadow">
-          <div className="p-6">
-            <h3 className="font-semibold leading-none tracking-tight mb-4">
-              Quick Actions
-            </h3>
-            <div className="grid gap-2">
-              <Link href="/admin/products/new">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2"
-                >
-                  <Package className="h-4 w-4" /> Add New Product
-                </Button>
-              </Link>
-              <Link href="/admin/banners">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2"
-                >
-                  <ImageIcon className="h-4 w-4" /> Manage Banners
-                </Button>
-              </Link>
-              <Link href="/admin/staff">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2"
-                >
-                  <Users className="h-4 w-4" /> Manage Staff
-                </Button>
               </Link>
             </div>
           </div>

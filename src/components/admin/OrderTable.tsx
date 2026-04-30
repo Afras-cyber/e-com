@@ -17,6 +17,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+import { useState } from 'react';
+
 const statusMap: any = {
   inquiry: { label: 'New Inquiry', color: 'bg-blue-100 text-blue-700', icon: MessageCircle },
   contacted: { label: 'Contacted', color: 'bg-purple-100 text-purple-700', icon: Clock },
@@ -29,10 +31,13 @@ const statusMap: any = {
 };
 
 export default function OrderTable() {
+  const [filter, setFilter] = useState('all');
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['admin-orders'],
+    queryKey: ['admin-orders', filter],
     queryFn: async () => {
-      const res = await fetch('/api/orders');
+      const url = filter === 'all' ? '/api/orders' : `/api/orders?status=${filter}`;
+      const res = await fetch(url);
       return res.json();
     }
   });
@@ -41,7 +46,30 @@ export default function OrderTable() {
   if (isError) return <div className="p-8 text-center text-red-500">Error loading orders</div>;
 
   return (
-    <div className="rounded-md border bg-card">
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+        <Button 
+          variant={filter === 'all' ? 'default' : 'outline'} 
+          size="sm" 
+          onClick={() => setFilter('all')}
+          className="rounded-full"
+        >
+          All
+        </Button>
+        {Object.entries(statusMap).map(([key, value]: [string, any]) => (
+          <Button 
+            key={key}
+            variant={filter === key ? 'default' : 'outline'} 
+            size="sm" 
+            onClick={() => setFilter(key)}
+            className="rounded-full whitespace-nowrap"
+          >
+            {value.label}
+          </Button>
+        ))}
+      </div>
+
+      <div className="rounded-md border bg-card shadow-sm">
       <div className="relative w-full overflow-auto">
         <table className="w-full caption-bottom text-sm">
           <thead className="[&_tr]:border-b">
@@ -102,6 +130,7 @@ export default function OrderTable() {
           </tbody>
         </table>
       </div>
+    </div>
       {(!data?.orders || data.orders.length === 0) && (
         <div className="p-8 text-center text-muted-foreground">No orders found</div>
       )}

@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import connectDB from '@/lib/db/mongoose';
 import Product from '@/lib/db/models/Product';
 import { notFound } from 'next/navigation';
@@ -7,6 +8,32 @@ import RelatedProducts from '@/components/shop/RelatedProducts';
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  await connectDB();
+  const product = await Product.findOne({ slug: resolvedParams.slug, isAvailable: true }).lean();
+
+  if (!product) {
+    return {
+      title: 'Product Not Found | StepKicks',
+    };
+  }
+
+  return {
+    title: `${product.name} | StepKicks`,
+    description: product.seoDescription || product.description.substring(0, 160),
+    openGraph: {
+      images: [product.images[0]],
+      title: product.name,
+      description: product.seoDescription || product.description.substring(0, 160),
+    },
+  };
+}
+
 export default async function ProductDetailPage({
   params,
 }: {
@@ -15,7 +42,7 @@ export default async function ProductDetailPage({
   const resolvedParams = await params;
   
   await connectDB();
-  const product = await Product.findOne({ slug: resolvedParams.slug, isActive: true }).lean();
+  const product = await Product.findOne({ slug: resolvedParams.slug, isAvailable: true }).lean();
 
   if (!product) {
     notFound();

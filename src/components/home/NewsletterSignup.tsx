@@ -5,6 +5,7 @@ import { Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export default function NewsletterSignup() {
   const [email, setEmail] = useState("");
@@ -16,11 +17,23 @@ export default function NewsletterSignup() {
 
     setStatus("loading");
     
-    // Simulate API call
-    setTimeout(() => {
-      setStatus("success");
-      setEmail("");
-    }, 1500);
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        setEmail("");
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+    }
   };
 
   return (
@@ -72,8 +85,14 @@ export default function NewsletterSignup() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="h-14 bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500 rounded-2xl focus:ring-primary"
+                      className={cn(
+                        "h-14 bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500 rounded-2xl focus:ring-primary",
+                        status === "error" && "border-destructive focus:ring-destructive"
+                      )}
                     />
+                    {status === "error" && (
+                      <p className="text-destructive text-xs mt-2 ml-1">Something went wrong. Please try again.</p>
+                    )}
                   </div>
                   <Button 
                     type="submit" 

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { IProduct } from '@/types/product';
 import { formatPrice } from '@/lib/format-price';
 
@@ -7,10 +8,12 @@ export default function ProductCard({ product }: { product: IProduct }) {
     <Link href={`/shop/${product.slug}`} className="group relative rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col transition-all hover:shadow-md">
       <div className="aspect-[4/5] relative overflow-hidden bg-muted/20">
         {product.images?.[0] ? (
-          <img 
+          <Image 
             src={product.images[0]} 
             alt={product.name}
-            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-muted/40 text-muted-foreground text-sm">
