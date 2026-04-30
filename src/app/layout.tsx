@@ -7,7 +7,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "StepKicks | Premium Shoes & Bags E-Commerce",
-  description: "Browse the best collection of sneakers, heels, and bags. Order via WhatsApp today.",
+  description:
+    "Browse the best collection of sneakers, heels, and bags. Order via WhatsApp today.",
 };
 
 export default function RootLayout({
@@ -17,10 +18,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Momo+Trust+Sans:wght@200..800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className={inter.className}>
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
