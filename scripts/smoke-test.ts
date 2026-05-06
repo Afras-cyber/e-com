@@ -31,15 +31,17 @@ async function smokeTest() {
         email: "test@example.com",
         address: "123 Test Street, Colombo"
       },
-      product: {
+      items: [{
         productId: product._id,
         productName: product.name,
         productSlug: product.slug,
         image: product.images[0],
         price: product.price,
+        quantity: 1,
         selectedSize: product.sizes[0],
         selectedColor: product.colors[0].name
-      },
+      }],
+      totalAmount: product.price,
       status: 'inquiry'
     });
     console.log(`✅ Test order created: ${testOrder.orderNumber}`);

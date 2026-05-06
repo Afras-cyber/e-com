@@ -87,7 +87,7 @@ const OrderSchema = new Schema<IOrderDocument>(
   { timestamps: true }
 );
 
-OrderSchema.index({ orderNumber: 1 });
+// Indexes
 OrderSchema.index({ status: 1 });
 OrderSchema.index({ createdAt: -1 });
 OrderSchema.index({ 'customer.phone': 1 });

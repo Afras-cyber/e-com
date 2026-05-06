@@ -28,8 +28,8 @@ export default async function AdminDashboard() {
 
   // Calculate total revenue for delivered orders
   const deliveredOrders = await Order.find({ status: "delivered" }).lean();
-  const revenue = deliveredOrders.reduce((sum, order) => {
-    return sum + (order.product.negotiatedPrice || order.product.price);
+  const revenue = deliveredOrders.reduce((sum, order: any) => {
+    return sum + (order.negotiatedTotal || order.totalAmount || order.product?.negotiatedPrice || order.product?.price || 0);
   }, 0);
 
   // Generate chart data for last 7 days
@@ -45,8 +45,8 @@ export default async function AdminDashboard() {
       updatedAt: { $gte: dayStart, $lte: dayEnd }
     }).lean();
 
-    const dayRevenue = dayOrders.reduce((sum, order) => 
-      sum + (order.product.negotiatedPrice || order.product.price), 0
+    const dayRevenue = dayOrders.reduce((sum, order: any) => 
+      sum + (order.negotiatedTotal || order.totalAmount || order.product?.negotiatedPrice || order.product?.price || 0), 0
     );
 
     last7DaysData.push({
