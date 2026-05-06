@@ -4,10 +4,12 @@ import { MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
+import { siteConfig } from "@/config/site";
+
 export default function WhatsAppButton() {
   const [showTooltip, setShowTooltip] = useState(false);
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94776756287";
-  const message = encodeURIComponent("Hi StepKicks! I'm interested in your products.");
+  const whatsappNumber = siteConfig.contact.whatsapp;
+  const message = encodeURIComponent(`Hi ${siteConfig.name}! I'm interested in your products.`);
 
   useEffect(() => {
     // Show tooltip after 5 seconds to catch attention

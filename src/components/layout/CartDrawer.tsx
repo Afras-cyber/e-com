@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import QuickOrderModal from '@/components/shop/QuickOrderModal';
+import { siteConfig } from '@/config/site';
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, total, clearCart } = useCartStore();
@@ -43,7 +44,7 @@ Order ID: *${order.orderNumber}*
     message += `\n*Total: LKR ${total().toLocaleString()}*\n\n`;
     message += `Please confirm my order. Thank you!`;
 
-    const finalUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}?text=${encodeURIComponent(message)}`;
+    const finalUrl = `https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(message)}`;
     window.open(finalUrl, "_blank");
     clearCart();
     closeCart();

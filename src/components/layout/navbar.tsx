@@ -11,6 +11,7 @@ import CartDrawer from './CartDrawer';
 import MobileMenu from './MobileMenu';
 import SearchDialog from './SearchDialog';
 import { useEffect, useState } from 'react';
+import { siteConfig } from '@/config/site';
 
 export default function Navbar() {
   const { itemCount, openCart } = useCartStore();
@@ -53,8 +54,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex h-14 items-center px-4">
           <div className="mr-8 hidden md:flex items-center">
             <Link href="/" className="mr-10 flex items-center">
-              <span className="text-2xl font-black tracking-tighter">
-                STEP<span className="text-primary italic">KICKS</span>
+              <span className="text-2xl font-black tracking-tighter uppercase">
+                {siteConfig.name.slice(0, 4)}<span className="text-primary italic">{siteConfig.name.slice(4)}</span>
               </span>
             </Link>
             <nav className="flex items-center space-x-8 text-sm font-bold uppercase tracking-widest">
@@ -74,8 +75,8 @@ export default function Navbar() {
           </div>
 
           <Link href="/" className="flex md:hidden flex-1 items-center justify-center">
-            <span className="text-xl font-black tracking-tighter">
-              STEP<span className="text-primary italic">KICKS</span>
+            <span className="text-xl font-black tracking-tighter uppercase">
+              {siteConfig.name.slice(0, 4)}<span className="text-primary italic">{siteConfig.name.slice(4)}</span>
             </span>
           </Link>
 

@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import { siteConfig } from "@/config/site";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "StepKicks | Premium Shoes & Bags E-Commerce",
-  description:
-    "Browse the best collection of sneakers, heels, and bags. Order via WhatsApp today.",
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
 };
 
 export default function RootLayout({
