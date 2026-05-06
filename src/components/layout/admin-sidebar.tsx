@@ -9,6 +9,8 @@ import {
   Image as ImageIcon, 
   Users, 
   MessageSquareQuote,
+  Tag,
+  Briefcase,
   LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -18,6 +20,8 @@ const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/admin/orders', icon: ShoppingCart, label: 'Orders' },
   { href: '/admin/products', icon: Package, label: 'Products' },
+  { href: '/admin/categories', icon: Tag, label: 'Categories' },
+  { href: '/admin/brands', icon: Briefcase, label: 'Brands' },
   { href: '/admin/banners', icon: ImageIcon, label: 'Banners' },
   { href: '/admin/staff', icon: Users, label: 'Staff' },
   { href: '/admin/testimonials', icon: MessageSquareQuote, label: 'Testimonials' },

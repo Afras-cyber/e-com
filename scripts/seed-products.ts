@@ -1,7 +1,16 @@
 import mongoose from 'mongoose';
 import Product from '../src/lib/db/models/Product';
+import Category from '../src/lib/db/models/Category';
+import Brand from '../src/lib/db/models/Brand';
 import dotenv from 'dotenv';
-import { slugify } from '../src/lib/slugify';
+
+const slugify = (text: string) => 
+  text.toString().toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
 
 // Load .env.local manually for the script
 dotenv.config({ path: '.env.local' });
@@ -79,18 +88,46 @@ async function seedProducts() {
     await mongoose.connect(mongoUri);
     console.log('Connected to MongoDB');
 
-    // Optional: Clear existing products
+    // Optional: Clear existing products, categories, and brands
     await Product.deleteMany({});
-    console.log('Cleared existing products');
+    await Category.deleteMany({});
+    await Brand.deleteMany({});
+    console.log('Cleared existing data');
 
-    // Add slugs
-    const productsToInsert = dummyProducts.map(p => ({
-      ...p,
-      slug: slugify(p.name)
-    }));
+    const productsToInsert = [];
+
+    for (const p of dummyProducts) {
+      // 1. Get or Create Category
+      let category = await Category.findOne({ name: new RegExp(`^${p.category}$`, 'i') });
+      if (!category) {
+        category = await Category.create({
+          name: p.category.charAt(0).toUpperCase() + p.category.slice(1),
+          slug: slugify(p.category),
+          isActive: true
+        });
+      }
+
+      // 2. Get or Create Brand
+      let brand = await Brand.findOne({ name: new RegExp(`^${p.brand}$`, 'i') });
+      if (!brand) {
+        brand = await Brand.create({
+          name: p.brand,
+          slug: slugify(p.brand),
+          isActive: true
+        });
+      }
+
+      // 3. Prepare Product
+      productsToInsert.push({
+        ...p,
+        categoryId: category._id,
+        brandId: brand._id,
+        slug: slugify(p.name)
+      });
+    }
 
     await Product.insertMany(productsToInsert);
-    console.log(`Successfully inserted ${productsToInsert.length} products!`);
+    console.log(`Successfully inserted ${productsToInsert.length} products with category/brand links!`);
 
     process.exit(0);
   } catch (error) {
