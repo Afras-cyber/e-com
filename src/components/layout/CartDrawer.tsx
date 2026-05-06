@@ -27,7 +27,7 @@ export default function CartDrawer() {
 
   const handleOrderSuccess = (order: any) => {
     const siteUrl = `${window.location.origin}`;
-    let message = `Hi! I just placed a cart order on StepKicks. 
+    let message = `Hi! I just placed a cart order on ${siteConfig.name}. 
     
 Order ID: *${order.orderNumber}*
 

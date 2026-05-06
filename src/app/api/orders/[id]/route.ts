@@ -5,6 +5,7 @@ import Product from '@/lib/db/models/Product';
 import { UpdateOrderStatusSchema } from '@/lib/validations/order.schema';
 import { auth } from '@/lib/auth';
 import { Resend } from 'resend';
+import { siteConfig } from '@/config/site';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -88,12 +89,12 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (order.customer.email) {
       try {
         await resend.emails.send({
-          from: 'StepKicks Store <onboarding@resend.dev>',
+          from: `${siteConfig.name} Store <onboarding@resend.dev>`,
           to: order.customer.email,
           subject: `Order Update: ${order.orderNumber}`,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-              <h2 style="color: #000; text-transform: uppercase; font-weight: 900; letter-spacing: -1px;">STEPKICKS</h2>
+              <h2 style="color: #000; text-transform: uppercase; font-weight: 900; letter-spacing: -1px;">${siteConfig.name.toUpperCase()}</h2>
               <p>Hi ${order.customer.name},</p>
               <p>Your order status has been updated to: <strong>${status.toUpperCase()}</strong></p>
               ${note ? `<p style="background: #f9f9f9; padding: 10px; border-radius: 5px; font-style: italic;">" ${note} "</p>` : ''}

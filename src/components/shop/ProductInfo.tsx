@@ -44,7 +44,7 @@ export default function ProductInfo({ product }: { product: any }) {
 
     // Update message to include order ID, price and link
     const productLink = `${window.location.origin}/shop/${product.slug}`;
-    const messageWithId = `Hi! I just placed a quick order on StepKicks. 
+    const messageWithId = `Hi! I just placed a quick order on ${siteConfig.name}. 
     
 Order ID: *${order.orderNumber}*
 👟 Product: *${product.name}*
