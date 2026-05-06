@@ -1,9 +1,10 @@
 import { Resend } from 'resend';
+import { siteConfig } from '@/config/site';
 
 export const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL ?? 'orders@stepkicks.lk';
+  process.env.RESEND_FROM_EMAIL ?? `orders@${siteConfig.url.replace(/^https?:\/\//, '')}`;
 
 // ─── Email Senders ────────────────────────────────────────────────────────────
 
@@ -24,7 +25,7 @@ export async function sendOrderConfirmation({
   return resend.emails.send({
     from: FROM_EMAIL,
     to: toEmail,
-    subject: `Your Order Inquiry — StepKicks ${orderNumber}`,
+    subject: `Your Order Inquiry — ${siteConfig.name} ${orderNumber}`,
     html: `
       <h2>Hi ${customerName}, thanks for your interest!</h2>
       <p>We've received your inquiry for:</p>
@@ -36,7 +37,7 @@ export async function sendOrderConfirmation({
       <p><strong>Total: LKR ${totalAmount.toLocaleString()}</strong></p>
       <p>Our team will contact you on WhatsApp shortly.</p>
       <hr/>
-      <small>StepKicks — Premium Shoes & Bags</small>
+      <small>${siteConfig.name} — Premium Shoes & Bags</small>
     `,
   });
 }
@@ -56,7 +57,7 @@ export async function sendNewOrderNotification({
   items: any[];
   totalAmount: number;
 }) {
-  const adminUrl = process.env.NEXTAUTH_URL ?? 'https://stepkicks.lk';
+  const adminUrl = process.env.NEXTAUTH_URL ?? siteConfig.url;
   return resend.emails.send({
     from: FROM_EMAIL,
     to: adminEmail,
@@ -87,11 +88,11 @@ export async function sendStaffWelcome({
   staffName: string;
   tempPassword: string;
 }) {
-  const loginUrl = process.env.NEXTAUTH_URL ?? 'https://stepkicks.lk';
+  const loginUrl = process.env.NEXTAUTH_URL ?? siteConfig.url;
   return resend.emails.send({
     from: FROM_EMAIL,
     to: toEmail,
-    subject: 'Welcome to StepKicks Staff Portal',
+    subject: `Welcome to ${siteConfig.name} Staff Portal`,
     html: `
       <h2>Welcome, ${staffName}!</h2>
       <p>Your staff account has been created. Login details:</p>
