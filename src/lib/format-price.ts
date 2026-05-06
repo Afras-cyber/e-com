@@ -1,4 +1,6 @@
-export function formatPrice(amount: number, currency = 'LKR'): string {
+import { siteConfig } from "@/config/site";
+
+export function formatPrice(amount: number, currency = siteConfig.business.currency): string {
   return new Intl.NumberFormat('en-LK', {
     style: 'currency',
     currency,

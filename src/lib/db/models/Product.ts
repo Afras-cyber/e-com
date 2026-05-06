@@ -5,9 +5,11 @@ export interface IProductDocument extends Document {
   slug: string;
   description: string;
   shortDescription: string;
-  category: 'shoes' | 'bags' | 'accessories';
+  categoryId: mongoose.Types.ObjectId;
+  brandId: mongoose.Types.ObjectId;
+  category: string; // Keep for convenience/display
   subcategory: string;
-  brand: string;
+  brand: string;    // Keep for convenience/display
   price: number;
   discountPrice?: number;
   discountPercent?: number;
@@ -44,11 +46,9 @@ const ProductSchema = new Schema<IProductDocument>(
     slug: { type: String, required: true, unique: true, lowercase: true },
     description: { type: String, required: true },
     shortDescription: { type: String, required: true },
-    category: {
-      type: String,
-      required: true,
-      enum: ['shoes', 'bags', 'accessories'],
-    },
+    categoryId: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    brandId: { type: Schema.Types.ObjectId, ref: 'Brand', required: true },
+    category: { type: String, required: true },
     subcategory: { type: String, required: true },
     brand: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },

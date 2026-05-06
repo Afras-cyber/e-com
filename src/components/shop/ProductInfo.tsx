@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { toast } from "sonner";
 import QuickOrderModal from "./QuickOrderModal";
+import { siteConfig } from "@/config/site";
 
 export default function ProductInfo({ product }: { product: any }) {
   const [selectedSize, setSelectedSize] = useState<string>(
@@ -54,7 +55,7 @@ Order ID: *${order.orderNumber}*
 
 Please confirm my order. Thank you!`.trim();
 
-    const finalUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}?text=${encodeURIComponent(messageWithId)}`;
+    const finalUrl = `https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(messageWithId)}`;
     window.open(finalUrl, "_blank");
   };
 

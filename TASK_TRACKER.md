@@ -111,5 +111,27 @@ We need to build the interactive UI components for the store and the admin panel
 8. [x] **Footer**: 2-column mobile grid, WhatsApp chat button, cleaner layout
 9. [x] **Responsive Grids**: All product grids now 2-column on mobile (shop, featured, wishlist)
 
+## Phase 11 — Automated Order Management & Configuration (Completed)
+1. [x] **Database Orders**: Integrated automatic order creation before WhatsApp redirect
+2. [x] **Quick Order Flow**: Implemented `<QuickOrderModal>` to capture customer data (Name/Phone)
+3. [x] **Multi-Item Support**: Refactored Order model to support full cart checkout (Items array)
+4. [x] **Admin Manual Control**: Added negotiated price updates and manual WhatsApp notification button
+5. [x] **Inventory Automation**: Fixed inventory sync for multiple items in a single order
+6. [x] **Central Configuration**: Created `src/config/site.ts` for easy shop white-labeling
+7. [x] **Stability**: Resolved schema caching and legacy data crashes in admin & track pages
+
+## Phase 12 — Dynamic Taxonomy & Branding (Completed)
+1. [x] **Category & Brand Models**: Implemented with auto-deactivation logic (cascade to products)
+2. [x] **Admin Management**: Created CRUD interfaces for Categories and Brands with status toggles
+3. [x] **Product Refactor**: Updated schema to use `ObjectId` references for taxonomy
+4. [x] **Dynamic Forms**: Refactored `ProductForm` to fetch live categories/brands from DB
+5. [x] **Migration & Seed**: Built scripts to transition existing data and updated seed files
+6. [x] **Visual Polish**: Fixed conflicting style shorthand console errors in admin portal
+
 ---
-**Note to Developer:** Check this file to see what to implement next!
+**Next Steps 🚀**
+- [ ] Add subcategory management to Categories
+- [ ] Implement product reviews and rating system
+- [ ] Add multi-image upload support with drag-and-drop
+- [ ] SEO audit and Sitemap generation
+- [ ] Promotional discount code system

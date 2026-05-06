@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProductSchema, ProductInput } from '@/lib/validations/product.schema';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '../shared/ImageUpload';
-import { X, Plus } from 'lucide-react';
+import { X, Plus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ProductFormProps {
@@ -17,6 +17,9 @@ interface ProductFormProps {
 export default function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<any[]>([]);
+  const [fetchingData, setFetchingData] = useState(true);
   
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<ProductInput>({
     resolver: zodResolver(ProductSchema),
@@ -29,6 +32,43 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       stock: 10,
     }
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [catsRes, brandsRes] = await Promise.all([
+          fetch('/api/admin/categories'),
+          fetch('/api/admin/brands')
+        ]);
+        const [cats, brs] = await Promise.all([catsRes.json(), brandsRes.json()]);
+        setCategories(cats);
+        setBrands(brs);
+      } catch (error) {
+        toast.error('Failed to load categories or brands');
+      } finally {
+        setFetchingData(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const selectedCategoryId = watch('categoryId');
+  const selectedBrandId = watch('brandId');
+
+  // Sync string names for convenience
+  useEffect(() => {
+    if (selectedCategoryId) {
+      const cat = categories.find(c => c._id === selectedCategoryId);
+      if (cat) setValue('category', cat.name);
+    }
+  }, [selectedCategoryId, categories, setValue]);
+
+  useEffect(() => {
+    if (selectedBrandId) {
+      const brand = brands.find(b => b._id === selectedBrandId);
+      if (brand) setValue('brand', brand.name);
+    }
+  }, [selectedBrandId, brands, setValue]);
 
   const images = watch('images');
   const colors = watch('colors');
@@ -76,18 +116,33 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           
           <div>
             <label className="text-sm font-medium">Brand</label>
-            <input {...register('brand')} className="w-full p-2 border rounded-md mt-1" placeholder="e.g. Nike" />
-            {errors.brand && <p className="text-red-500 text-xs mt-1">{errors.brand.message}</p>}
+            <select 
+              {...register('brandId')} 
+              className="w-full p-2 border rounded-md mt-1"
+              disabled={fetchingData}
+            >
+              <option value="">Select Brand</option>
+              {brands.map(b => (
+                <option key={b._id} value={b._id}>{b.name}</option>
+              ))}
+            </select>
+            {errors.brandId && <p className="text-red-500 text-xs mt-1">{errors.brandId.message}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium">Category</label>
-              <select {...register('category')} className="w-full p-2 border rounded-md mt-1">
-                <option value="shoes">Shoes</option>
-                <option value="bags">Bags</option>
-                <option value="accessories">Accessories</option>
+              <select 
+                {...register('categoryId')} 
+                className="w-full p-2 border rounded-md mt-1"
+                disabled={fetchingData}
+              >
+                <option value="">Select Category</option>
+                {categories.map(c => (
+                  <option key={c._id} value={c._id}>{c.name}</option>
+                ))}
               </select>
+              {errors.categoryId && <p className="text-red-500 text-xs mt-1">{errors.categoryId.message}</p>}
             </div>
             <div>
               <label className="text-sm font-medium">Subcategory</label>

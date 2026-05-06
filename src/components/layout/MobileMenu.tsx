@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { siteConfig } from '@/config/site';
 
 export default function MobileMenu() {
   const { isMobileMenuOpen, closeMobileMenu } = useUIStore();
@@ -54,8 +55,8 @@ export default function MobileMenu() {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b">
-              <span className="text-xl font-black tracking-tighter">
-                STEP<span className="text-primary italic">KICKS</span>
+              <span className="text-xl font-black tracking-tighter uppercase">
+                {siteConfig.name.slice(0, 4)}<span className="text-primary italic">{siteConfig.name.slice(4)}</span>
               </span>
               <Button variant="ghost" size="icon" onClick={closeMobileMenu} className="rounded-full">
                 <X className="w-5 h-5" />
@@ -101,7 +102,7 @@ export default function MobileMenu() {
             {/* WhatsApp CTA at bottom */}
             <div className="p-4 border-t bg-muted/10">
               <a 
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+94776756287'}`}
+                href={`https://wa.me/${siteConfig.contact.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-[#1da851] transition-colors active:scale-[0.98]"
