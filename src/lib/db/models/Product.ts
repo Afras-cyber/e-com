@@ -8,6 +8,7 @@ export interface IProductDocument extends Document {
   categoryId: mongoose.Types.ObjectId;
   brandId: mongoose.Types.ObjectId;
   category: string; // Keep for convenience/display
+  subcategory: string;
   brand: string;    // Keep for convenience/display
   price: number;
   discountPrice?: number;

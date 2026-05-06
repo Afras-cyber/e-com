@@ -23,7 +23,6 @@ const CategorySchema = new Schema<ICategoryDocument>(
   { timestamps: true }
 );
 
-CategorySchema.index({ slug: 1 });
 CategorySchema.index({ isActive: 1 });
 
 // Middleware to deactivate products when category is deactivated

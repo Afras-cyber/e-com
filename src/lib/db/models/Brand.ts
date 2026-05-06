@@ -23,7 +23,6 @@ const BrandSchema = new Schema<IBrandDocument>(
   { timestamps: true }
 );
 
-BrandSchema.index({ slug: 1 });
 BrandSchema.index({ isActive: 1 });
 
 // Middleware to deactivate products when brand is deactivated
