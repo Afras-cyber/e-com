@@ -52,7 +52,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const product = await Product.findByIdAndUpdate(
       resolvedParams.id,
       validatedData,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     ).lean();
 
     if (!product) {

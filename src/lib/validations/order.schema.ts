@@ -6,15 +6,17 @@ export const CreateOrderSchema = z.object({
     phone: z.string().min(7, 'Valid phone number required'),
     email: z.string().email().optional().or(z.literal('')),
   }),
-  product: z.object({
+  items: z.array(z.object({
     productId: z.string(),
     productName: z.string(),
     productSlug: z.string(),
     selectedSize: z.string().min(1, 'Size is required'),
     selectedColor: z.string().min(1, 'Color is required'),
     price: z.number().positive(),
+    quantity: z.number().int().positive(),
     image: z.string(),
-  }),
+  })),
+  totalAmount: z.number().positive(),
 });
 
 export const UpdateOrderStatusSchema = z.object({

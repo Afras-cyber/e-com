@@ -24,7 +24,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const staff = await User.findByIdAndUpdate(
       resolvedParams.id,
       updateData,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     ).select('-password').lean();
 
     if (!staff) {

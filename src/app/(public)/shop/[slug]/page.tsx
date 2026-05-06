@@ -45,7 +45,7 @@ export default async function ProductDetailPage({
   const product = await Product.findOneAndUpdate(
     { slug: resolvedParams.slug, isAvailable: true },
     { $inc: { viewCount: 1 } },
-    { new: true }
+    { returnDocument: 'after' }
   ).lean();
 
   if (!product) {

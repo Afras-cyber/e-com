@@ -41,7 +41,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const resolvedParams = await params;
     await connectDB();
     const body = await request.json();
-    const { status, note } = UpdateOrderStatusSchema.parse(body);
+    const { status, note, negotiatedPrice } = body;
 
     const order = await Order.findById(resolvedParams.id);
     if (!order) {
@@ -49,28 +49,39 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
 
     const oldStatus = order.status;
-    order.status = status;
-    order.statusHistory.push({
-      status,
-      updatedBy: (session.user as any).id,
-      note,
-      timestamp: new Date(),
-    });
+    
+    if (status) {
+      order.status = status;
+      order.statusHistory.push({
+        status,
+        updatedBy: (session.user as any).id,
+        note,
+        timestamp: new Date(),
+      });
+    }
+
+    if (negotiatedPrice !== undefined || body.negotiatedTotal !== undefined) {
+      order.negotiatedTotal = body.negotiatedTotal ?? negotiatedPrice;
+    }
 
     await order.save();
 
     // Side Effect 1: Inventory Sync
     // If order is confirmed and wasn't confirmed before, decrement stock
     if (status === 'confirmed' && oldStatus !== 'confirmed') {
-      await Product.findByIdAndUpdate(order.product.productId, {
-        $inc: { stock: -1 }
-      });
+      for (const item of order.items) {
+        await Product.findByIdAndUpdate(item.productId, {
+          $inc: { stock: -item.quantity }
+        });
+      }
     }
     // If order was confirmed and is now cancelled, increment stock back
     if (status === 'cancelled' && oldStatus === 'confirmed') {
-      await Product.findByIdAndUpdate(order.product.productId, {
-        $inc: { stock: 1 }
-      });
+      for (const item of order.items) {
+        await Product.findByIdAndUpdate(item.productId, {
+          $inc: { stock: item.quantity }
+        });
+      }
     }
 
     // Side Effect 2: Email Notification
@@ -88,7 +99,13 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
               ${note ? `<p style="background: #f9f9f9; padding: 10px; border-radius: 5px; font-style: italic;">" ${note} "</p>` : ''}
               <div style="margin: 20px 0; padding: 15px; background: #fafafa; border-radius: 8px;">
                 <p style="margin: 0; font-weight: bold;">Order: ${order.orderNumber}</p>
-                <p style="margin: 5px 0 0 0;">Product: ${order.product.productName} (${order.product.selectedSize})</p>
+                <div style="margin-top: 10px;">
+                  ${order.items.map((item: any) => `
+                    <div style="margin-bottom: 5px; font-size: 14px;">
+                      • ${item.productName} (${item.selectedSize}) x ${item.quantity}
+                    </div>
+                  `).join('')}
+                </div>
               </div>
               <p>You can track your order live at: <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://stepkicks.lk'}/track?order=${order.orderNumber}">${process.env.NEXT_PUBLIC_APP_URL || 'https://stepkicks.lk'}/track</a></p>
               <p style="margin-top: 30px; font-size: 12px; color: #888;">If you have any questions, feel free to reply to this email or message us on WhatsApp.</p>

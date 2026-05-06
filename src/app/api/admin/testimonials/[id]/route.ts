@@ -22,7 +22,7 @@ export async function PATCH(
     const testimonial = await Testimonial.findByIdAndUpdate(
       id,
       { $set: body },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!testimonial) {

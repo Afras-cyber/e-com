@@ -17,16 +17,18 @@ export interface IOrderDocument extends Document {
     phone: string;
     email?: string;
   };
-  product: {
+  items: {
     productId: mongoose.Types.ObjectId;
     productName: string;
     productSlug: string;
     selectedSize: string;
     selectedColor: string;
     price: number;
-    negotiatedPrice?: number;
+    quantity: number;
     image: string;
-  };
+  }[];
+  totalAmount: number;
+  negotiatedTotal?: number;
   status: OrderStatus;
   statusHistory: {
     status: OrderStatus;
@@ -64,16 +66,18 @@ const OrderSchema = new Schema<IOrderDocument>(
       phone: { type: String, required: true },
       email: { type: String },
     },
-    product: {
+    items: [{
       productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
       productName: { type: String, required: true },
       productSlug: { type: String, required: true },
       selectedSize: { type: String, required: true },
       selectedColor: { type: String, required: true },
       price: { type: Number, required: true },
-      negotiatedPrice: { type: Number },
+      quantity: { type: Number, required: true, default: 1 },
       image: { type: String, required: true },
-    },
+    }],
+    totalAmount: { type: Number, required: true },
+    negotiatedTotal: { type: Number },
     status: { type: String, enum: ORDER_STATUSES, default: 'inquiry' },
     statusHistory: [StatusHistorySchema],
     whatsappSent: { type: Boolean, default: false },
@@ -89,12 +93,22 @@ OrderSchema.index({ createdAt: -1 });
 OrderSchema.index({ 'customer.phone': 1 });
 
 // Auto-generate order number
-OrderSchema.pre('save', async function () {
-  if (this.isNew) {
-    const count = await mongoose.model('Order').countDocuments();
-    this.orderNumber = `SK-${new Date().getFullYear()}-${String(count + 1).padStart(5, '0')}`;
+OrderSchema.pre('validate', async function () {
+  if (this.isNew && !this.orderNumber) {
+    try {
+      const OrderModel = this.constructor as mongoose.Model<IOrderDocument>;
+      const count = await OrderModel.countDocuments();
+      this.orderNumber = `STK-${new Date().getFullYear()}-${String(count + 1).padStart(5, '0')}`;
+    } catch (err: any) {
+      throw err;
+    }
   }
 });
+
+// Force refresh model in development to avoid schema caching issues
+if (process.env.NODE_ENV === 'development') {
+  delete (mongoose as any).models.Order;
+}
 
 const Order: Model<IOrderDocument> =
   mongoose.models.Order || mongoose.model<IOrderDocument>('Order', OrderSchema);

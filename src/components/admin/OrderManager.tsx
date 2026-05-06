@@ -34,7 +34,7 @@ export default function OrderManager({ id }: { id: string }) {
     setUpdating(true);
     try {
       const res = await fetch(`/api/orders/${id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus, note }),
       });
@@ -56,9 +56,9 @@ export default function OrderManager({ id }: { id: string }) {
     setUpdating(true);
     try {
       const res = await fetch(`/api/orders/${id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ negotiatedPrice: price }),
+        body: JSON.stringify({ negotiatedTotal: price }),
       });
       if (res.ok) refetch();
     } catch (error) {
@@ -110,15 +110,41 @@ export default function OrderManager({ id }: { id: string }) {
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Product</h3>
-                <div className="flex gap-4">
-                  <img src={order.product.image} alt="" className="w-20 h-20 rounded-lg object-cover border" />
-                  <div className="space-y-1">
-                    <p className="font-bold">{order.product.productName}</p>
-                    <p className="text-sm">Size: <span className="font-medium">{order.product.selectedSize}</span></p>
-                    <p className="text-sm">Color: <span className="font-medium">{order.product.selectedColor}</span></p>
-                    <p className="text-lg font-bold pt-1">{formatPrice(order.product.price)}</p>
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Items</h3>
+                <div className="space-y-4">
+                  {(order.items || [
+                    {
+                      ...order.product,
+                      quantity: 1,
+                    }
+                  ]).map((item: any, i: number) => (
+                    <div key={i} className="flex gap-4 p-3 rounded-lg bg-muted/20 border border-muted/30">
+                      <img src={item.image} alt="" className="w-16 h-16 rounded-lg object-cover border" />
+                      <div className="flex-1 space-y-0.5">
+                        <p className="font-bold text-sm leading-tight">{item.productName}</p>
+                        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                          Size: {item.selectedSize} | {item.selectedColor}
+                        </p>
+                        <div className="flex justify-between items-center mt-1">
+                          <p className="text-xs font-medium">Qty: {item.quantity}</p>
+                          <p className="text-sm font-black">{formatPrice(item.price * (item.quantity || 1))}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-6 pt-6 border-t space-y-2">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="font-bold">{formatPrice(order.totalAmount || order.product?.price)}</span>
                   </div>
+                  {order.negotiatedTotal && (
+                    <div className="flex justify-between items-center text-sm text-primary">
+                      <span className="font-bold">Negotiated Total</span>
+                      <span className="text-lg font-black">{formatPrice(order.negotiatedTotal)}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -182,11 +208,32 @@ export default function OrderManager({ id }: { id: string }) {
               </div>
 
               <div className="pt-4 border-t space-y-4">
+                <Button 
+                  className="w-full gap-2 bg-[#25D366] hover:bg-[#128C7E]" 
+                  onClick={() => {
+                    const message = `Hi ${order.customer.name}! This is an update regarding your order *${order.orderNumber}*.
+                    
+Current Status: *${order.status.toUpperCase()}*
+${note ? `Note: ${note}` : ''}
+
+You can track your order here: ${window.location.origin}/track?order=${order.orderNumber}
+
+Thank you for choosing StepKicks!`.trim();
+                    window.open(`https://wa.me/${order.customer.phone.replace(/\+/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+                  }}
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Send Update via WhatsApp
+                </Button>
+                <p className="text-[10px] text-center text-muted-foreground uppercase tracking-widest font-medium">Notify customer manually</p>
+              </div>
+
+              <div className="pt-4 border-t space-y-4">
                 <label className="text-sm font-medium">Final Negotiated Price</label>
                 <div className="flex gap-2">
                   <input 
                     type="number"
-                    defaultValue={order.product.negotiatedPrice || order.product.price}
+                    defaultValue={order.negotiatedTotal || order.totalAmount}
                     onBlur={(e) => updateNegotiatedPrice(parseInt(e.target.value))}
                     className="flex-1 p-2 border rounded-md font-bold"
                   />

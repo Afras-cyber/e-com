@@ -8,23 +8,45 @@ import { formatPrice } from '@/lib/format-price';
 import { buildWhatsAppCartURL } from '@/lib/whatsapp';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import QuickOrderModal from '@/components/shop/QuickOrderModal';
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, total, clearCart } = useCartStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCheckout = () => {
-    const cartConfig = {
-      items: items.map(item => ({
-        productName: item.product.name,
-        productSlug: item.product.slug,
-        size: item.selectedSize,
-        color: item.selectedColor,
-        price: item.product.discountPrice ?? item.product.price,
-        quantity: item.quantity,
-      })),
-      total: total(),
-    };
-    window.open(buildWhatsAppCartURL(cartConfig), '_blank');
+    if (items.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleOrderSuccess = (order: any) => {
+    const siteUrl = `${window.location.origin}`;
+    let message = `Hi! I just placed a cart order on StepKicks. 
+    
+Order ID: *${order.orderNumber}*
+
+*Items:*
+`;
+    
+    items.forEach((item, index) => {
+      const itemLink = `${siteUrl}/shop/${item.product.slug}`;
+      message += `${index + 1}. *${item.product.name}* (${item.selectedSize} | ${item.selectedColor}) x ${item.quantity}\n`;
+      message += `   💰 Price: LKR ${(item.product.discountPrice ?? item.product.price).toLocaleString()}\n`;
+      message += `   🔗 Link: ${itemLink}\n\n`;
+    });
+    
+    message += `\n*Total: LKR ${total().toLocaleString()}*\n\n`;
+    message += `Please confirm my order. Thank you!`;
+
+    const finalUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}?text=${encodeURIComponent(message)}`;
+    window.open(finalUrl, "_blank");
+    clearCart();
+    closeCart();
   };
 
   return (
@@ -142,6 +164,24 @@ export default function CartDrawer() {
               </div>
             )}
           </motion.div>
+
+          {/* QuickOrderModal for Cart */}
+          {items.length > 0 && (
+            <QuickOrderModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              product={{
+                id: items[0].product._id, // Just placeholder ID for the modal component logic
+                name: "Cart Order",
+                slug: "cart",
+                image: items[0].product.images[0],
+                price: total(),
+              }}
+              selectedSize="N/A"
+              selectedColor="N/A"
+              onSuccess={handleOrderSuccess}
+            />
+          )}
         </>
       )}
     </AnimatePresence>

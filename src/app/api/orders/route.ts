@@ -65,9 +65,8 @@ export async function POST(request: Request) {
         orderNumber: order.orderNumber,
         customerName: order.customer.name,
         customerPhone: order.customer.phone,
-        productName: order.product.productName,
-        selectedSize: order.product.selectedSize,
-        selectedColor: order.product.selectedColor,
+        items: order.items,
+        totalAmount: order.totalAmount,
       }).catch(err => console.error('Failed to send admin order email:', err));
     }
 
@@ -76,11 +75,8 @@ export async function POST(request: Request) {
         toEmail: order.customer.email,
         customerName: order.customer.name,
         orderNumber: order.orderNumber,
-        productName: order.product.productName,
-        selectedSize: order.product.selectedSize,
-        selectedColor: order.product.selectedColor,
-        price: order.product.price,
-        productSlug: order.product.productSlug,
+        items: order.items,
+        totalAmount: order.totalAmount,
       }).catch(err => console.error('Failed to send customer order email:', err));
     }
 
@@ -90,6 +86,9 @@ export async function POST(request: Request) {
     if (error.name === 'ZodError') {
       return NextResponse.json({ error: error.errors }, { status: 400 });
     }
-    return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to create order', message: error.message }, 
+      { status: 500 }
+    );
   }
 }

@@ -97,15 +97,20 @@ export default function OrderTable() {
                   </td>
                   <td className="p-4 align-middle">
                     <div className="flex items-center gap-2">
-                      <img src={order.product.image} alt="" className="w-8 h-8 rounded object-cover border" />
+                      <img src={order.items?.[0]?.image || order.product?.image} alt="" className="w-8 h-8 rounded object-cover border" />
                       <div className="flex flex-col">
-                        <span className="font-medium line-clamp-1">{order.product.productName}</span>
-                        <span className="text-xs text-muted-foreground">Size: {order.product.selectedSize} | {order.product.selectedColor}</span>
+                        <span className="font-medium line-clamp-1">
+                          {order.items?.[0]?.productName || order.product?.productName}
+                          {(order.items?.length || 0) > 1 && <span className="text-primary ml-1">+{order.items.length - 1} more</span>}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {order.items?.[0]?.selectedSize || order.product?.selectedSize} | {order.items?.[0]?.selectedColor || order.product?.selectedColor}
+                        </span>
                       </div>
                     </div>
                   </td>
                   <td className="p-4 align-middle font-bold">
-                    {formatPrice(order.product.negotiatedPrice || order.product.price)}
+                    {formatPrice(order.negotiatedTotal || order.totalAmount)}
                   </td>
                   <td className="p-4 align-middle text-muted-foreground">
                     {format(new Date(order.createdAt), 'MMM dd, yyyy')}

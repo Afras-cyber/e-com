@@ -11,20 +11,14 @@ export async function sendOrderConfirmation({
   toEmail,
   customerName,
   orderNumber,
-  productName,
-  selectedSize,
-  selectedColor,
-  price,
-  productSlug,
+  items,
+  totalAmount,
 }: {
   toEmail: string;
   customerName: string;
   orderNumber: string;
-  productName: string;
-  selectedSize: string;
-  selectedColor: string;
-  price: number;
-  productSlug: string;
+  items: any[];
+  totalAmount: number;
 }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://stepkicks.lk';
   return resend.emails.send({
@@ -35,13 +29,12 @@ export async function sendOrderConfirmation({
       <h2>Hi ${customerName}, thanks for your interest!</h2>
       <p>We've received your inquiry for:</p>
       <ul>
-        <li><strong>${productName}</strong></li>
-        <li>Size: ${selectedSize}</li>
-        <li>Color: ${selectedColor}</li>
-        <li>Price: LKR ${price.toLocaleString()}</li>
+        ${items.map(item => `
+          <li><strong>${item.productName}</strong> (Size: ${item.selectedSize}) x ${item.quantity} - LKR ${item.price.toLocaleString()}</li>
+        `).join('')}
       </ul>
+      <p><strong>Total: LKR ${totalAmount.toLocaleString()}</strong></p>
       <p>Our team will contact you on WhatsApp shortly.</p>
-      <p><a href="${siteUrl}/shop/${productSlug}">View Product →</a></p>
       <hr/>
       <small>StepKicks — Premium Shoes & Bags</small>
     `,
@@ -53,30 +46,33 @@ export async function sendNewOrderNotification({
   orderNumber,
   customerName,
   customerPhone,
-  productName,
-  selectedSize,
-  selectedColor,
+  items,
+  totalAmount,
 }: {
   adminEmail: string;
   orderNumber: string;
   customerName: string;
   customerPhone: string;
-  productName: string;
-  selectedSize: string;
-  selectedColor: string;
+  items: any[];
+  totalAmount: number;
 }) {
   const adminUrl = process.env.NEXTAUTH_URL ?? 'https://stepkicks.lk';
   return resend.emails.send({
     from: FROM_EMAIL,
     to: adminEmail,
-    subject: `🛍️ New Order Inquiry — ${productName} (Size ${selectedSize})`,
+    subject: `🛍️ New Order Inquiry — ${orderNumber}`,
     html: `
       <h2>New Order Inquiry</h2>
       <p><strong>Order #:</strong> ${orderNumber}</p>
       <p><strong>Customer:</strong> ${customerName}</p>
       <p><strong>Phone:</strong> ${customerPhone}</p>
-      <p><strong>Product:</strong> ${productName}</p>
-      <p><strong>Size:</strong> ${selectedSize} | <strong>Color:</strong> ${selectedColor}</p>
+      <h3 style="margin-top: 20px;">Items:</h3>
+      <ul>
+        ${items.map(item => `
+          <li><strong>${item.productName}</strong> (Size: ${item.selectedSize} | Color: ${item.selectedColor}) x ${item.quantity}</li>
+        `).join('')}
+      </ul>
+      <p><strong>Total Value: LKR ${totalAmount.toLocaleString()}</strong></p>
       <p><a href="${adminUrl}/admin/orders">View in Admin Panel →</a></p>
     `,
   });

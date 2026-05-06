@@ -19,7 +19,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const banner = await Banner.findByIdAndUpdate(
       resolvedParams.id,
       body,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     ).lean();
 
     if (!banner) {

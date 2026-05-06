@@ -9,6 +9,7 @@ import { buildWhatsAppURL } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { toast } from "sonner";
+import QuickOrderModal from "./QuickOrderModal";
 
 export default function ProductInfo({ product }: { product: any }) {
   const [selectedSize, setSelectedSize] = useState<string>(
@@ -18,6 +19,7 @@ export default function ProductInfo({ product }: { product: any }) {
     product.colors?.[0]?.name || "",
   );
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const addToCart = useCartStore((state) => state.addItem);
 
   const handleWhatsAppOrder = () => {
@@ -25,16 +27,35 @@ export default function ProductInfo({ product }: { product: any }) {
       toast.error("Please select a size and color first.");
       return;
     }
+    setIsModalOpen(true);
+  };
 
+  const handleOrderSuccess = (order: any) => {
     const url = buildWhatsAppURL({
       productName: product.name,
       productSlug: product.slug,
       price: product.discountPrice || product.price,
       size: selectedSize,
       color: selectedColor,
+      // Add order number to the message
+      siteUrl: `${window.location.origin}`,
     });
 
-    window.open(url, "_blank");
+    // Update message to include order ID, price and link
+    const productLink = `${window.location.origin}/shop/${product.slug}`;
+    const messageWithId = `Hi! I just placed a quick order on StepKicks. 
+    
+Order ID: *${order.orderNumber}*
+👟 Product: *${product.name}*
+📏 Size: ${selectedSize}
+🎨 Color: ${selectedColor}
+💰 Price: LKR ${product.price.toLocaleString()}
+🔗 Link: ${productLink}
+
+Please confirm my order. Thank you!`.trim();
+
+    const finalUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}?text=${encodeURIComponent(messageWithId)}`;
+    window.open(finalUrl, "_blank");
   };
 
   const handleAddToCart = () => {
@@ -197,6 +218,21 @@ export default function ProductInfo({ product }: { product: any }) {
           <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground leading-tight">Easy Returns</span>
         </div>
       </div>
+
+      <QuickOrderModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        product={{
+          id: product._id,
+          name: product.name,
+          slug: product.slug,
+          image: product.images[0],
+          price: product.discountPrice || product.price
+        }}
+        selectedSize={selectedSize}
+        selectedColor={selectedColor}
+        onSuccess={handleOrderSuccess}
+      />
     </div>
   );
 }

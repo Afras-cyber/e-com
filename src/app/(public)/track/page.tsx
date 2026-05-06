@@ -148,14 +148,31 @@ export default function TrackOrderPage() {
               </div>
 
               {/* Product Info */}
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-[2rem] p-6 flex items-center gap-6">
-                <img src={order.product.image} className="w-20 h-20 rounded-2xl object-cover border border-zinc-200 dark:border-zinc-700 shadow-sm" alt="" />
-                <div className="flex-1">
-                  <h4 className="font-bold text-lg leading-tight">{order.product.productName}</h4>
-                  <p className="text-sm text-muted-foreground">Size: {order.product.selectedSize} | Color: {order.product.selectedColor}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xl font-black">{formatPrice(order.product.negotiatedPrice || order.product.price)}</p>
+              <div className="space-y-4">
+                <h3 className="text-lg font-bold px-1">Order Items</h3>
+                {(order.items || [
+                  {
+                    ...order.product,
+                    quantity: 1,
+                  }
+                ]).map((item: any, i: number) => (
+                  <div key={i} className="bg-zinc-50 dark:bg-zinc-800/50 rounded-[2rem] p-6 flex items-center gap-6">
+                    <img src={item.image} className="w-20 h-20 rounded-2xl object-cover border border-zinc-200 dark:border-zinc-700 shadow-sm" alt="" />
+                    <div className="flex-1">
+                      <h4 className="font-bold text-lg leading-tight">{item.productName}</h4>
+                      <p className="text-sm text-muted-foreground">Size: {item.selectedSize} | Color: {item.selectedColor} | Qty: {item.quantity}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xl font-black">{formatPrice(item.price * (item.quantity || 1))}</p>
+                    </div>
+                  </div>
+                ))}
+                
+                <div className="bg-zinc-900 text-white rounded-[2rem] p-6 flex justify-between items-center">
+                  <span className="font-bold text-zinc-400">Total Bill</span>
+                  <span className="text-2xl font-black">
+                    {formatPrice(order.negotiatedTotal || order.totalAmount)}
+                  </span>
                 </div>
               </div>
             </motion.div>
