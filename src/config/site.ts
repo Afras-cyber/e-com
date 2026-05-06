@@ -1,13 +1,14 @@
 export const siteConfig = {
   name: "StepKicks",
   shortName: "SK",
-  description: "StepKicks — Your destination for premium shoes and accessories. Authentic quality, delivered fast to your doorstep.",
+  description:
+    "StepKicks — Your destination for premium shoes and accessories. Authentic quality, delivered fast to your doorstep.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://stepkicks.lk",
   ogImage: "https://stepkicks.lk/og.jpg",
   contact: {
     email: "info@stepkicks.lk",
     phone: "+94 77 675 6287",
-    whatsapp: "94776756287", // Raw number for wa.me URLs
+    whatsapp: "94776756287",
     address: "123, Galle Road, Colombo 03, Sri Lanka",
   },
   social: {
@@ -19,7 +20,7 @@ export const siteConfig = {
     currency: "LKR",
     currencySymbol: "Rs.",
     orderPrefix: "STK",
-  }
+  },
 };
 
 export type SiteConfig = typeof siteConfig;
