@@ -4,6 +4,9 @@ import MobileFilterToggle from "@/components/shop/MobileFilterToggle";
 import { ProductFilters as FilterType } from "@/types/product";
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
+import connectDB from "@/lib/db/mongoose";
+import Category from "@/lib/db/models/Category";
+import Brand from "@/lib/db/models/Brand";
 
 export default async function ShopPage({
   searchParams,
@@ -30,6 +33,13 @@ export default async function ShopPage({
     filters.sizes?.length ||
     filters.isOnSale;
 
+  await connectDB();
+  const dbCategories = await Category.find({ isActive: true }).sort({ order: 1, name: 1 }).lean();
+  const dbBrands = await Brand.find({ isActive: true }).sort({ name: 1 }).lean();
+  
+  const categoriesData = JSON.parse(JSON.stringify(dbCategories));
+  const brandsData = JSON.parse(JSON.stringify(dbBrands));
+
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
       {/* Header */}
@@ -47,7 +57,7 @@ export default async function ShopPage({
 
         {/* Mobile filter toggle */}
         <div className="md:hidden">
-          <MobileFilterToggle hasActiveFilters={!!hasActiveFilters} />
+          <MobileFilterToggle hasActiveFilters={!!hasActiveFilters} categories={categoriesData} brands={brandsData} />
         </div>
       </div>
 
@@ -60,7 +70,7 @@ export default async function ShopPage({
                 <div className="animate-pulse h-64 bg-muted rounded-xl" />
               }
             >
-              <ProductFilters />
+              <ProductFilters categories={categoriesData} brands={brandsData} />
             </Suspense>
           </div>
         </aside>

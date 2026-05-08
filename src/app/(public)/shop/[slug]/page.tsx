@@ -2,8 +2,7 @@ import { Metadata } from 'next';
 import connectDB from '@/lib/db/mongoose';
 import Product from '@/lib/db/models/Product';
 import { notFound } from 'next/navigation';
-import ProductGallery from '@/components/shop/ProductGallery';
-import ProductInfo from '@/components/shop/ProductInfo';
+import ProductDetailsClientWrapper from '@/components/shop/ProductDetailsClientWrapper';
 import RelatedProducts from '@/components/shop/RelatedProducts';
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
@@ -59,19 +58,9 @@ export default async function ProductDetailPage({
     <div className="min-h-screen">
       {/* Main Product Section */}
       <div className="container mx-auto px-4 py-6 sm:py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16">
-          {/* Gallery — sticky on desktop */}
-          <div className="lg:sticky lg:top-24 lg:self-start">
-            <Suspense fallback={<div className="aspect-square bg-muted animate-pulse rounded-2xl" />}>
-              <ProductGallery images={serializedProduct.images} name={serializedProduct.name} />
-            </Suspense>
-          </div>
-
-          {/* Product Info */}
           <Suspense fallback={<div className="h-96 bg-muted animate-pulse rounded-2xl" />}>
-            <ProductInfo product={serializedProduct} />
+            <ProductDetailsClientWrapper product={serializedProduct} />
           </Suspense>
-        </div>
       </div>
       
       {/* Description Section */}

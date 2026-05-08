@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export default function ProductFilters() {
+export default function ProductFilters({ categories = [], brands = [] }: { categories?: any[], brands?: any[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -43,25 +43,50 @@ export default function ProductFilters() {
   const currentSizes = searchParams.get('sizes')?.split(',') || [];
   const isOnSale = searchParams.get('isOnSale') === 'true';
 
-  const brands = ['Nike', 'Adidas', 'Puma', 'Reebok', 'Vans', 'New Balance'];
-  const sizes = ['38', '39', '40', '41', '42', '43', '44', '45'];
+  const categoryList = categories.length > 0 
+    ? categories 
+    : [{ name: 'shoes', slug: 'shoes' }, { name: 'clothes', slug: 'clothes' }, { name: 'bags', slug: 'bags' }];
+    
+  const brandList = brands.length > 0 
+    ? brands.map(b => b.name) 
+    : ['Nike', 'Adidas', 'Puma', 'Reebok', 'Vans', 'New Balance'];
+
+  let sizesToDisplay: string[] = [];
+  const selectedCategoryData = currentCategory 
+    ? categories.find(c => c.slug.toLowerCase() === currentCategory.toLowerCase() || c.name.toLowerCase() === currentCategory.toLowerCase()) 
+    : null;
+
+  if (selectedCategoryData && selectedCategoryData.sizes && selectedCategoryData.sizes.length > 0) {
+    sizesToDisplay = selectedCategoryData.sizes;
+  } else {
+    const allSizes = new Set<string>();
+    categories.forEach(c => {
+      if (c.sizes) c.sizes.forEach((s: string) => allSizes.add(s));
+    });
+    sizesToDisplay = Array.from(allSizes);
+    if (sizesToDisplay.length === 0) {
+      sizesToDisplay = ['38', '39', '40', '41', '42', '43', '44', '45', 'XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    }
+  }
+
+  const sizes = sizesToDisplay;
 
   return (
     <div className="space-y-8 pr-6">
       <div>
         <h3 className="font-bold text-sm uppercase tracking-widest mb-4">Categories</h3>
         <div className="flex flex-col space-y-2">
-          {['shoes', 'bags', 'accessories'].map((cat) => (
+          {categoryList.map((cat) => (
             <button
-              key={cat}
-              onClick={() => setFilter('category', cat)}
+              key={cat.slug}
+              onClick={() => setFilter('category', cat.slug)}
               className={cn(
                 "text-left text-sm transition-colors py-1 hover:text-primary flex items-center justify-between",
-                currentCategory === cat ? "font-bold text-primary" : "text-muted-foreground"
+                currentCategory === cat.slug || currentCategory === cat.name ? "font-bold text-primary" : "text-muted-foreground"
               )}
             >
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
-              {currentCategory === cat && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
+              {cat.name}
+              {(currentCategory === cat.slug || currentCategory === cat.name) && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
             </button>
           ))}
         </div>
@@ -70,7 +95,7 @@ export default function ProductFilters() {
       <div className="border-t pt-6">
         <h3 className="font-bold text-sm uppercase tracking-widest mb-4">Brands</h3>
         <div className="grid grid-cols-1 gap-2">
-          {brands.map((brand) => (
+          {brandList.map((brand) => (
             <label key={brand} className="flex items-center gap-2 cursor-pointer group">
               <div 
                 className={cn(

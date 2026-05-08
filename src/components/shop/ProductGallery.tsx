@@ -5,8 +5,28 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function ProductGallery({ images, name }: { images: string[], name: string }) {
-  const [mainIndex, setMainIndex] = useState(0);
+export default function ProductGallery({ 
+  images, 
+  name,
+  externalIndex,
+  onIndexChange
+}: { 
+  images: string[], 
+  name: string,
+  externalIndex?: number,
+  onIndexChange?: (index: number) => void
+}) {
+  const [internalIndex, setInternalIndex] = useState(0);
+  const mainIndex = externalIndex !== undefined ? externalIndex : internalIndex;
+
+  const setMainIndex = (index: number | ((prev: number) => number)) => {
+    const nextIndex = typeof index === 'function' ? index(mainIndex) : index;
+    if (onIndexChange) {
+      onIndexChange(nextIndex);
+    } else {
+      setInternalIndex(nextIndex);
+    }
+  };
 
   if (!images || images.length === 0) {
     return (

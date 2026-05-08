@@ -59,9 +59,17 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   useEffect(() => {
     if (selectedCategoryId) {
       const cat = categories.find(c => c._id === selectedCategoryId);
-      if (cat) setValue('category', cat.name);
+      if (cat) {
+        setValue('category', cat.name);
+        
+        // Auto-populate sizes if empty
+        const currentSizes = watch('sizes') || [];
+        if (currentSizes.length === 0 && cat.sizes && cat.sizes.length > 0) {
+          setValue('sizes', cat.sizes);
+        }
+      }
     }
-  }, [selectedCategoryId, categories, setValue]);
+  }, [selectedCategoryId, categories, setValue, watch]);
 
   useEffect(() => {
     if (selectedBrandId) {
@@ -218,6 +226,14 @@ export default function ProductForm({ initialData }: ProductFormProps) {
               value={newColor.hex}
               onChange={e => setNewColor({...newColor, hex: e.target.value})}
               className="w-10 h-10 p-1 border rounded-md"
+            />
+            <input 
+              type="number" 
+              value={(newColor as any).imageIndex !== undefined ? (newColor as any).imageIndex : ''}
+              onChange={e => setNewColor({...newColor, imageIndex: e.target.value === '' ? undefined : parseInt(e.target.value)} as any)}
+              placeholder="Img Idx" 
+              className="w-20 p-2 border rounded-md text-sm"
+              min="0"
             />
             <Button type="button" variant="outline" onClick={() => {
               if (newColor.name) {
