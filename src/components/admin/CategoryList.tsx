@@ -9,7 +9,7 @@ export default function CategoryList() {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState({ name: '', slug: '', isActive: true });
+  const [editForm, setEditForm] = useState({ name: '', slug: '', sizes: '', isActive: true });
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
@@ -48,18 +48,22 @@ export default function CategoryList() {
     try {
       const url = id ? `/api/admin/categories/${id}` : '/api/admin/categories';
       const method = id ? 'PATCH' : 'POST';
-      
+      const payload = {
+        ...editForm,
+        sizes: editForm.sizes ? editForm.sizes.split(',').map(s => s.trim()).filter(Boolean) : []
+      };
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editForm),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
         toast.success(id ? 'Category updated' : 'Category created');
         setIsEditing(null);
         setIsAdding(false);
-        setEditForm({ name: '', slug: '', isActive: true });
+        setEditForm({ name: '', slug: '', sizes: '', isActive: true });
         fetchCategories();
       } else {
         const err = await res.json();
@@ -93,7 +97,7 @@ export default function CategoryList() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Manage Categories</h2>
-        <Button onClick={() => { setIsAdding(true); setEditForm({ name: '', slug: '', isActive: true }); }}>
+        <Button onClick={() => { setIsAdding(true); setEditForm({ name: '', slug: '', sizes: '', isActive: true }); }}>
           <Plus className="w-4 h-4 mr-2" /> Add Category
         </Button>
       </div>
@@ -117,6 +121,15 @@ export default function CategoryList() {
                 onChange={e => setEditForm({ ...editForm, slug: e.target.value })}
               />
             </div>
+            <div className="flex-1 space-y-2">
+              <label className="text-xs font-bold uppercase">Sizes (comma separated)</label>
+              <input 
+                className="w-full p-2 border rounded-md" 
+                placeholder="e.g. S, M, L, XL"
+                value={editForm.sizes} 
+                onChange={e => setEditForm({ ...editForm, sizes: e.target.value })}
+              />
+            </div>
             <div className="flex gap-2">
               <Button onClick={() => handleSave()} size="sm">Save</Button>
               <Button variant="outline" onClick={() => setIsAdding(false)} size="sm">Cancel</Button>
@@ -130,6 +143,7 @@ export default function CategoryList() {
               <tr>
                 <th className="p-4 text-left font-bold">Category Name</th>
                 <th className="p-4 text-left font-bold">Slug</th>
+                <th className="p-4 text-left font-bold">Sizes</th>
                 <th className="p-4 text-center font-bold">Status</th>
                 <th className="p-4 text-right font-bold">Actions</th>
               </tr>
@@ -151,12 +165,24 @@ export default function CategoryList() {
                   <td className="p-4 text-muted-foreground">
                     {isEditing === cat._id ? (
                       <input 
-                        className="p-1 border rounded" 
+                        className="p-1 border rounded w-full" 
                         value={editForm.slug} 
                         onChange={e => setEditForm({ ...editForm, slug: e.target.value })}
                       />
                     ) : (
                       cat.slug
+                    )}
+                  </td>
+                  <td className="p-4 text-muted-foreground">
+                    {isEditing === cat._id ? (
+                      <input 
+                        className="p-1 border rounded w-full" 
+                        placeholder="e.g. S, M, L"
+                        value={editForm.sizes} 
+                        onChange={e => setEditForm({ ...editForm, sizes: e.target.value })}
+                      />
+                    ) : (
+                      cat.sizes?.join(', ') || '-'
                     )}
                   </td>
                   <td className="p-4 text-center">
@@ -187,7 +213,7 @@ export default function CategoryList() {
                         </>
                       ) : (
                         <>
-                          <Button size="icon" variant="ghost" onClick={() => { setIsEditing(cat._id); setEditForm({ name: cat.name, slug: cat.slug, isActive: cat.isActive }); }}>
+                          <Button size="icon" variant="ghost" onClick={() => { setIsEditing(cat._id); setEditForm({ name: cat.name, slug: cat.slug, sizes: cat.sizes?.join(', ') || '', isActive: cat.isActive }); }}>
                             <Edit className="w-4 h-4" />
                           </Button>
                           <Button size="icon" variant="ghost" onClick={() => handleDelete(cat._id)}>

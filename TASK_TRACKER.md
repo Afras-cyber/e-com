@@ -128,6 +128,13 @@ We need to build the interactive UI components for the store and the admin panel
 5. [x] **Migration & Seed**: Built scripts to transition existing data and updated seed files
 6. [x] **Visual Polish**: Fixed conflicting style shorthand console errors in admin portal
 
+## Phase 13 — Extended Taxonomies & Variants (Completed)
+1. [x] **Database-driven Taxonomies**: Updated `Category` schema to include custom sizes array. Admin can now define the available sizes (e.g., S, M, L or 40, 41) directly from the Category Management portal.
+2. [x] **Dynamic Filtering**: Configured `/shop` filters to automatically fetch and display categories and brands from the Database. The available sizes in the sidebar automatically adapt to the specific sizes defined by the active category.
+3. [x] **Smart Product Form**: The `ProductForm` now auto-populates product sizes based on the category the admin selects.
+4. [x] **Variant Image Binding**: Implemented logic in the admin portal (`ProductForm`) to assign a specific image index to each product color.
+5. [x] **Interactive Gallery**: Created `ProductDetailsClientWrapper` to enable real-time synchronization between the color selector and the active product image on the detail page.
+
 ---
 **Next Steps 🚀**
 - [ ] Add subcategory management to Categories

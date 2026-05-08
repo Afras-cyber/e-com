@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import ProductFilters from './ProductFilters';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export default function MobileFilterToggle({ hasActiveFilters }: { hasActiveFilters: boolean }) {
+export default function MobileFilterToggle({ hasActiveFilters, categories = [], brands = [] }: { hasActiveFilters: boolean, categories?: any[], brands?: any[] }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -48,7 +48,7 @@ export default function MobileFilterToggle({ hasActiveFilters }: { hasActiveFilt
                 </Button>
               </div>
               <div className="p-6">
-                <ProductFilters />
+                <ProductFilters categories={categories} brands={brands} />
               </div>
               <div className="sticky bottom-0 p-4 bg-background border-t">
                 <Button 

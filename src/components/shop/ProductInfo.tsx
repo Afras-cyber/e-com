@@ -12,7 +12,13 @@ import { toast } from "sonner";
 import QuickOrderModal from "./QuickOrderModal";
 import { siteConfig } from "@/config/site";
 
-export default function ProductInfo({ product }: { product: any }) {
+export default function ProductInfo({ 
+  product,
+  onColorChange
+}: { 
+  product: any,
+  onColorChange?: (colorIndex: number, imageIndex?: number) => void
+}) {
   const [selectedSize, setSelectedSize] = useState<string>(
     product.sizes?.[0] || "",
   );
@@ -121,10 +127,13 @@ Please confirm my order. Thank you!`.trim();
               </span>
             </h3>
             <div className="flex gap-3 flex-wrap">
-              {product.colors.map((color: any) => (
+              {product.colors.map((color: any, idx: number) => (
                 <button
                   key={color.name}
-                  onClick={() => setSelectedColor(color.name)}
+                  onClick={() => {
+                    setSelectedColor(color.name);
+                    if (onColorChange) onColorChange(idx, color.imageIndex);
+                  }}
                   className={cn(
                     "w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 focus:outline-none transition-all relative",
                     selectedColor === color.name
