@@ -3,7 +3,7 @@ import ProductFilters from "@/components/shop/ProductFilters";
 import MobileFilterToggle from "@/components/shop/MobileFilterToggle";
 import { ProductFilters as FilterType } from "@/types/product";
 import { Suspense } from "react";
-import { Loader2 } from "lucide-react";
+import { RefreshLinear } from "solar-icon-set";;
 import connectDB from "@/lib/db/mongoose";
 import Category from "@/lib/db/models/Category";
 import Brand from "@/lib/db/models/Brand";
@@ -80,7 +80,7 @@ export default async function ShopPage({
           <Suspense
             fallback={
               <div className="flex items-center justify-center min-h-[400px]">
-                <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+                <RefreshLinear className="w-8 h-8 animate-spin text-muted-foreground" />
               </div>
             }
           >

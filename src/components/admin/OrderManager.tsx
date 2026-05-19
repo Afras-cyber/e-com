@@ -5,13 +5,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { formatPrice } from "@/lib/format-price";
 import { format } from "date-fns";
-import {
-  MessageCircle,
-  ArrowLeft,
-  Save,
-  CheckCircle2,
-  AlertCircle,
-} from "lucide-react";
+import { ChatLineLinear, ArrowLeftLinear, DisketteLinear, CheckCircleLinear, DangerCircleLinear } from "solar-icon-set";;
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -91,7 +85,7 @@ export default function OrderManager({ id }: { id: string }) {
     <div className="space-y-8">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" onClick={() => router.back()}>
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeftLinear className="h-4 w-4" />
         </Button>
         <div>
           <h1 className="text-2xl font-bold">
@@ -131,7 +125,7 @@ export default function OrderManager({ id }: { id: string }) {
                     )
                   }
                 >
-                  <MessageCircle className="h-4 w-4" />
+                  <ChatLineLinear className="h-4 w-4" />
                   Chat on WhatsApp
                 </Button>
               </div>
@@ -249,7 +243,7 @@ export default function OrderManager({ id }: { id: string }) {
                       disabled={updating}
                     >
                       {order.status === s && (
-                        <CheckCircle2 className="mr-2 h-4 w-4" />
+                        <CheckCircleLinear className="mr-2 h-4 w-4" />
                       )}
                       {s}
                     </Button>
@@ -288,7 +282,7 @@ Thank you for choosing ${siteConfig.name}!`.trim();
                     );
                   }}
                 >
-                  <MessageCircle className="h-4 w-4" />
+                  <ChatLineLinear className="h-4 w-4" />
                   Send Update via WhatsApp
                 </Button>
                 <p className="text-[10px] text-center text-muted-foreground uppercase tracking-widest font-medium">
@@ -310,7 +304,7 @@ Thank you for choosing ${siteConfig.name}!`.trim();
                     className="flex-1 p-2 border rounded-md font-bold"
                   />
                   <Button size="icon" variant="secondary">
-                    <Save className="h-4 w-4" />
+                    <DisketteLinear className="h-4 w-4" />
                   </Button>
                 </div>
                 <p className="text-[10px] text-muted-foreground">

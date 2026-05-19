@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
+import { ChatLineLinear } from "solar-icon-set";;
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
@@ -48,7 +48,7 @@ export default function WhatsAppButton() {
         className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:shadow-[#25D366]/40 transition-shadow"
       >
         <div className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20 group-hover:hidden" />
-        <MessageCircle className="h-7 w-7" />
+        <ChatLineLinear className="h-7 w-7" />
         
         {/* Active status indicator */}
         <span className="absolute top-0 right-0 flex h-3.5 w-3.5">

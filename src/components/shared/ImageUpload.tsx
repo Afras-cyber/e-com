@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Upload, X, Loader2 } from 'lucide-react';
+import { UploadLinear, CloseCircleLinear, RefreshLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
@@ -36,7 +36,7 @@ export default function ImageUpload({
 
       const { uploadUrl, fileUrl } = await res.json();
 
-      // 2. Upload to S3
+      // 2. UploadLinear to S3
       const uploadRes = await fetch(uploadUrl, {
         method: 'PUT',
         headers: { 'Content-Type': file.type },
@@ -46,11 +46,11 @@ export default function ImageUpload({
       if (uploadRes.ok) {
         onChange([...value, fileUrl]);
       } else {
-        toast.error('Upload failed');
+        toast.error('UploadLinear failed');
       }
     } catch (error) {
-      console.error('Upload error:', error);
-      toast.error('Upload error');
+      console.error('UploadLinear error:', error);
+      toast.error('UploadLinear error');
     } finally {
       setLoading(false);
     }
@@ -63,7 +63,7 @@ export default function ImageUpload({
           <div key={url} className="relative w-[150px] h-[150px] rounded-md overflow-hidden border">
             <div className="z-10 absolute top-2 right-2">
               <Button type="button" onClick={() => onRemove(url)} variant="destructive" size="icon" className="h-6 w-6">
-                <X className="h-4 w-4" />
+                <CloseCircleLinear className="h-4 w-4" />
               </Button>
             </div>
             <img className="object-cover w-full h-full" alt="Image" src={url} />
@@ -71,12 +71,12 @@ export default function ImageUpload({
         ))}
         {loading ? (
           <div className="w-[150px] h-[150px] rounded-md border-2 border-dashed flex items-center justify-center">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            <RefreshLinear className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : (
           <label className="w-[150px] h-[150px] rounded-md border-2 border-dashed flex flex-col items-center justify-center cursor-pointer hover:bg-muted transition-colors">
-            <Upload className="h-6 w-6 text-muted-foreground mb-2" />
-            <span className="text-xs text-muted-foreground">Upload Image</span>
+            <UploadLinear className="h-6 w-6 text-muted-foreground mb-2" />
+            <span className="text-xs text-muted-foreground">UploadLinear Image</span>
             <input type="file" className="hidden" accept="image/*" onChange={onUpload} disabled={loading} />
           </label>
         )}

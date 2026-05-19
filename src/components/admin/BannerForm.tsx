@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '../shared/ImageUpload';
-import { Loader2 } from 'lucide-react';
+import { RefreshLinear } from "solar-icon-set";;
 import { toast } from 'sonner';
 
 export default function BannerForm({ initialData, onSuccess }: { initialData?: any, onSuccess: () => void }) {
@@ -81,7 +81,7 @@ export default function BannerForm({ initialData, onSuccess }: { initialData?: a
 
       <div className="flex justify-end gap-4">
         <Button type="submit" disabled={loading}>
-          {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+          {loading && <RefreshLinear className="h-4 w-4 animate-spin mr-2" />}
           {initialData ? 'Update Banner' : 'Create Banner'}
         </Button>
       </div>

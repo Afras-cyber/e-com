@@ -4,12 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { IProduct } from '@/types/product';
 import { formatPrice } from '@/lib/format-price';
-import { Heart } from 'lucide-react';
+import { HeartLinear, HeartBold } from "solar-icon-set";
 import { useWishlist } from '@/store/useWishlist';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
-export default function ProductCard({ product }: { product: IProduct }) {
+export default function ProductCard({ product, priority = false }: { product: IProduct, priority?: boolean }) {
   const { addItem, removeItem, isInWishlist } = useWishlist();
   const active = isInWishlist(product._id);
 
@@ -41,6 +41,7 @@ export default function ProductCard({ product }: { product: IProduct }) {
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
+            priority={priority}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-muted/40 text-muted-foreground text-sm">
@@ -65,9 +66,13 @@ export default function ProductCard({ product }: { product: IProduct }) {
         {/* Wishlist Button */}
         <button 
           onClick={toggleWishlist}
-          className="absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-sm transition-all hover:bg-white hover:scale-110 active:scale-95 z-10"
+          className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 dark:bg-black/40 backdrop-blur-sm shadow-sm transition-all hover:bg-white dark:hover:bg-black/60 hover:scale-110 active:scale-95 z-10"
         >
-          <Heart className={cn("w-4 h-4 transition-colors", active ? "fill-red-500 text-red-500" : "text-muted-foreground")} />
+          {active ? (
+            <HeartBold className="w-4 h-4 text-red-500" />
+          ) : (
+            <HeartLinear className="w-4 h-4 text-foreground/60 dark:text-zinc-400" />
+          )}
         </button>
       </div>
       

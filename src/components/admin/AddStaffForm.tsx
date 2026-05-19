@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateStaffSchema, CreateStaffInput } from '@/lib/validations/user.schema';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { RefreshLinear } from "solar-icon-set";;
 import { toast } from 'sonner';
 
 export default function AddStaffForm({ onSuccess }: { onSuccess: () => void }) {
@@ -66,7 +66,7 @@ export default function AddStaffForm({ onSuccess }: { onSuccess: () => void }) {
         </div>
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+        {loading ? <RefreshLinear className="h-4 w-4 animate-spin mr-2" /> : null}
         Add Staff Member
       </Button>
       <p className="text-[10px] text-muted-foreground text-center">

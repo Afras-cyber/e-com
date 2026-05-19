@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Star, Send, CheckCircle2 } from 'lucide-react';
+import { StarLinear, SendSquareLinear, CheckCircleLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -44,7 +44,7 @@ export default function TestimonialForm({ onClose }: { onClose: () => void }) {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center py-10"
           >
-            <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+            <CheckCircleLinear className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
             <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
             <p className="text-muted-foreground mb-6">Your review has been submitted and is pending approval.</p>
             <Button onClick={onClose} variant="outline">Close</Button>
@@ -87,7 +87,7 @@ export default function TestimonialForm({ onClose }: { onClose: () => void }) {
                       onClick={() => setFormData({...formData, rating: star})}
                       className="focus:outline-none transition-transform hover:scale-110"
                     >
-                      <Star 
+                      <StarLinear 
                         className={`w-8 h-8 ${star <= formData.rating ? 'fill-amber-500 text-amber-500' : 'text-muted'}`} 
                       />
                     </button>
@@ -122,7 +122,7 @@ export default function TestimonialForm({ onClose }: { onClose: () => void }) {
                 >
                   {status === 'loading' ? 'Submitting...' : (
                     <>
-                      Submit Review <Send className="w-4 h-4" />
+                      Submit Review <SendSquareLinear className="w-4 h-4" />
                     </>
                   )}
                 </Button>

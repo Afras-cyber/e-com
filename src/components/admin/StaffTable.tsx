@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { UserPlus, Shield, User as UserIcon, CheckCircle, XCircle, Trash2 } from 'lucide-react';
+import { UserPlusLinear, ShieldLinear, UserLinear as UserIcon, CheckCircleLinear, CloseCircleLinear, TrashBinTrashLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -74,7 +74,7 @@ export default function StaffTable() {
                 <td className="p-4 align-middle">
                   <div className="flex items-center gap-1.5 capitalize font-medium">
                     {user.role === 'admin' ? (
-                      <Shield className="h-3 w-3 text-orange-500" />
+                      <ShieldLinear className="h-3 w-3 text-orange-500" />
                     ) : (
                       <UserIcon className="h-3 w-3 text-blue-500" />
                     )}
@@ -85,12 +85,12 @@ export default function StaffTable() {
                   <button onClick={() => toggleStatus(user._id, user.isActive)} className="flex items-center gap-1">
                     {user.isActive ? (
                       <div className="flex items-center text-green-600 gap-1 font-bold text-xs uppercase">
-                        <CheckCircle className="h-3 w-3" />
+                        <CheckCircleLinear className="h-3 w-3" />
                         Active
                       </div>
                     ) : (
                       <div className="flex items-center text-muted-foreground gap-1 font-bold text-xs uppercase">
-                        <XCircle className="h-3 w-3" />
+                        <CloseCircleLinear className="h-3 w-3" />
                         Inactive
                       </div>
                     )}
@@ -101,7 +101,7 @@ export default function StaffTable() {
                 </td>
                 <td className="p-4 align-middle text-right">
                   <Button variant="ghost" size="icon" className="text-destructive" onClick={() => deleteStaff(user._id)}>
-                    <Trash2 className="h-4 w-4" />
+                    <TrashBinTrashLinear className="h-4 w-4" />
                   </Button>
                 </td>
               </tr>

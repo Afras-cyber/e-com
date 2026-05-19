@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
+import { SendSquareLinear, CheckCircleLinear } from "solar-icon-set";;
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -49,14 +49,14 @@ export default function ContactForm() {
             className="text-center py-12"
           >
             <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 size={32} />
+              <CheckCircleLinear size={32} />
             </div>
             <h2 className="text-2xl font-bold mb-2">Message Sent!</h2>
             <p className="text-muted-foreground mb-8">
               Thank you for reaching out. We'll get back to you as soon as possible.
             </p>
             <Button onClick={() => setStatus('idle')} variant="outline">
-              Send another message
+              SendSquareLinear another message
             </Button>
           </motion.div>
         ) : (
@@ -65,7 +65,7 @@ export default function ContactForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
+            <h2 className="text-2xl font-bold mb-6">SendSquareLinear us a Message</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -116,8 +116,8 @@ export default function ContactForm() {
               >
                 {status === 'loading' ? 'Sending...' : (
                   <>
-                    <Send size={18} />
-                    Send Message
+                    <SendSquareLinear size={18} />
+                    SendSquareLinear Message
                   </>
                 )}
               </Button>

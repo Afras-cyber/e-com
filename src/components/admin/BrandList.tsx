@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus, Edit, Trash2, Save, X, ToggleLeft, ToggleRight, Star } from 'lucide-react';
+import { AddCircleLinear, PenLinear, TrashBinTrashLinear, DisketteLinear, CloseCircleLinear, RefreshLinear, StarLinear } from "solar-icon-set";;
 import { toast } from 'sonner';
 
 export default function BrandList() {
@@ -110,7 +110,7 @@ export default function BrandList() {
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Manage Brands</h2>
         <Button onClick={() => { setIsAdding(true); setEditForm({ name: '', slug: '', isActive: true, isFeatured: false }); }}>
-          <Plus className="w-4 h-4 mr-2" /> Add Brand
+          <AddCircleLinear className="w-4 h-4 mr-2" /> Add Brand
         </Button>
       </div>
 
@@ -134,7 +134,7 @@ export default function BrandList() {
               />
             </div>
             <div className="flex gap-2">
-              <Button onClick={() => handleSave()} size="sm">Save</Button>
+              <Button onClick={() => handleSave()} size="sm">DisketteLinear</Button>
               <Button variant="outline" onClick={() => setIsAdding(false)} size="sm">Cancel</Button>
             </div>
           </div>
@@ -178,19 +178,19 @@ export default function BrandList() {
                   </td>
                   <td className="p-4 text-center">
                     <button onClick={() => handleToggleFeatured(brand)}>
-                      <Star className={`w-5 h-5 ${brand.isFeatured ? 'fill-yellow-400 text-yellow-400' : 'text-zinc-300'}`} />
+                      <StarLinear className={`w-5 h-5 ${brand.isFeatured ? 'fill-yellow-400 text-yellow-400' : 'text-zinc-300'}`} />
                     </button>
                   </td>
                   <td className="p-4 text-center">
                     <button onClick={() => handleToggleActive(brand)} className="transition-transform active:scale-95">
                       {brand.isActive ? (
                         <div className="flex items-center gap-1 text-green-500 font-bold justify-center">
-                          <ToggleRight className="w-6 h-6" />
+                          <RefreshLinear className="w-6 h-6" />
                           <span>Active</span>
                         </div>
                       ) : (
                         <div className="flex items-center gap-1 text-zinc-400 font-bold justify-center">
-                          <ToggleLeft className="w-6 h-6" />
+                          <RefreshLinear className="w-6 h-6" />
                           <span>Inactive</span>
                         </div>
                       )}
@@ -201,19 +201,19 @@ export default function BrandList() {
                       {isEditing === brand._id ? (
                         <>
                           <Button size="icon" variant="ghost" onClick={() => handleSave(brand._id)}>
-                            <Save className="w-4 h-4 text-blue-500" />
+                            <DisketteLinear className="w-4 h-4 text-blue-500" />
                           </Button>
                           <Button size="icon" variant="ghost" onClick={() => setIsEditing(null)}>
-                            <X className="w-4 h-4" />
+                            <CloseCircleLinear className="w-4 h-4" />
                           </Button>
                         </>
                       ) : (
                         <>
                           <Button size="icon" variant="ghost" onClick={() => { setIsEditing(brand._id); setEditForm({ name: brand.name, slug: brand.slug, isActive: brand.isActive, isFeatured: brand.isFeatured }); }}>
-                            <Edit className="w-4 h-4" />
+                            <PenLinear className="w-4 h-4" />
                           </Button>
                           <Button size="icon" variant="ghost" onClick={() => handleDelete(brand._id)}>
-                            <Trash2 className="w-4 h-4 text-red-500" />
+                            <TrashBinTrashLinear className="w-4 h-4 text-red-500" />
                           </Button>
                         </>
                       )}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MessageCircle, Loader2 } from 'lucide-react';
+import { CloseCircleLinear, ChatLineLinear, RefreshLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -107,7 +107,7 @@ export default function QuickOrderModal({
                 Quick <span className="text-primary">Order</span>
               </h2>
               <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full">
-                <X size={20} />
+                <CloseCircleLinear size={20} />
               </Button>
             </div>
 
@@ -161,10 +161,10 @@ export default function QuickOrderModal({
                 className="w-full h-14 rounded-2xl gap-3 text-lg font-black shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
               >
                 {loading ? (
-                  <Loader2 className="animate-spin" />
+                  <RefreshLinear className="animate-spin" />
                 ) : (
                   <>
-                    <MessageCircle size={22} />
+                    <ChatLineLinear size={22} />
                     Complete via WhatsApp
                   </>
                 )}

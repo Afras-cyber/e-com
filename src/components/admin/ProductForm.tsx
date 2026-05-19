@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ProductSchema, ProductInput } from '@/lib/validations/product.schema';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '../shared/ImageUpload';
-import { X, Plus, Loader2 } from 'lucide-react';
+import { CloseCircleLinear, AddCircleLinear, RefreshLinear } from "solar-icon-set";;
 import { toast } from 'sonner';
 
 interface ProductFormProps {
@@ -249,7 +249,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
               <div key={i} className="flex items-center gap-2 px-3 py-1 bg-muted rounded-full text-sm">
                 <span className="w-3 h-3 rounded-full" style={{ backgroundColor: c.hex }} />
                 <span>{c.name}</span>
-                <X className="h-3 w-3 cursor-pointer" onClick={() => setValue('colors', colors.filter((_, idx) => idx !== i))} />
+                <CloseCircleLinear className="h-3 w-3 cursor-pointer" onClick={() => setValue('colors', colors.filter((_, idx) => idx !== i))} />
               </div>
             ))}
           </div>
@@ -278,7 +278,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
             {sizes.map((s, i) => (
               <div key={i} className="flex items-center gap-2 px-3 py-1 bg-muted rounded-full text-sm font-medium">
                 <span>{s}</span>
-                <X className="h-3 w-3 cursor-pointer" onClick={() => setValue('sizes', sizes.filter((_, idx) => idx !== i))} />
+                <CloseCircleLinear className="h-3 w-3 cursor-pointer" onClick={() => setValue('sizes', sizes.filter((_, idx) => idx !== i))} />
               </div>
             ))}
           </div>

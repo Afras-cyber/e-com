@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { SlidersHorizontal, X } from 'lucide-react';
+import { TuningLinear, CloseCircleLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import ProductFilters from './ProductFilters';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -17,7 +17,7 @@ export default function MobileFilterToggle({ hasActiveFilters, categories = [], 
         onClick={() => setIsOpen(true)}
         className="gap-2 rounded-xl font-bold relative"
       >
-        <SlidersHorizontal className="w-4 h-4" />
+        <TuningLinear className="w-4 h-4" />
         Filters
         {hasActiveFilters && (
           <span className="w-2 h-2 rounded-full bg-primary absolute -top-0.5 -right-0.5" />
@@ -44,7 +44,7 @@ export default function MobileFilterToggle({ hasActiveFilters, categories = [], 
               <div className="sticky top-0 bg-background/95 backdrop-blur-xl p-4 border-b flex items-center justify-between rounded-t-3xl z-10">
                 <h3 className="font-bold text-lg">Filters</h3>
                 <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="rounded-full">
-                  <X className="w-5 h-5" />
+                  <CloseCircleLinear className="w-5 h-5" />
                 </Button>
               </div>
               <div className="p-6">

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { AltArrowLeftLinear, AltArrowRightLinear } from "solar-icon-set";;
 
 export default function ProductGallery({ 
   images, 
@@ -59,13 +59,13 @@ export default function ProductGallery({
               onClick={prevImage}
               className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center shadow-md transition-all sm:opacity-0 sm:group-hover:opacity-100 active:scale-90"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <AltArrowLeftLinear className="w-5 h-5" />
             </button>
             <button 
               onClick={nextImage}
               className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center shadow-md transition-all sm:opacity-0 sm:group-hover:opacity-100 active:scale-90"
             >
-              <ChevronRight className="w-5 h-5" />
+              <AltArrowRightLinear className="w-5 h-5" />
             </button>
 
             {/* Image counter badge */}

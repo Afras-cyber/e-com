@@ -2,7 +2,7 @@
 
 import { useUIStore } from '@/store/useUIStore';
 import { useWishlist } from '@/store/useWishlist';
-import { X, Search, Heart, ShoppingBag, Sparkles, Package, Footprints, Info, Phone, MapPin } from 'lucide-react';
+import { CloseCircleLinear, MagniferLinear, HeartLinear, BagLinear, StarsLinear, BoxLinear, MapPointLinear, InfoCircleLinear, PhoneLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
@@ -25,14 +25,14 @@ export default function MobileMenu() {
   };
 
   const navLinks = [
-    { label: 'Home', href: '/', icon: Sparkles },
-    { label: 'Shop All', href: '/shop', icon: ShoppingBag },
-    { label: 'Sneakers', href: '/shop?category=shoes', icon: Footprints },
-    { label: 'Bags', href: '/shop?category=bags', icon: Package },
-    { label: 'Track Order', href: '/track', icon: MapPin },
-    { label: 'Wishlist', href: '/wishlist', icon: Heart, badge: wishlistItems.length },
-    { label: 'About Us', href: '/about', icon: Info },
-    { label: 'Contact', href: '/contact', icon: Phone },
+    { label: 'Home', href: '/', icon: StarsLinear },
+    { label: 'Shop All', href: '/shop', icon: BagLinear },
+    { label: 'Sneakers', href: '/shop?category=shoes', icon: MapPointLinear },
+    { label: 'Bags', href: '/shop?category=bags', icon: BoxLinear },
+    { label: 'Track Order', href: '/track', icon: MapPointLinear },
+    { label: 'Wishlist', href: '/wishlist', icon: HeartLinear, badge: wishlistItems.length },
+    { label: 'About Us', href: '/about', icon: InfoCircleLinear },
+    { label: 'Contact', href: '/contact', icon: PhoneLinear },
   ];
 
   return (
@@ -59,17 +59,17 @@ export default function MobileMenu() {
                 {siteConfig.name.slice(0, 4)}<span className="text-primary italic">{siteConfig.name.slice(4)}</span>
               </span>
               <Button variant="ghost" size="icon" onClick={closeMobileMenu} className="rounded-full">
-                <X className="w-5 h-5" />
+                <CloseCircleLinear className="w-5 h-5" />
               </Button>
             </div>
 
-            {/* Search */}
+            {/* MagniferLinear */}
             <div className="px-5 py-4">
               <form onSubmit={handleSearch} className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <MagniferLinear className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="text"
-                  placeholder="Search products..."
+                  placeholder="MagniferLinear products..."
                   className="w-full bg-muted/50 border rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}

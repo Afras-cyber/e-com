@@ -4,7 +4,7 @@ import { useState } from "react";
 import { IProduct } from "@/types/product";
 import { formatPrice } from "@/lib/format-price";
 import { Button } from "@/components/ui/button";
-import { Check, MessageCircle, ShoppingCart, Truck, ShieldCheck, RotateCcw } from "lucide-react";
+import { CheckReadLinear, ChatLineLinear, CartLargeLinear, BusLinear, ShieldCheckLinear, HistoryLinear } from "solar-icon-set";;
 import { buildWhatsAppURL } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
@@ -144,7 +144,7 @@ Please confirm my order. Thank you!`.trim();
                   title={color.name}
                 >
                   {selectedColor === color.name && (
-                    <Check className="absolute inset-0 m-auto w-4 h-4 text-white drop-shadow-md" />
+                    <CheckReadLinear className="absolute inset-0 m-auto w-4 h-4 text-white drop-shadow-md" />
                   )}
                 </button>
               ))}
@@ -191,7 +191,7 @@ Please confirm my order. Thank you!`.trim();
           onClick={handleWhatsAppOrder}
           className="w-full gap-3 bg-[#25D366] hover:bg-[#1da851] text-white font-black text-base sm:text-lg py-7 sm:py-7 rounded-2xl shadow-lg shadow-[#25D366]/25 hover:shadow-xl hover:shadow-[#25D366]/30 transition-all active:scale-[0.98]"
         >
-          <MessageCircle size={22} className="shrink-0" />
+          <ChatLineLinear size={22} className="shrink-0" />
           Order via WhatsApp
         </Button>
 
@@ -202,7 +202,7 @@ Please confirm my order. Thank you!`.trim();
           variant="outline"
           className="w-full gap-3 font-bold text-base py-6 sm:py-6 rounded-2xl border-2 hover:bg-foreground hover:text-background transition-all"
         >
-          <ShoppingCart size={20} className="shrink-0" />
+          <CartLargeLinear size={20} className="shrink-0" />
           Add to Cart
         </Button>
       </div>
@@ -211,19 +211,19 @@ Please confirm my order. Thank you!`.trim();
       <div className="mt-8 grid grid-cols-3 gap-3 text-center border-t pt-6">
         <div className="flex flex-col items-center gap-2">
           <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-            <ShieldCheck size={18} className="text-emerald-500" />
+            <ShieldCheckLinear size={18} className="text-emerald-500" />
           </div>
           <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground leading-tight">100% Authentic</span>
         </div>
         <div className="flex flex-col items-center gap-2">
           <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
-            <Truck size={18} className="text-blue-500" />
+            <BusLinear size={18} className="text-blue-500" />
           </div>
           <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground leading-tight">Fast Delivery</span>
         </div>
         <div className="flex flex-col items-center gap-2">
           <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
-            <RotateCcw size={18} className="text-amber-500" />
+            <HistoryLinear size={18} className="text-amber-500" />
           </div>
           <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground leading-tight">Easy Returns</span>
         </div>

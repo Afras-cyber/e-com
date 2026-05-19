@@ -2,31 +2,21 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingCart, 
-  Image as ImageIcon, 
-  Users, 
-  MessageSquareQuote,
-  Tag,
-  Briefcase,
-  LogOut
-} from 'lucide-react';
+import { WidgetLinear, BoxLinear, CartLargeLinear, GalleryLinear as ImageIcon, UsersGroupTwoRoundedLinear, ChatSquareLinear, TagLinear, CaseLinear, InfoCircleLinear } from "solar-icon-set";;
 import { cn } from '@/lib/utils';
 import { signOut } from 'next-auth/react';
 
 import { siteConfig } from '@/config/site';
 
 const navItems = [
-  { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/admin/orders', icon: ShoppingCart, label: 'Orders' },
-  { href: '/admin/products', icon: Package, label: 'Products' },
-  { href: '/admin/categories', icon: Tag, label: 'Categories' },
-  { href: '/admin/brands', icon: Briefcase, label: 'Brands' },
+  { href: '/admin', icon: WidgetLinear, label: 'Dashboard' },
+  { href: '/admin/orders', icon: CartLargeLinear, label: 'Orders' },
+  { href: '/admin/products', icon: BoxLinear, label: 'Products' },
+  { href: '/admin/categories', icon: TagLinear, label: 'Categories' },
+  { href: '/admin/brands', icon: CaseLinear, label: 'Brands' },
   { href: '/admin/banners', icon: ImageIcon, label: 'Banners' },
-  { href: '/admin/staff', icon: Users, label: 'Staff' },
-  { href: '/admin/testimonials', icon: MessageSquareQuote, label: 'Testimonials' },
+  { href: '/admin/staff', icon: UsersGroupTwoRoundedLinear, label: 'Staff' },
+  { href: '/admin/testimonials', icon: ChatSquareLinear, label: 'Testimonials' },
 ];
 
 export default function AdminSidebar() {
@@ -63,7 +53,7 @@ export default function AdminSidebar() {
           onClick={() => signOut({ callbackUrl: '/admin/login' })}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-primary"
         >
-          <LogOut className="h-4 w-4" />
+          <InfoCircleLinear className="h-4 w-4" />
           Logout
         </button>
       </div>

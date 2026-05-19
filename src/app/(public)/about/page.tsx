@@ -1,4 +1,4 @@
-import { ShieldCheck, Truck, Heart, Star, Sparkles, Zap } from "lucide-react";
+import { ShieldCheckLinear, BusLinear, HeartLinear, StarLinear, StarsLinear, BoltLinear } from "solar-icon-set";;
 import Image from "next/image";
 
 export default function AboutPage() {
@@ -29,7 +29,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold uppercase tracking-wider">
-                <Sparkles size={14} />
+                <StarsLinear size={14} />
                 Our Story
               </div>
               <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight">
@@ -90,21 +90,21 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: ShieldCheck,
+                icon: ShieldCheckLinear,
                 title: "Strict Authenticity",
                 description: "Our multi-stage verification process ensures that every pair of sneakers and every luxury bag is 100% genuine. No exceptions.",
                 color: "text-blue-500",
                 bg: "bg-blue-500/10"
               },
               {
-                icon: Zap,
+                icon: BoltLinear,
                 title: "Personalized Support",
                 description: "Experience luxury service via WhatsApp. Our dedicated concierges help you find the right size and style for your needs.",
                 color: "text-amber-500",
                 bg: "bg-amber-500/10"
               },
               {
-                icon: Truck,
+                icon: BusLinear,
                 title: "Elite Fulfillment",
                 description: "We treat your purchases with the utmost care. Premium packaging and secure, insured shipping are standard for every order.",
                 color: "text-rose-500",
@@ -132,7 +132,7 @@ export default function AboutPage() {
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <Heart className="mx-auto h-16 w-16 mb-8 animate-pulse" />
+          <HeartLinear className="mx-auto h-16 w-16 mb-8 animate-pulse" />
           <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-8">
             Built by Collectors,<br />For Collectors.
           </h2>
@@ -142,11 +142,11 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-12 grayscale brightness-200 opacity-50">
              {/* Brands could go here again or just some icons */}
-             <Star size={40} />
-             <Star size={40} />
-             <Star size={40} />
-             <Star size={40} />
-             <Star size={40} />
+             <StarLinear size={40} />
+             <StarLinear size={40} />
+             <StarLinear size={40} />
+             <StarLinear size={40} />
+             <StarLinear size={40} />
           </div>
         </div>
       </section>

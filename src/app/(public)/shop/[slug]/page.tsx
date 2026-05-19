@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import ProductDetailsClientWrapper from '@/components/shop/ProductDetailsClientWrapper';
 import RelatedProducts from '@/components/shop/RelatedProducts';
 import { Suspense } from 'react';
-import { Loader2 } from 'lucide-react';
+import { RefreshLinear } from "solar-icon-set";;
 
 export async function generateMetadata({
   params,

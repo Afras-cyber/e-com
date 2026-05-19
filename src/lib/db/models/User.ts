@@ -31,7 +31,7 @@ const UserSchema = new Schema<IUserDocument>(
   { timestamps: true }
 );
 
-UserSchema.index({ email: 1 });
+
 
 // Hash password before save
 UserSchema.pre('save', async function () {

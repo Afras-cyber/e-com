@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, Home, ArrowRight } from "lucide-react";
+import { MagniferLinear, HomeAngleLinear, ArrowRightLinear } from "solar-icon-set";;
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
@@ -23,13 +23,13 @@ export default function NotFound() {
       <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm justify-center">
         <Link href="/" className="w-full sm:w-auto">
           <Button variant="default" className="w-full gap-2" size="lg">
-            <Home size={18} />
-            Back to Home
+            <HomeAngleLinear size={18} />
+            Back to HomeAngleLinear
           </Button>
         </Link>
         <Link href="/shop" className="w-full sm:w-auto">
           <Button variant="outline" className="w-full gap-2" size="lg">
-            <Search size={18} />
+            <MagniferLinear size={18} />
             Browse Shop
           </Button>
         </Link>
@@ -41,15 +41,15 @@ export default function NotFound() {
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link href="/shop?category=shoes" className="text-sm hover:text-primary transition-colors flex items-center gap-1">
-            Sneakers <ArrowRight size={14} />
+            Sneakers <ArrowRightLinear size={14} />
           </Link>
           <span className="text-zinc-300 dark:text-zinc-700">•</span>
           <Link href="/shop?category=bags" className="text-sm hover:text-primary transition-colors flex items-center gap-1">
-            Luxury Bags <ArrowRight size={14} />
+            Luxury Bags <ArrowRightLinear size={14} />
           </Link>
           <span className="text-zinc-300 dark:text-zinc-700">•</span>
           <Link href="/shop?isOnSale=true" className="text-sm hover:text-primary transition-colors flex items-center gap-1 text-primary">
-            Flash Sale <ArrowRight size={14} />
+            Flash Sale <ArrowRightLinear size={14} />
           </Link>
         </div>
       </div>
