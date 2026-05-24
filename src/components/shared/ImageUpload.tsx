@@ -7,20 +7,32 @@ import { toast } from "sonner";
 
 interface ImageUploadProps {
   value: string[];
-  onChange: (value: string[]) => void;
+  onChange: (value: string[], newFile?: File) => void;
   onRemove: (value: string) => void;
+  deferredUpload?: boolean;
+  disabled?: boolean;
+  isUploading?: boolean;
 }
 
 export default function ImageUpload({
   value,
   onChange,
   onRemove,
+  deferredUpload = false,
+  disabled = false,
+  isUploading = false,
 }: ImageUploadProps) {
   const [loading, setLoading] = useState(false);
 
   const onUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (deferredUpload) {
+      const objectUrl = URL.createObjectURL(file);
+      onChange([...value, objectUrl], file);
+      return;
+    }
 
     setLoading(true);
     try {
@@ -76,6 +88,7 @@ export default function ImageUpload({
                 variant="destructive"
                 size="icon"
                 className="h-6 w-6"
+                disabled={disabled || loading || isUploading}
               >
                 <CloseCircleLinear className="h-4 w-4" />
               </Button>
@@ -83,12 +96,12 @@ export default function ImageUpload({
             <img className="object-cover w-full h-full" alt="Image" src={url} />
           </div>
         ))}
-        {loading ? (
+        {loading || isUploading ? (
           <div className="w-[150px] h-[150px] rounded-md border-2 border-dashed flex items-center justify-center">
             <RefreshLinear className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : (
-          <label className="w-[150px] h-[150px] rounded-md border-2 border-dashed flex flex-col items-center justify-center cursor-pointer hover:bg-muted transition-colors">
+          <label className={`w-[150px] h-[150px] rounded-md border-2 border-dashed flex flex-col items-center justify-center ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-muted'} transition-colors`}>
             <UploadLinear className="h-6 w-6 text-muted-foreground mb-2" />
             <span className="text-xs text-muted-foreground">
               Upload Image
@@ -98,7 +111,7 @@ export default function ImageUpload({
               className="hidden"
               accept="image/*"
               onChange={onUpload}
-              disabled={loading}
+              disabled={disabled || loading || isUploading}
             />
           </label>
         )}

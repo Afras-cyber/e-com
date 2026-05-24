@@ -20,6 +20,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const [categories, setCategories] = useState<any[]>([]);
   const [brands, setBrands] = useState<any[]>([]);
   const [fetchingData, setFetchingData] = useState(true);
+  const [pendingFiles, setPendingFiles] = useState<{ url: string, file: File }[]>([]);
+  const [uploadingImages, setUploadingImages] = useState(false);
   
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<ProductInput>({
     resolver: zodResolver(ProductSchema),
@@ -88,6 +90,44 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const onSubmit = async (data: ProductInput) => {
     setLoading(true);
     try {
+      const finalImages = [...data.images];
+      
+      const hasPending = finalImages.some(imgUrl => imgUrl.startsWith('blob:'));
+      if (hasPending) setUploadingImages(true);
+
+      const uploadPromises = finalImages.map(async (imgUrl, i) => {
+        if (imgUrl.startsWith('blob:')) {
+          const pending = pendingFiles.find(p => p.url === imgUrl);
+          if (pending) {
+            const uploadResInfo = await fetch("/api/upload", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                filename: pending.file.name,
+                contentType: pending.file.type,
+              }),
+            });
+            if (!uploadResInfo.ok) throw new Error("Failed to get upload URL");
+            const { uploadUrl, fileUrl } = await uploadResInfo.json();
+
+            const s3Res = await fetch(uploadUrl, {
+              method: "PUT",
+              headers: { "Content-Type": pending.file.type },
+              body: pending.file,
+            });
+
+            if (!s3Res.ok) throw new Error("Failed to upload image to S3");
+            finalImages[i] = fileUrl;
+          }
+        }
+      });
+
+      await Promise.all(uploadPromises);
+      
+      if (hasPending) setUploadingImages(false);
+
+      data.images = finalImages;
+
       const url = initialData ? `/api/products/${initialData._id}` : '/api/products';
       const method = initialData ? 'PUT' : 'POST';
       
@@ -203,9 +243,20 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       <div className="border-t pt-8">
         <label className="text-lg font-bold block mb-4">Product Images</label>
         <ImageUpload 
+          deferredUpload
+          isUploading={uploadingImages}
+          disabled={loading}
           value={images} 
-          onChange={(urls) => setValue('images', urls)} 
-          onRemove={(url) => setValue('images', images.filter(i => i !== url))} 
+          onChange={(urls, newFile) => {
+            setValue('images', urls);
+            if (newFile) {
+              setPendingFiles(prev => [...prev, { url: urls[urls.length - 1], file: newFile }]);
+            }
+          }} 
+          onRemove={(url) => {
+            setValue('images', images.filter(i => i !== url));
+            setPendingFiles(prev => prev.filter(p => p.url !== url));
+          }} 
         />
         {errors.images && <p className="text-red-500 text-xs mt-1">{errors.images.message}</p>}
       </div>
@@ -290,7 +341,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           Cancel
         </Button>
         <Button type="submit" disabled={loading}>
-          {loading ? 'Saving...' : initialData ? 'Update Product' : 'Create Product'}
+          {loading && <RefreshLinear className="h-4 w-4 animate-spin mr-2" />}
+          {loading ? (uploadingImages ? 'Uploading Images...' : 'Saving...') : initialData ? 'Update Product' : 'Create Product'}
         </Button>
       </div>
     </form>
