@@ -4,6 +4,7 @@ import Product from '@/lib/db/models/Product';
 import { ProductSchema } from '@/lib/validations/product.schema';
 import { auth } from '@/lib/auth';
 import { deleteImagesFromS3 } from '@/lib/s3';
+import { revalidatePath } from 'next/cache';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -103,6 +104,10 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     }
 
     await Product.findByIdAndDelete(resolvedParams.id);
+
+    // Invalidate the cache to ensure the table refreshes
+    revalidatePath('/api/products');
+    revalidatePath('/admin/products');
 
     return NextResponse.json({ message: 'Product deleted successfully' });
   } catch (error) {

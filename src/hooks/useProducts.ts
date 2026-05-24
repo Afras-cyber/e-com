@@ -19,7 +19,13 @@ async function fetchProducts(filters: ProductFilters): Promise<ProductsResponse>
   if (filters.minPrice) params.append('minPrice', filters.minPrice.toString());
   if (filters.maxPrice) params.append('maxPrice', filters.maxPrice.toString());
 
-  const response = await fetch(`/api/products?${params.toString()}`);
+  const response = await fetch(`/api/products?${params.toString()}`, {
+    cache: 'no-store',
+    headers: {
+      'Pragma': 'no-cache',
+      'Cache-Control': 'no-cache'
+    }
+  });
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
