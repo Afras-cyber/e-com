@@ -1,27 +1,29 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const ProductSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+  name: z.string().min(2, "Name must be at least 2 characters"),
   slug: z.string().optional(),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
+  description: z.string().min(10, "Description must be at least 10 characters"),
   shortDescription: z.string().min(10).max(200),
-  categoryId: z.string().min(1, 'Category is required'),
-  brandId: z.string().min(1, 'Brand is required'),
+  categoryId: z.string().min(1, "Category is required"),
+  brandId: z.string().min(1, "Brand is required"),
   category: z.string(),
   brand: z.string(),
   subcategory: z.string().optional(),
-  price: z.number().positive('Price must be positive'),
-  discountPrice: z.preprocess((val) => Number.isNaN(val) ? undefined : val, z.number().positive().optional()),
+  price: z.number().positive("Price must be positive"),
+  discountPrice: z.number().positive().optional(),
   discountPercent: z.number().optional(),
-  images: z.array(z.string().url()).min(1, 'At least one image is required'),
-  sizes: z.array(z.string()).min(1, 'At least one size is required'),
-  colors: z.array(
-    z.object({
-      name: z.string(),
-      hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid hex color'),
-      imageIndex: z.number().optional(),
-    })
-  ).min(1),
+  images: z.array(z.string().url()).min(1, "At least one image is required"),
+  sizes: z.array(z.string()).min(1, "At least one size is required"),
+  colors: z
+    .array(
+      z.object({
+        name: z.string(),
+        hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color"),
+        imageIndex: z.number().optional(),
+      }),
+    )
+    .min(1),
   stock: z.number().int().min(0),
   isAvailable: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
