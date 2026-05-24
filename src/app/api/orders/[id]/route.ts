@@ -19,7 +19,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
     const resolvedParams = await params;
     await connectDB();
-    const order = await Order.findById(resolvedParams.id).populate('statusHistory.updatedBy', 'name role').lean();
+    
+    // Support lookup by both _id and orderNumber (e.g. STK-2026-00001)
+    const isObjectId = /^[0-9a-fA-F]{24}$/.test(resolvedParams.id);
+    const query = isObjectId ? { _id: resolvedParams.id } : { orderNumber: resolvedParams.id };
+
+    const order = await Order.findOne(query).populate('statusHistory.updatedBy', 'name role').lean();
 
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
@@ -44,7 +49,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const body = await request.json();
     const { status, note, negotiatedPrice } = body;
 
-    const order = await Order.findById(resolvedParams.id);
+    const isObjectId = /^[0-9a-fA-F]{24}$/.test(resolvedParams.id);
+    const query = isObjectId ? { _id: resolvedParams.id } : { orderNumber: resolvedParams.id };
+
+    const order = await Order.findOne(query);
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }

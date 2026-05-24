@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { WidgetLinear, BoxLinear, CartLargeLinear, GalleryLinear as ImageIcon, UsersGroupTwoRoundedLinear, ChatSquareLinear, TagLinear, CaseLinear, InfoCircleLinear } from "solar-icon-set";;
+import { usePathname, useRouter } from 'next/navigation';
+import { WidgetLinear, BoxLinear, CartLargeLinear, GalleryLinear as ImageIcon, UsersGroupTwoRoundedLinear, ChatSquareLinear, TagLinear, CaseLinear, InfoCircleLinear, MagniferLinear } from "solar-icon-set";
 import { cn } from '@/lib/utils';
 import { signOut } from 'next-auth/react';
 
@@ -21,6 +22,16 @@ const navItems = [
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [orderId, setOrderId] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (orderId.trim()) {
+      router.push(`/admin/orders/${orderId.trim()}`);
+      setOrderId("");
+    }
+  };
 
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r bg-background sm:flex">
@@ -30,6 +41,24 @@ export default function AdminSidebar() {
         </Link>
       </div>
       <div className="flex flex-1 flex-col overflow-y-auto py-4">
+        <div className="px-4 mb-4">
+          <form
+            onSubmit={handleSearch}
+            className="relative flex items-center w-full"
+          >
+            <MagniferLinear className="absolute left-2.5 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search Order ID..."
+              className="w-full rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
+            />
+            <button type="submit" className="hidden">
+              Search
+            </button>
+          </form>
+        </div>
         <nav className="grid gap-1 px-4">
           {navItems.map((item) => (
             <Link
