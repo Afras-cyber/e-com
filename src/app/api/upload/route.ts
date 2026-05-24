@@ -10,6 +10,10 @@ const s3Client = new S3Client({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
+  // Prevents SDK v3 from auto-injecting x-amz-checksum-algorithm: CRC32
+  // into presigned URLs. Without this, browser fetch PUT gets 403 Forbidden
+  // because S3 expects the checksum header that the browser never sends.
+  requestChecksumCalculation: "WHEN_REQUIRED",
 });
 
 export async function POST(request: Request) {
