@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db/mongoose';
 import Banner from '@/lib/db/models/Banner';
 import { auth } from '@/lib/auth';
+import { deleteImagesFromS3 } from '@/lib/s3';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,15 +17,20 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     await connectDB();
     const body = await request.json();
     
+    const existingBanner = await Banner.findById(resolvedParams.id).lean();
+    if (!existingBanner) {
+      return NextResponse.json({ error: 'Banner not found' }, { status: 404 });
+    }
+
+    if (existingBanner.image && existingBanner.image !== body.image) {
+      await deleteImagesFromS3([existingBanner.image]);
+    }
+    
     const banner = await Banner.findByIdAndUpdate(
       resolvedParams.id,
       body,
       { returnDocument: 'after', runValidators: true }
     ).lean();
-
-    if (!banner) {
-      return NextResponse.json({ error: 'Banner not found' }, { status: 404 });
-    }
 
     return NextResponse.json(banner);
   } catch (error) {
@@ -42,11 +48,17 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     const resolvedParams = await params;
     await connectDB();
-    const banner = await Banner.findByIdAndDelete(resolvedParams.id);
-
-    if (!banner) {
+    
+    const existingBanner = await Banner.findById(resolvedParams.id).lean();
+    if (!existingBanner) {
       return NextResponse.json({ error: 'Banner not found' }, { status: 404 });
     }
+
+    if (existingBanner.image) {
+      await deleteImagesFromS3([existingBanner.image]);
+    }
+
+    await Banner.findByIdAndDelete(resolvedParams.id);
 
     return NextResponse.json({ message: 'Banner deleted successfully' });
   } catch (error) {
