@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useQuery } from '@tanstack/react-query';
-import { IProduct } from '@/types/product';
-import ProductCard from './ProductCard';
-import { RefreshLinear } from "solar-icon-set";;
+import { useQuery } from "@tanstack/react-query";
+import { IProduct } from "@/types/product";
+import ProductCard from "./ProductCard";
+import { RestartLinear } from "solar-icon-set";
 
 interface RelatedProductsProps {
   category: string;
@@ -12,25 +12,34 @@ interface RelatedProductsProps {
 
 async function fetchRelatedProducts(category: string) {
   const res = await fetch(`/api/products?category=${category}&limit=4`);
-  if (!res.ok) throw new Error('Failed to fetch related products');
+  if (!res.ok) throw new Error("Failed to fetch related products");
   return res.json();
 }
 
-export default function RelatedProducts({ category, currentProductId }: RelatedProductsProps) {
+export default function RelatedProducts({
+  category,
+  currentProductId,
+}: RelatedProductsProps) {
   const { data, isLoading } = useQuery({
-    queryKey: ['related-products', category],
+    queryKey: ["related-products", category],
     queryFn: () => fetchRelatedProducts(category),
   });
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <RefreshLinear className="w-8 h-8 animate-spin text-muted-foreground" />
+        <RestartLinear
+          className="animate-spin text-muted-foreground"
+          size={32}
+        />
       </div>
     );
   }
 
-  const relatedProducts = data?.products?.filter((p: IProduct) => p._id !== currentProductId).slice(0, 4) || [];
+  const relatedProducts =
+    data?.products
+      ?.filter((p: IProduct) => p._id !== currentProductId)
+      .slice(0, 4) || [];
 
   if (relatedProducts.length === 0) return null;
 

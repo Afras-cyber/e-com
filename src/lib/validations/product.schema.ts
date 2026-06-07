@@ -11,7 +11,7 @@ export const ProductSchema = z.object({
   brand: z.string(),
   subcategory: z.string().optional(),
   price: z.number().positive('Price must be positive'),
-  discountPrice: z.preprocess((val) => Number.isNaN(val) ? undefined : val, z.number().positive().optional()),
+  discountPrice: z.union([z.number().positive(), z.nan()]).optional().transform((val) => val === undefined || Number.isNaN(val) ? undefined : val),
   discountPercent: z.number().optional(),
   images: z.array(z.string().url()).min(1, 'At least one image is required'),
   sizes: z.array(z.string()).min(1, 'At least one size is required'),
