@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { Edit, Trash2, CheckCircle, XCircle, ExternalLink, MoveUp, MoveDown } from 'lucide-react';
+import { PenLinear, TrashBinTrashLinear, CheckCircleLinear, CloseCircleLinear, LinkLinear, ArrowUpLinear, ArrowDownLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 
 export default function BannerTable({ onEdit }: { onEdit: (banner: any) => void }) {
@@ -64,12 +64,12 @@ export default function BannerTable({ onEdit }: { onEdit: (banner: any) => void 
                   <button onClick={() => toggleStatus(banner._id, banner.isActive)} className="flex items-center gap-1">
                     {banner.isActive ? (
                       <div className="flex items-center text-green-600 gap-1 font-bold text-xs uppercase">
-                        <CheckCircle className="h-3 w-3" />
+                        <CheckCircleLinear className="h-3 w-3" />
                         Live
                       </div>
                     ) : (
                       <div className="flex items-center text-muted-foreground gap-1 font-bold text-xs uppercase">
-                        <XCircle className="h-3 w-3" />
+                        <CloseCircleLinear className="h-3 w-3" />
                         Draft
                       </div>
                     )}
@@ -78,10 +78,10 @@ export default function BannerTable({ onEdit }: { onEdit: (banner: any) => void 
                 <td className="p-4 align-middle text-right">
                   <div className="flex justify-end gap-2">
                     <Button variant="ghost" size="icon" onClick={() => onEdit(banner)}>
-                      <Edit className="h-4 w-4" />
+                      <PenLinear className="h-4 w-4" />
                     </Button>
                     <Button variant="ghost" size="icon" className="text-destructive" onClick={() => deleteBanner(banner._id)}>
-                      <Trash2 className="h-4 w-4" />
+                      <TrashBinTrashLinear className="h-4 w-4" />
                     </Button>
                   </div>
                 </td>

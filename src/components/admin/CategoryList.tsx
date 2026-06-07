@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus, Edit, Trash2, Save, X, ToggleLeft, ToggleRight } from 'lucide-react';
+import { AddCircleLinear, PenLinear, TrashBinTrashLinear, DisketteLinear, CloseCircleLinear, RefreshLinear } from "solar-icon-set";;
 import { toast } from 'sonner';
 
 export default function CategoryList() {
@@ -98,7 +98,7 @@ export default function CategoryList() {
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Manage Categories</h2>
         <Button onClick={() => { setIsAdding(true); setEditForm({ name: '', slug: '', sizes: '', isActive: true }); }}>
-          <Plus className="w-4 h-4 mr-2" /> Add Category
+          <AddCircleLinear className="w-4 h-4 mr-2" /> Add Category
         </Button>
       </div>
 
@@ -131,7 +131,7 @@ export default function CategoryList() {
               />
             </div>
             <div className="flex gap-2">
-              <Button onClick={() => handleSave()} size="sm">Save</Button>
+              <Button onClick={() => handleSave()} size="sm">DisketteLinear</Button>
               <Button variant="outline" onClick={() => setIsAdding(false)} size="sm">Cancel</Button>
             </div>
           </div>
@@ -189,12 +189,12 @@ export default function CategoryList() {
                     <button onClick={() => handleToggleActive(cat)} className="transition-transform active:scale-95">
                       {cat.isActive ? (
                         <div className="flex items-center gap-1 text-green-500 font-bold">
-                          <ToggleRight className="w-6 h-6" />
+                          <RefreshLinear className="w-6 h-6" />
                           <span>Active</span>
                         </div>
                       ) : (
                         <div className="flex items-center gap-1 text-zinc-400 font-bold">
-                          <ToggleLeft className="w-6 h-6" />
+                          <RefreshLinear className="w-6 h-6" />
                           <span>Inactive</span>
                         </div>
                       )}
@@ -205,19 +205,19 @@ export default function CategoryList() {
                       {isEditing === cat._id ? (
                         <>
                           <Button size="icon" variant="ghost" onClick={() => handleSave(cat._id)}>
-                            <Save className="w-4 h-4 text-blue-500" />
+                            <DisketteLinear className="w-4 h-4 text-blue-500" />
                           </Button>
                           <Button size="icon" variant="ghost" onClick={() => setIsEditing(null)}>
-                            <X className="w-4 h-4" />
+                            <CloseCircleLinear className="w-4 h-4" />
                           </Button>
                         </>
                       ) : (
                         <>
                           <Button size="icon" variant="ghost" onClick={() => { setIsEditing(cat._id); setEditForm({ name: cat.name, slug: cat.slug, sizes: cat.sizes?.join(', ') || '', isActive: cat.isActive }); }}>
-                            <Edit className="w-4 h-4" />
+                            <PenLinear className="w-4 h-4" />
                           </Button>
                           <Button size="icon" variant="ghost" onClick={() => handleDelete(cat._id)}>
-                            <Trash2 className="w-4 h-4 text-red-500" />
+                            <TrashBinTrashLinear className="w-4 h-4 text-red-500" />
                           </Button>
                         </>
                       )}

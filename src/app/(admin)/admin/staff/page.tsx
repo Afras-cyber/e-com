@@ -4,7 +4,7 @@ import StaffTable from '@/components/admin/StaffTable';
 import AddStaffForm from '@/components/admin/AddStaffForm';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus, X } from 'lucide-react';
+import { AddCircleLinear, CloseCircleLinear } from "solar-icon-set";;
 
 export default function AdminStaffPage() {
   const [isAdding, setIsAdding] = useState(false);
@@ -18,7 +18,7 @@ export default function AdminStaffPage() {
           <p className="text-muted-foreground">Manage your team and their access levels</p>
         </div>
         <Button onClick={() => setIsAdding(!isAdding)} variant={isAdding ? "outline" : "default"} className="gap-2">
-          {isAdding ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+          {isAdding ? <CloseCircleLinear className="h-4 w-4" /> : <AddCircleLinear className="h-4 w-4" />}
           {isAdding ? "Cancel" : "Add Staff"}
         </Button>
       </div>

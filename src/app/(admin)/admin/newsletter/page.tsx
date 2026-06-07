@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { Mail, Loader2, Download, Send } from 'lucide-react';
+import { LetterLinear, RefreshLinear, DownloadLinear, SendSquareLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -41,12 +41,12 @@ export default function AdminNewsletterPage() {
         <div className="flex gap-2">
           <Link href="/admin/newsletter/new">
             <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
-              <Send className="h-4 w-4" />
+              <SendSquareLinear className="h-4 w-4" />
               New Campaign
             </Button>
           </Link>
           <Button onClick={exportCSV} variant="outline" disabled={!subscribers || subscribers.length === 0} className="gap-2">
-            <Download className="h-4 w-4" />
+            <DownloadLinear className="h-4 w-4" />
             Export CSV
           </Button>
         </div>
@@ -55,7 +55,7 @@ export default function AdminNewsletterPage() {
       <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+            <RefreshLinear className="w-8 h-8 animate-spin text-muted-foreground" />
           </div>
         ) : (
           <div className="relative w-full overflow-auto">
@@ -72,7 +72,7 @@ export default function AdminNewsletterPage() {
                   <tr key={sub._id} className="border-b transition-colors hover:bg-muted/50">
                     <td className="p-4 align-middle font-medium">
                       <div className="flex items-center gap-2">
-                        <Mail className="h-4 w-4 text-muted-foreground" />
+                        <LetterLinear className="h-4 w-4 text-muted-foreground" />
                         {sub.email}
                       </div>
                     </td>

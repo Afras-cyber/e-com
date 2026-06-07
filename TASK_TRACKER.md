@@ -135,6 +135,23 @@ We need to build the interactive UI components for the store and the admin panel
 4. [x] **Variant Image Binding**: Implemented logic in the admin portal (`ProductForm`) to assign a specific image index to each product color.
 5. [x] **Interactive Gallery**: Created `ProductDetailsClientWrapper` to enable real-time synchronization between the color selector and the active product image on the detail page.
 
+## Phase 14 — Landing Page Redesign & Theme Fixes (Completed)
+1. [x] **Footer Light/Dark Fix**: Replaced hardcoded `bg-zinc-950` / `text-zinc-400` with CSS variable tokens (`bg-foreground/[0.03]`, `text-foreground/60`) so text is always visible in both modes. Added social icon row and improved spacing.
+2. [x] **Navbar Polish**: Added animated underline hover on desktop nav links, refined icon button states using `text-foreground/60 hover:text-primary`, cleaned up mobile layout.
+3. [x] **HeroBanner Redesign**: Taller viewport (`h-[85vh]`), ambient glow blobs, dot-grid texture overlay, dual CTA buttons (Shop + Our Story), scroll indicator animation. Fallback hero uses proper dark bg (always dark under image).
+4. [x] **CategorySection**: Full motion animations (`whileInView`), count badges per category, shine hover effect, `shadowColor` per card, proper `text-foreground` labels.
+5. [x] **FeaturedProducts**: Replaced spinner with skeleton cards, added `whileInView` stagger, CTA button uses `hover:bg-primary` theme tokens.
+6. [x] **TestimonialsSection**: Cards now use `bg-background border-border` (light) / `bg-zinc-800/60 border-zinc-700/60` (dark), verified badge, improved quote icon and star rating.
+7. [x] **NewsletterSignup**: Dark inner card uses `bg-zinc-950 dark:bg-zinc-900` (always dark for contrast), form input uses `bg-white/5` transparent on dark, improved loading spinner.
+8. [x] **Brand Marquee**: Fixed color — `text-foreground/10 dark:text-white/[0.06]` so brand names are visible as watermarks in both modes.
+9. [x] **CTA Banner**: Inverted design using `bg-foreground` (dark in light mode, light in dark mode) for maximum impact without hardcoded colors.
+10. [x] **Main page.tsx**: Full restructure with consistent section spacing (`py-20 sm:py-28`), feature card accent colors, brand marquee section wrapped with `border-y border-border`.
+
+## Phase 15 — Global Icon Migration (Completed)
+1. [x] **Icon Migration**: Removed `lucide-react` dependency and integrated `solar-icon-set`.
+2. [x] **Global Search & Replace**: Automated AST-based script mapping 66 Lucide icons to their exact `*Linear` equivalents in Solar Icons.
+3. [x] **Project Build Verification**: Ensured zero compile-time errors after updating 49 TypeScript and TSX files.
+
 ---
 **Next Steps 🚀**
 - [ ] Add subcategory management to Categories

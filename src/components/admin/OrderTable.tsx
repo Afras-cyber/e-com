@@ -3,16 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { formatPrice } from '@/lib/format-price';
 import { format } from 'date-fns';
-import { 
-  Eye, 
-  MessageCircle, 
-  ChevronRight,
-  Clock,
-  CheckCircle,
-  Truck,
-  XCircle,
-  Package
-} from 'lucide-react';
+import { EyeLinear, ChatLineLinear, AltArrowRightLinear, ClockCircleLinear, CheckCircleLinear, BusLinear, CloseCircleLinear, BoxLinear } from "solar-icon-set";;
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -20,14 +11,14 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 const statusMap: any = {
-  inquiry: { label: 'New Inquiry', color: 'bg-blue-100 text-blue-700', icon: MessageCircle },
-  contacted: { label: 'Contacted', color: 'bg-purple-100 text-purple-700', icon: Clock },
-  negotiating: { label: 'Negotiating', color: 'bg-orange-100 text-orange-700', icon: Clock },
-  confirmed: { label: 'Confirmed', color: 'bg-cyan-100 text-cyan-700', icon: CheckCircle },
-  processing: { label: 'Processing', color: 'bg-yellow-100 text-yellow-700', icon: Package },
-  shipped: { label: 'Shipped', color: 'bg-indigo-100 text-indigo-700', icon: Truck },
-  delivered: { label: 'Delivered', color: 'bg-green-100 text-green-700', icon: CheckCircle },
-  cancelled: { label: 'Cancelled', color: 'bg-red-100 text-red-700', icon: XCircle },
+  inquiry: { label: 'New Inquiry', color: 'bg-blue-100 text-blue-700', icon: ChatLineLinear },
+  contacted: { label: 'Contacted', color: 'bg-purple-100 text-purple-700', icon: ClockCircleLinear },
+  negotiating: { label: 'Negotiating', color: 'bg-orange-100 text-orange-700', icon: ClockCircleLinear },
+  confirmed: { label: 'Confirmed', color: 'bg-cyan-100 text-cyan-700', icon: CheckCircleLinear },
+  processing: { label: 'Processing', color: 'bg-yellow-100 text-yellow-700', icon: BoxLinear },
+  shipped: { label: 'Shipped', color: 'bg-indigo-100 text-indigo-700', icon: BusLinear },
+  delivered: { label: 'Delivered', color: 'bg-green-100 text-green-700', icon: CheckCircleLinear },
+  cancelled: { label: 'Cancelled', color: 'bg-red-100 text-red-700', icon: CloseCircleLinear },
 };
 
 export default function OrderTable() {
@@ -125,7 +116,7 @@ export default function OrderTable() {
                     <Link href={`/admin/orders/${order._id}`}>
                       <Button variant="ghost" size="sm" className="gap-2">
                         Manage
-                        <ChevronRight className="h-4 w-4" />
+                        <AltArrowRightLinear className="h-4 w-4" />
                       </Button>
                     </Link>
                   </td>

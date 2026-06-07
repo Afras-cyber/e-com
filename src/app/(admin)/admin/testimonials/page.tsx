@@ -2,18 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { 
-  Star, 
-  CheckCircle2, 
-  XCircle, 
-  Trash2, 
-  Loader2, 
-  MessageSquare, 
-  Quote,
-  Zap,
-  CheckSquare,
-  Square
-} from 'lucide-react';
+import { StarLinear, CheckCircleLinear, CloseCircleLinear, TrashBinTrashLinear, RefreshLinear, ChatSquareLinear, DialogLinear, BoltLinear, CheckSquareLinear, StopLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useState } from 'react';
@@ -116,7 +105,7 @@ export default function AdminTestimonialsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+        <RefreshLinear className="w-8 h-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -136,7 +125,7 @@ export default function AdminTestimonialsPage() {
             onClick={toggleSelectAll}
             className="w-fit gap-2 h-10 px-4"
           >
-            {selectedIds.length === testimonials.length ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+            {selectedIds.length === testimonials.length ? <CheckSquareLinear className="w-4 h-4" /> : <StopLinear className="w-4 h-4" />}
             {selectedIds.length === testimonials.length ? 'Deselect All' : 'Select All'}
           </Button>
         )}
@@ -156,7 +145,7 @@ export default function AdminTestimonialsPage() {
               onClick={() => bulkUpdateMutation.mutate({ ids: selectedIds, update: { isApproved: true } })}
               disabled={bulkUpdateMutation.isPending}
             >
-              <CheckCircle2 className="w-4 h-4" /> Approve
+              <CheckCircleLinear className="w-4 h-4" /> Approve
             </Button>
             <Button 
               size="sm" 
@@ -165,7 +154,7 @@ export default function AdminTestimonialsPage() {
               onClick={() => bulkUpdateMutation.mutate({ ids: selectedIds, update: { isFeatured: true } })}
               disabled={bulkUpdateMutation.isPending}
             >
-              <Zap className="w-4 h-4 fill-current text-indigo-400" /> Feature
+              <BoltLinear className="w-4 h-4 fill-current text-indigo-400" /> Feature
             </Button>
             <Button 
               size="sm" 
@@ -178,7 +167,7 @@ export default function AdminTestimonialsPage() {
               }}
               disabled={bulkDeleteMutation.isPending}
             >
-              <Trash2 className="w-4 h-4" /> Delete
+              <TrashBinTrashLinear className="w-4 h-4" /> Delete
             </Button>
             <Button 
               variant="ghost" 
@@ -203,9 +192,9 @@ export default function AdminTestimonialsPage() {
           >
             <div className="absolute top-4 right-4 z-20">
               {selectedIds.includes(t._id) ? (
-                <CheckSquare className="w-5 h-5 text-primary fill-current bg-white rounded-sm" />
+                <CheckSquareLinear className="w-5 h-5 text-primary fill-current bg-white rounded-sm" />
               ) : (
-                <Square className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors bg-white/50 rounded-sm" />
+                <StopLinear className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors bg-white/50 rounded-sm" />
               )}
             </div>
             <div className="flex items-start justify-between">
@@ -220,7 +209,7 @@ export default function AdminTestimonialsPage() {
               </div>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
-                  <Star 
+                  <StarLinear 
                     key={i} 
                     className={`w-3 h-3 ${i < t.rating ? 'fill-amber-500 text-amber-500' : 'text-muted'}`} 
                   />
@@ -229,7 +218,7 @@ export default function AdminTestimonialsPage() {
             </div>
 
             <div className="relative">
-              <Quote className="absolute -top-2 -left-2 w-8 h-8 text-muted/20 -z-0" />
+              <DialogLinear className="absolute -top-2 -left-2 w-8 h-8 text-muted/20 -z-0" />
               <p className="text-sm text-card-foreground/80 italic line-clamp-4 relative z-10">
                 "{t.review}"
               </p>
@@ -250,7 +239,7 @@ export default function AdminTestimonialsPage() {
                   className="flex-1 h-9 gap-2 text-xs"
                   onClick={() => updateMutation.mutate({ id: t._id, data: { isApproved: false } })}
                 >
-                  <XCircle className="w-3.5 h-3.5 text-amber-500" />
+                  <CloseCircleLinear className="w-3.5 h-3.5 text-amber-500" />
                   Unapprove
                 </Button>
               ) : (
@@ -260,7 +249,7 @@ export default function AdminTestimonialsPage() {
                   className="flex-1 h-9 gap-2 text-xs bg-emerald-600 hover:bg-emerald-700"
                   onClick={() => updateMutation.mutate({ id: t._id, data: { isApproved: true } })}
                 >
-                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <CheckCircleLinear className="w-3.5 h-3.5" />
                   Approve
                 </Button>
               )}
@@ -272,7 +261,7 @@ export default function AdminTestimonialsPage() {
                 title={t.isFeatured ? "Unfeature" : "Feature on Homepage"}
                 onClick={() => updateMutation.mutate({ id: t._id, data: { isFeatured: !t.isFeatured } })}
               >
-                <Zap className={`w-3.5 h-3.5 ${t.isFeatured ? 'fill-current' : ''}`} />
+                <BoltLinear className={`w-3.5 h-3.5 ${t.isFeatured ? 'fill-current' : ''}`} />
               </Button>
 
               <Button 
@@ -285,7 +274,7 @@ export default function AdminTestimonialsPage() {
                   }
                 }}
               >
-                <Trash2 className="w-3.5 h-3.5" />
+                <TrashBinTrashLinear className="w-3.5 h-3.5" />
               </Button>
             </div>
           </div>
@@ -293,7 +282,7 @@ export default function AdminTestimonialsPage() {
 
         {testimonials?.length === 0 && (
           <div className="col-span-full flex flex-col items-center justify-center py-20 text-muted-foreground bg-card border rounded-2xl border-dashed">
-            <MessageSquare className="w-12 h-12 mb-4 opacity-10" />
+            <ChatSquareLinear className="w-12 h-12 mb-4 opacity-10" />
             <p>No testimonials found in the database.</p>
           </div>
         )}

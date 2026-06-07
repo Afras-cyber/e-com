@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
-import { Check } from 'lucide-react';
+import { CheckReadLinear } from "solar-icon-set";;
 import { cn } from '@/lib/utils';
 
 export default function ProductFilters({ categories = [], brands = [] }: { categories?: any[], brands?: any[] }) {
@@ -104,7 +104,7 @@ export default function ProductFilters({ categories = [], brands = [] }: { categ
                 )}
                 onClick={() => setFilter('brand', brand, true)}
               >
-                {currentBrands.includes(brand) && <Check className="h-3 w-3 text-white" />}
+                {currentBrands.includes(brand) && <CheckReadLinear className="h-3 w-3 text-white" />}
               </div>
               <span className={cn(
                 "text-sm transition-colors",

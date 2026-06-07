@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { LetterLinear, PhoneLinear, MapPointLinear } from "solar-icon-set";;
 import { Instagram, Facebook } from "@/components/shared/BrandIcons";
 import { Button } from "@/components/ui/button";
 import ContactForm from "@/components/contact/ContactForm";
@@ -31,10 +31,10 @@ export default function ContactPage() {
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="p-3 bg-primary/10 rounded-xl text-primary">
-                      <Phone size={24} />
+                      <PhoneLinear size={24} />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg">Phone / WhatsApp</h3>
+                      <h3 className="font-semibold text-lg">PhoneLinear / WhatsApp</h3>
                       <p className="text-muted-foreground">+94 77 675 6287</p>
                       <p className="text-xs text-muted-foreground mt-1">Mon-Sat: 9am - 8pm</p>
                     </div>
@@ -42,7 +42,7 @@ export default function ContactPage() {
 
                   <div className="flex items-start gap-4">
                     <div className="p-3 bg-primary/10 rounded-xl text-primary">
-                      <Mail size={24} />
+                      <LetterLinear size={24} />
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">Email</h3>
@@ -53,7 +53,7 @@ export default function ContactPage() {
 
                   <div className="flex items-start gap-4">
                     <div className="p-3 bg-primary/10 rounded-xl text-primary">
-                      <MapPin size={24} />
+                      <MapPointLinear size={24} />
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">Location</h3>

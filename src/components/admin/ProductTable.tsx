@@ -2,15 +2,7 @@
 
 import { useProducts } from '@/hooks/useProducts';
 import { formatPrice } from '@/lib/format-price';
-import { 
-  Edit, 
-  Trash2, 
-  Plus, 
-  MoreHorizontal, 
-  CheckCircle2, 
-  XCircle,
-  ExternalLink
-} from 'lucide-react';
+import { PenLinear, TrashBinTrashLinear, AddCircleLinear, MenuDotsLinear, CheckCircleLinear, CloseCircleLinear, LinkLinear } from "solar-icon-set";;
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -103,12 +95,12 @@ export default function ProductTable() {
                   <button onClick={() => toggleStatus(product._id, product.isAvailable)}>
                     {product.isAvailable ? (
                       <div className="flex items-center text-green-600 gap-1">
-                        <CheckCircle2 className="h-4 w-4" />
+                        <CheckCircleLinear className="h-4 w-4" />
                         <span>Active</span>
                       </div>
                     ) : (
                       <div className="flex items-center text-muted-foreground gap-1">
-                        <XCircle className="h-4 w-4" />
+                        <CloseCircleLinear className="h-4 w-4" />
                         <span>Hidden</span>
                       </div>
                     )}
@@ -118,16 +110,16 @@ export default function ProductTable() {
                   <div className="flex justify-end gap-2">
                     <Link href={`/shop/${product.slug}`} target="_blank">
                       <Button variant="ghost" size="icon" title="View in Store">
-                        <ExternalLink className="h-4 w-4" />
+                        <LinkLinear className="h-4 w-4" />
                       </Button>
                     </Link>
                     <Link href={`/admin/products/${product._id}`}>
-                      <Button variant="ghost" size="icon" title="Edit">
-                        <Edit className="h-4 w-4" />
+                      <Button variant="ghost" size="icon" title="PenLinear">
+                        <PenLinear className="h-4 w-4" />
                       </Button>
                     </Link>
                     <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => deleteProduct(product._id)}>
-                      <Trash2 className="h-4 w-4" />
+                      <TrashBinTrashLinear className="h-4 w-4" />
                     </Button>
                   </div>
                 </td>

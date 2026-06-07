@@ -3,6 +3,8 @@ import connectDB from '@/lib/db/mongoose';
 import Product from '@/lib/db/models/Product';
 import { ProductSchema } from '@/lib/validations/product.schema';
 import { auth } from '@/lib/auth';
+import { deleteImagesFromS3 } from '@/lib/s3';
+import { revalidatePath } from 'next/cache';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -40,6 +42,21 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     
     const validatedData = ProductSchema.parse(body);
 
+    const existingProduct = await Product.findById(resolvedParams.id).lean();
+    if (!existingProduct) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    // Find images that were removed in the update
+    const imagesToDelete = existingProduct.images?.filter(
+      (img: string) => !validatedData.images.includes(img)
+    ) || [];
+
+    if (imagesToDelete.length > 0) {
+      // Don't await if you don't want to block the update, but awaiting ensures consistency
+      await deleteImagesFromS3(imagesToDelete);
+    }
+
     // Calculate discount percent if applicable
     if (validatedData.discountPrice && validatedData.discountPrice < validatedData.price) {
       validatedData.discountPercent = Math.round(((validatedData.price - validatedData.discountPrice) / validatedData.price) * 100);
@@ -54,10 +71,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       validatedData,
       { returnDocument: 'after', runValidators: true }
     ).lean();
-
-    if (!product) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-    }
 
     return NextResponse.json(product);
   } catch (error: any) {
@@ -79,11 +92,22 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     const resolvedParams = await params;
     await connectDB();
-    const product = await Product.findByIdAndDelete(resolvedParams.id);
-
-    if (!product) {
+    const existingProduct = await Product.findById(resolvedParams.id).lean();
+    
+    if (!existingProduct) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
+
+    // Delete images from S3
+    if (existingProduct.images && existingProduct.images.length > 0) {
+      await deleteImagesFromS3(existingProduct.images);
+    }
+
+    await Product.findByIdAndDelete(resolvedParams.id);
+
+    // Invalidate the cache to ensure the table refreshes
+    revalidatePath('/api/products');
+    revalidatePath('/admin/products');
 
     return NextResponse.json({ message: 'Product deleted successfully' });
   } catch (error) {

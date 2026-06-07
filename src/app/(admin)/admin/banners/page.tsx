@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus, X } from 'lucide-react';
+import { AddCircleLinear, CloseCircleLinear } from "solar-icon-set";;
 import BannerTable from '@/components/admin/BannerTable';
 import BannerForm from '@/components/admin/BannerForm';
 
@@ -32,7 +32,7 @@ export default function AdminBannersPage() {
             setIsAdding(true);
           }
         }} variant={(isAdding || editingBanner) ? "outline" : "default"} className="gap-2">
-          {(isAdding || editingBanner) ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+          {(isAdding || editingBanner) ? <CloseCircleLinear className="h-4 w-4" /> : <AddCircleLinear className="h-4 w-4" />}
           {(isAdding || editingBanner) ? "Cancel" : "Create Banner"}
         </Button>
       </div>

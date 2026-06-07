@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Search, X, Loader2, ShoppingBag, ArrowRight } from 'lucide-react';
+import { MagniferLinear, CloseCircleLinear, RefreshLinear, BagLinear, ArrowRightLinear } from "solar-icon-set";;
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { IProduct } from '@/types/product';
@@ -25,7 +25,7 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
       const data = await res.json();
       setResults(data.products || []);
     } catch (error) {
-      console.error('Search error:', error);
+      console.error('MagniferLinear error:', error);
     } finally {
       setLoading(false);
     }
@@ -67,10 +67,10 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
           className="relative w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800"
         >
           <div className="flex items-center p-6 border-b border-zinc-100 dark:border-zinc-800">
-            <Search className="w-6 h-6 text-muted-foreground mr-4" />
+            <MagniferLinear className="w-6 h-6 text-muted-foreground mr-4" />
             <input
               autoFocus
-              placeholder="Search for sneakers, bags, or brands..."
+              placeholder="MagniferLinear for sneakers, bags, or brands..."
               className="flex-1 bg-transparent border-none outline-none text-lg placeholder:text-muted-foreground"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -85,14 +85,14 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
               onClick={onClose}
               className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
             >
-              <X className="w-5 h-5 text-muted-foreground" />
+              <CloseCircleLinear className="w-5 h-5 text-muted-foreground" />
             </button>
           </div>
 
           <div className="max-h-[60vh] overflow-y-auto p-4">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-                <Loader2 className="w-8 h-8 animate-spin mb-2" />
+                <RefreshLinear className="w-8 h-8 animate-spin mb-2" />
                 <p>Searching StepKicks...</p>
               </div>
             ) : results.length > 0 ? (
@@ -118,7 +118,7 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
                     </div>
                     <div className="text-right">
                       <p className="font-black text-sm">{formatPrice(product.discountPrice || product.price)}</p>
-                      <ArrowRight className="w-4 h-4 ml-auto text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ArrowRightLinear className="w-4 h-4 ml-auto text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </Link>
                 ))}
@@ -132,7 +132,7 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
               </div>
             ) : query.length >= 2 ? (
               <div className="text-center py-12 text-muted-foreground">
-                <Search className="w-12 h-12 mx-auto mb-4 opacity-10" />
+                <MagniferLinear className="w-12 h-12 mx-auto mb-4 opacity-10" />
                 <p>No products found for "{query}"</p>
                 <p className="text-xs mt-1">Try searching for something else</p>
               </div>

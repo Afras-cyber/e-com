@@ -1,6 +1,6 @@
 import ProductTable from '@/components/admin/ProductTable';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { AddCircleLinear } from "solar-icon-set";;
 import Link from 'next/link';
 
 export default function AdminProductsPage() {
@@ -13,7 +13,7 @@ export default function AdminProductsPage() {
         </div>
         <Link href="/admin/products/new">
           <Button className="gap-2">
-            <Plus className="h-4 w-4" />
+            <AddCircleLinear className="h-4 w-4" />
             Add Product
           </Button>
         </Link>

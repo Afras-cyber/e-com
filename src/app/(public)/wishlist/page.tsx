@@ -4,7 +4,7 @@ import { useWishlist } from '@/store/useWishlist';
 import { useCartStore } from '@/store/useCartStore';
 import { formatPrice } from '@/lib/format-price';
 import { Button } from '@/components/ui/button';
-import { Trash2, ShoppingBag, ArrowRight, HeartOff } from 'lucide-react';
+import { TrashBinTrashLinear, BagLinear, ArrowRightLinear, HeartBrokenLinear } from "solar-icon-set";;
 import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'sonner';
@@ -32,7 +32,7 @@ export default function WishlistPage() {
       <div className="container mx-auto px-4 py-20 text-center">
         <div className="max-w-md mx-auto space-y-6">
           <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto">
-            <HeartOff className="w-10 h-10 text-muted-foreground" />
+            <HeartBrokenLinear className="w-10 h-10 text-muted-foreground" />
           </div>
           <h1 className="text-3xl font-bold">Your wishlist is empty</h1>
           <p className="text-muted-foreground">
@@ -40,7 +40,7 @@ export default function WishlistPage() {
           </p>
           <Link href="/shop">
             <Button className="rounded-full px-8 h-12 gap-2 mt-4 font-bold">
-              <ShoppingBag className="w-4 h-4" />
+              <BagLinear className="w-4 h-4" />
               Go Shopping
             </Button>
           </Link>
@@ -76,6 +76,7 @@ export default function WishlistPage() {
                 src={item.image} 
                 alt={item.name}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
@@ -91,7 +92,7 @@ export default function WishlistPage() {
                 <Link href={`/shop/${item.slug}`} className="flex-1">
                   <Button className="w-full rounded-xl font-bold uppercase tracking-tighter h-11 gap-2">
                     View Product
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRightLinear className="w-4 h-4" />
                   </Button>
                 </Link>
                 <Button 
@@ -100,7 +101,7 @@ export default function WishlistPage() {
                   onClick={() => removeItem(item.id)}
                   className="rounded-xl h-11 w-11 shrink-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all"
                 >
-                  <Trash2 className="w-5 h-5" />
+                  <TrashBinTrashLinear className="w-5 h-5" />
                 </Button>
               </div>
             </div>

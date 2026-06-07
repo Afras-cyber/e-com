@@ -1,12 +1,5 @@
 import { auth } from "@/lib/auth";
-import {
-  Package,
-  ShoppingCart,
-  Users,
-  Image as ImageIcon,
-  ArrowRight,
-  Send,
-} from "lucide-react";
+import { BoxLinear, CartLargeLinear, UsersGroupTwoRoundedLinear, GalleryLinear as ImageIcon, ArrowRightLinear, SendSquareLinear } from "solar-icon-set";;
 import Link from "next/link";
 import connectDB from "@/lib/db/mongoose";
 import Order from "@/lib/db/models/Order";
@@ -92,7 +85,7 @@ export default async function AdminDashboard() {
         <div className="rounded-xl border bg-card text-card-foreground shadow">
           <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
             <h3 className="tracking-tight text-sm font-medium">Total Orders</h3>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+            <CartLargeLinear className="h-4 w-4 text-muted-foreground" />
           </div>
           <div className="p-6 pt-0">
             <div className="text-2xl font-bold">{totalOrders}</div>
@@ -104,7 +97,7 @@ export default async function AdminDashboard() {
             <h3 className="tracking-tight text-sm font-medium">
               Pending Inquiries
             </h3>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <UsersGroupTwoRoundedLinear className="h-4 w-4 text-muted-foreground" />
           </div>
           <div className="p-6 pt-0">
             <div className="text-2xl font-bold">{pendingOrders}</div>
@@ -116,7 +109,7 @@ export default async function AdminDashboard() {
             <h3 className="tracking-tight text-sm font-medium">
               Total Products
             </h3>
-            <Package className="h-4 w-4 text-muted-foreground" />
+            <BoxLinear className="h-4 w-4 text-muted-foreground" />
           </div>
           <div className="p-6 pt-0">
             <div className="text-2xl font-bold">{totalProducts}</div>
@@ -139,7 +132,7 @@ export default async function AdminDashboard() {
                   variant="outline"
                   className="w-full justify-start gap-2"
                 >
-                  <Package className="h-4 w-4" /> Add New Product
+                  <BoxLinear className="h-4 w-4" /> Add New Product
                 </Button>
               </Link>
               <Link href="/admin/banners">
@@ -152,7 +145,7 @@ export default async function AdminDashboard() {
               </Link>
               <Link href="/admin/newsletter">
                 <Button variant="outline" className="w-full justify-start gap-2">
-                  <Send className="h-4 w-4" /> Newsletter Subscriptions
+                  <SendSquareLinear className="h-4 w-4" /> Newsletter Subscriptions
                 </Button>
               </Link>
             </div>
@@ -216,7 +209,7 @@ export default async function AdminDashboard() {
                 href="/admin/orders"
                 className="text-sm text-blue-600 hover:underline flex items-center gap-1"
               >
-                View all orders <ArrowRight className="h-3 w-3" />
+                View all orders <ArrowRightLinear className="h-3 w-3" />
               </Link>
             </div>
           </div>
@@ -256,7 +249,7 @@ export default async function AdminDashboard() {
                 href="/admin/products"
                 className="text-sm text-blue-600 hover:underline flex items-center gap-1"
               >
-                View all products <ArrowRight className="h-3 w-3" />
+                View all products <ArrowRightLinear className="h-3 w-3" />
               </Link>
             </div>
           </div>

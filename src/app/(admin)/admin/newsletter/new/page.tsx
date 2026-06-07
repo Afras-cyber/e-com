@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Send, Loader2, ArrowLeft, Eye } from 'lucide-react';
+import { SendSquareLinear, RefreshLinear, ArrowLeftLinear, EyeLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -56,7 +56,7 @@ export default function NewCampaignPage() {
         <div className="flex items-center gap-4">
           <Link href="/admin/newsletter">
             <Button variant="ghost" size="icon" className="rounded-full">
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeftLinear className="h-5 w-5" />
             </Button>
           </Link>
           <div>
@@ -70,7 +70,7 @@ export default function NewCampaignPage() {
             onClick={() => setPreview(!preview)}
             className="gap-2"
           >
-            <Eye className="h-4 w-4" />
+            <EyeLinear className="h-4 w-4" />
             {preview ? 'Edit Mode' : 'Preview'}
           </Button>
           <Button 
@@ -78,8 +78,8 @@ export default function NewCampaignPage() {
             disabled={loading}
             className="gap-2 bg-indigo-600 hover:bg-indigo-700"
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-            Send Broadcast
+            {loading ? <RefreshLinear className="h-4 w-4 animate-spin" /> : <SendSquareLinear className="h-4 w-4" />}
+            SendSquareLinear Broadcast
           </Button>
         </div>
       </div>

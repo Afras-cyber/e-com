@@ -4,7 +4,7 @@ import { useProducts } from '@/hooks/useProducts';
 import { ProductFilters } from '@/types/product';
 import ProductCard from './ProductCard';
 import ProductSkeleton from './ProductSkeleton';
-import { PackageX } from 'lucide-react';
+import { BoxLinear } from "solar-icon-set";;
 
 export default function ProductGrid({ filters }: { filters: ProductFilters }) {
   const { data, isLoading, isError } = useProducts(filters);
@@ -31,7 +31,7 @@ export default function ProductGrid({ filters }: { filters: ProductFilters }) {
   if (!data?.products || data.products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] text-center border rounded-xl bg-muted/10 p-8">
-        <PackageX className="w-12 h-12 text-muted-foreground mb-4 opacity-50" />
+        <BoxLinear className="w-12 h-12 text-muted-foreground mb-4 opacity-50" />
         <h3 className="text-xl font-semibold mb-2">No products found</h3>
         <p className="text-muted-foreground">Try adjusting your filters or search query.</p>
       </div>

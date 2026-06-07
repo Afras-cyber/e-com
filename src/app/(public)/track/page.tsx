@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Package, Clock, CheckCircle2, Truck, AlertCircle, Loader2 } from 'lucide-react';
+import { MagniferLinear, BoxLinear, ClockCircleLinear, CheckCircleLinear, BusLinear, DangerCircleLinear, RefreshLinear } from "solar-icon-set";;
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { format } from 'date-fns';
@@ -9,14 +9,14 @@ import { formatPrice } from '@/lib/format-price';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const statusMap: any = {
-  inquiry: { label: 'Inquiry Received', icon: Clock, color: 'text-blue-500', bg: 'bg-blue-50' },
-  contacted: { label: 'Store Contacted', icon: Search, color: 'text-purple-500', bg: 'bg-purple-50' },
-  negotiating: { label: 'Negotiating', icon: Search, color: 'text-orange-500', bg: 'bg-orange-50' },
-  confirmed: { label: 'Order Confirmed', icon: CheckCircle2, color: 'text-cyan-500', bg: 'bg-cyan-50' },
-  processing: { label: 'Processing', icon: Package, color: 'text-yellow-500', bg: 'bg-yellow-50' },
-  shipped: { label: 'Dispatched', icon: Truck, color: 'text-indigo-500', bg: 'bg-indigo-50' },
-  delivered: { label: 'Delivered', icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-50' },
-  cancelled: { label: 'Cancelled', icon: AlertCircle, color: 'text-red-500', bg: 'bg-red-50' },
+  inquiry: { label: 'Inquiry Received', icon: ClockCircleLinear, color: 'text-blue-500', bg: 'bg-blue-50' },
+  contacted: { label: 'Store Contacted', icon: MagniferLinear, color: 'text-purple-500', bg: 'bg-purple-50' },
+  negotiating: { label: 'Negotiating', icon: MagniferLinear, color: 'text-orange-500', bg: 'bg-orange-50' },
+  confirmed: { label: 'Order Confirmed', icon: CheckCircleLinear, color: 'text-cyan-500', bg: 'bg-cyan-50' },
+  processing: { label: 'Processing', icon: BoxLinear, color: 'text-yellow-500', bg: 'bg-yellow-50' },
+  shipped: { label: 'Dispatched', icon: BusLinear, color: 'text-indigo-500', bg: 'bg-indigo-50' },
+  delivered: { label: 'Delivered', icon: CheckCircleLinear, color: 'text-green-500', bg: 'bg-green-50' },
+  cancelled: { label: 'Cancelled', icon: DangerCircleLinear, color: 'text-red-500', bg: 'bg-red-50' },
 };
 
 export default function TrackOrderPage() {
@@ -63,7 +63,7 @@ export default function TrackOrderPage() {
 
         <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-4 mb-12">
           <div className="flex-1 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <MagniferLinear className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <Input 
               placeholder="e.g. ORD-123456" 
               className="pl-12 h-14 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-lg uppercase"
@@ -73,7 +73,7 @@ export default function TrackOrderPage() {
             />
           </div>
           <Button type="submit" disabled={loading} className="h-14 px-10 rounded-2xl text-lg font-bold gap-2">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Track Order"}
+            {loading ? <RefreshLinear className="w-5 h-5 animate-spin" /> : "Track Order"}
           </Button>
         </form>
 
@@ -104,7 +104,7 @@ export default function TrackOrderPage() {
                       <h2 className="text-3xl font-black capitalize">{order.status}</h2>
                       <div className={`p-2 rounded-xl ${statusMap[order.status]?.bg || 'bg-zinc-800'} ${statusMap[order.status]?.color || 'text-white'}`}>
                         {(() => {
-                          const Icon = statusMap[order.status]?.icon || Package;
+                          const Icon = statusMap[order.status]?.icon || BoxLinear;
                           return <Icon size={24} />;
                         })()}
                       </div>
@@ -123,7 +123,7 @@ export default function TrackOrderPage() {
                 <h3 className="text-xl font-bold mb-8">Status History</h3>
                 <div className="relative space-y-8 before:absolute before:left-[11px] before:top-2 before:h-[calc(100%-20px)] before:w-0.5 before:bg-zinc-100 dark:before:bg-zinc-800">
                   {order.statusHistory.map((item: any, i: number) => {
-                    const status = statusMap[item.status] || { label: item.status, icon: Package };
+                    const status = statusMap[item.status] || { label: item.status, icon: BoxLinear };
                     const Icon = status.icon;
                     const isLatest = i === 0;
                     

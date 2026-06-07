@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { IProduct } from '@/types/product';
 import ProductCard from './ProductCard';
-import { Loader2 } from 'lucide-react';
+import { RefreshLinear } from "solar-icon-set";;
 
 interface RelatedProductsProps {
   category: string;
@@ -25,7 +25,7 @@ export default function RelatedProducts({ category, currentProductId }: RelatedP
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+        <RefreshLinear className="w-8 h-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
