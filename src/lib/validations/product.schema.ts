@@ -11,7 +11,6 @@ export const ProductSchema = z
     category: z.string(),
     brand: z.string(),
     subcategory: z.string().optional().default(""),
-    // .or(z.literal("").transform(() => undefined)),
     price: z.number().positive("Price must be positive"),
     isDiscount: z.boolean().default(false),
     discountPrice: z

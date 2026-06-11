@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IProductDocument extends Document {
   name: string;
@@ -8,8 +8,8 @@ export interface IProductDocument extends Document {
   categoryId: mongoose.Types.ObjectId;
   brandId: mongoose.Types.ObjectId;
   category: string; // Keep for convenience/display
-  subcategory: string;
-  brand: string;    // Keep for convenience/display
+  subcategory?: string;
+  brand: string; // Keep for convenience/display
   price: number;
   discountPrice?: number;
   discountPercent?: number;
@@ -37,19 +37,23 @@ const ColorSchema = new Schema(
     hex: { type: String, required: true },
     imageIndex: { type: Number },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ProductSchema = new Schema<IProductDocument>(
   {
     name: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, lowercase: true },
-    description: { type: String, required: true },
+    description: { type: String, required: false },
     shortDescription: { type: String, required: true },
-    categoryId: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
-    brandId: { type: Schema.Types.ObjectId, ref: 'Brand', required: true },
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    brandId: { type: Schema.Types.ObjectId, ref: "Brand", required: true },
     category: { type: String, required: true },
-    subcategory: { type: String, required: true },
+    subcategory: { type: String, required: false },
     brand: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
     discountPrice: { type: Number, min: 0 },
@@ -69,7 +73,7 @@ const ProductSchema = new Schema<IProductDocument>(
     viewCount: { type: Number, default: 0, min: 0 },
     clickCount: { type: Number, default: 0, min: 0 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Indexes for performance
@@ -77,9 +81,10 @@ ProductSchema.index({ category: 1 });
 ProductSchema.index({ isFeatured: 1 });
 ProductSchema.index({ isOnSale: 1 });
 ProductSchema.index({ createdAt: -1 });
-ProductSchema.index({ name: 'text', tags: 'text' });
+ProductSchema.index({ name: "text", tags: "text" });
 
 const Product: Model<IProductDocument> =
-  mongoose.models.Product || mongoose.model<IProductDocument>('Product', ProductSchema);
+  mongoose.models.Product ||
+  mongoose.model<IProductDocument>("Product", ProductSchema);
 
 export default Product;

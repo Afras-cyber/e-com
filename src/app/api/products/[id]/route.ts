@@ -52,7 +52,6 @@ export async function PUT(
     const resolvedParams = await params;
     await connectDB();
     const body = await request.json();
-
     const validatedData = ProductSchema.parse(body);
 
     const existingProduct = await Product.findById(resolvedParams.id).lean();
@@ -90,7 +89,7 @@ export async function PUT(
     const product = await Product.findByIdAndUpdate(
       resolvedParams.id,
       validatedData,
-      { returnDocument: "after", runValidators: true },
+      { returnDocument: "after", runValidators: false },
     ).lean();
 
     return NextResponse.json(product);

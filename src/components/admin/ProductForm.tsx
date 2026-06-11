@@ -192,6 +192,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           <div>
             <label className="text-sm font-medium">Brand</label>
             <select
+              value={selectedBrandId}
               {...register("brandId")}
               className="w-full p-2 border rounded-md mt-1"
               disabled={fetchingData}
@@ -214,6 +215,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
             <div>
               <label className="text-sm font-medium">Category</label>
               <select
+                value={selectedCategoryId}
                 {...register("categoryId")}
                 className="w-full p-2 border rounded-md mt-1"
                 disabled={fetchingData}
@@ -312,7 +314,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           </div>
 
           <div>
-            <label className="text-sm font-medium">Full Description</label>
+            <label className="text-sm font-medium">
+              Full Description (Optional)
+            </label>
             <textarea
               {...register("description")}
               className="w-full p-2 border rounded-md mt-1 h-40"
