@@ -43,6 +43,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       colors: [],
       isOnSale: false,
       isAvailable: true,
+      isDiscount: false,
       stock: 10,
     },
   });
@@ -98,6 +99,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const images = watch("images");
   const colors = watch("colors");
   const sizes = watch("sizes");
+  const isDiscount = watch("isDiscount");
 
   const [newColor, setNewColor] = useState({ name: "", hex: "#000000" });
   const [newSize, setNewSize] = useState("");
@@ -190,6 +192,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           <div>
             <label className="text-sm font-medium">Brand</label>
             <select
+              value={selectedBrandId}
               {...register("brandId")}
               className="w-full p-2 border rounded-md mt-1"
               disabled={fetchingData}
@@ -212,6 +215,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
             <div>
               <label className="text-sm font-medium">Category</label>
               <select
+                value={selectedCategoryId}
                 {...register("categoryId")}
                 className="w-full p-2 border rounded-md mt-1"
                 disabled={fetchingData}
@@ -230,12 +234,19 @@ export default function ProductForm({ initialData }: ProductFormProps) {
               )}
             </div>
             <div>
-              <label className="text-sm font-medium">Subcategory</label>
+              <label className="text-sm font-medium">
+                Subcategory (Optional)
+              </label>
               <input
                 {...register("subcategory")}
                 className="w-full p-2 border rounded-md mt-1"
                 placeholder="e.g. Sneakers"
               />
+              {errors.subcategory && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.subcategory.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -253,16 +264,44 @@ export default function ProductForm({ initialData }: ProductFormProps) {
             )}
           </div>
 
-          <div>
-            <label className="text-sm font-medium">
-              Discount Price (Optional)
+          {/* Discount Toggle */}
+          <div className="flex items-center gap-3 py-1">
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                {...register("isDiscount")}
+                className="sr-only peer"
+              />
+              <div className="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600" />
             </label>
-            <input
-              type="number"
-              {...register("discountPrice", { valueAsNumber: true })}
-              className="w-full p-2 border rounded-md mt-1"
-            />
+            <span className="text-sm font-medium">Enable Discount</span>
           </div>
+
+          {isDiscount && (
+            <div>
+              <label className="text-sm font-medium">
+                Discount Price (LKR)
+              </label>
+              <input
+                type="number"
+                {...register("discountPrice", {
+                  setValueAs: (v) =>
+                    v === "" || v === null || v === undefined
+                      ? undefined
+                      : isNaN(Number(v))
+                        ? undefined
+                        : Number(v),
+                })}
+                className="w-full p-2 border rounded-md mt-1"
+                placeholder="e.g. 4500"
+              />
+              {errors.discountPrice && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.discountPrice.message}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="space-y-4">
@@ -275,7 +314,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           </div>
 
           <div>
-            <label className="text-sm font-medium">Full Description</label>
+            <label className="text-sm font-medium">
+              Full Description (Optional)
+            </label>
             <textarea
               {...register("description")}
               className="w-full p-2 border rounded-md mt-1 h-40"
