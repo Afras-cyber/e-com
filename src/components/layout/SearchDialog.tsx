@@ -1,16 +1,28 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { MagniferLinear, CloseCircleLinear, RefreshLinear, BagLinear, ArrowRightLinear } from "solar-icon-set";;
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { IProduct } from '@/types/product';
-import { formatPrice } from '@/lib/format-price';
-import Link from 'next/link';
+import { useState, useEffect, useCallback } from "react";
+import {
+  MagniferLinear,
+  CloseCircleLinear,
+  RefreshLinear,
+  BagLinear,
+  ArrowRightLinear,
+} from "solar-icon-set";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { IProduct } from "@/types/product";
+import { formatPrice } from "@/lib/format-price";
+import Link from "next/link";
 
-export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+export default function SearchDialog({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   const router = useRouter();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +37,7 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
       const data = await res.json();
       setResults(data.products || []);
     } catch (error) {
-      console.error('MagniferLinear error:', error);
+      console.error("MagniferLinear error:", error);
     } finally {
       setLoading(false);
     }
@@ -41,10 +53,10 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
   // Handle escape key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") onClose();
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
   if (!isOpen) return null;
@@ -59,7 +71,7 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
           onClick={onClose}
           className="absolute inset-0 bg-zinc-950/80 backdrop-blur-md"
         />
-        
+
         <motion.div
           initial={{ opacity: 0, y: -20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -75,13 +87,13 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && query) {
+                if (e.key === "Enter" && query) {
                   router.push(`/shop?search=${query}`);
                   onClose();
                 }
               }}
             />
-            <button 
+            <button
               onClick={onClose}
               className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
             >
@@ -93,36 +105,44 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
             {loading ? (
               <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                 <RefreshLinear className="w-8 h-8 animate-spin mb-2" />
-                <p>Searching StepKicks...</p>
+                <p>Searching CRK Shoes...</p>
               </div>
             ) : results.length > 0 ? (
               <div className="space-y-2">
-                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground px-2 mb-4">Products Found</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground px-2 mb-4">
+                  Products Found
+                </p>
                 {results.map((product) => (
-                  <Link 
-                    key={product._id} 
+                  <Link
+                    key={product._id}
                     href={`/shop/${product.slug}`}
                     onClick={onClose}
                     className="flex items-center gap-4 p-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-2xl transition-all group"
                   >
                     <div className="w-16 h-16 rounded-xl overflow-hidden bg-muted flex-shrink-0">
-                      <img 
-                        src={product.images[0]} 
-                        alt={product.name} 
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-sm line-clamp-1">{product.name}</h4>
-                      <p className="text-xs text-muted-foreground">{product.category} • {product.brand}</p>
+                      <h4 className="font-bold text-sm line-clamp-1">
+                        {product.name}
+                      </h4>
+                      <p className="text-xs text-muted-foreground">
+                        {product.category} • {product.brand}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-black text-sm">{formatPrice(product.discountPrice || product.price)}</p>
+                      <p className="font-black text-sm">
+                        {formatPrice(product.discountPrice || product.price)}
+                      </p>
                       <ArrowRightLinear className="w-4 h-4 ml-auto text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </Link>
                 ))}
-                <Link 
+                <Link
                   href={`/shop?search=${query}`}
                   onClick={onClose}
                   className="flex items-center justify-center p-4 text-primary font-bold text-sm hover:underline"
@@ -138,13 +158,15 @@ export default function SearchDialog({ isOpen, onClose }: { isOpen: boolean, onC
               </div>
             ) : (
               <div className="py-6 px-2">
-                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Quick Links</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">
+                  Quick Links
+                </p>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { label: 'New Arrivals', href: '/shop?sort=newest' },
-                    { label: 'On Sale', href: '/shop?isOnSale=true' },
-                    { label: 'Luxury Bags', href: '/shop?category=bags' },
-                    { label: 'Sneakers', href: '/shop?category=shoes' },
+                    { label: "New Arrivals", href: "/shop?sort=newest" },
+                    { label: "On Sale", href: "/shop?isOnSale=true" },
+                    { label: "Luxury Bags", href: "/shop?category=bags" },
+                    { label: "Sneakers", href: "/shop?category=shoes" },
                   ].map((link) => (
                     <Link
                       key={link.label}

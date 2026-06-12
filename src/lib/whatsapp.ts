@@ -13,21 +13,21 @@ function getSiteUrl(overrideUrl?: string): string {
   if (overrideUrl) return overrideUrl;
 
   // 2. In browser: use current origin (works in dev AND production)
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     return window.location.origin;
   }
 
   // 3. Server-side: use env variable, with a sensible fallback
-  return process.env.NEXT_PUBLIC_SITE_URL || 'https://stepkicks.lk';
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://crkshoes.lk";
 }
 
 export function buildWhatsAppURL(config: WhatsAppMessageConfig): string {
   const siteUrl = getSiteUrl(config.siteUrl);
   const sellerPhone =
-    config.sellerPhone ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '';
+    config.sellerPhone ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
 
   const productLink = `${siteUrl}/shop/${config.productSlug}?size=${encodeURIComponent(
-    config.size
+    config.size,
   )}&color=${encodeURIComponent(config.color)}`;
 
   const message = `Hi! I'm interested in purchasing:
@@ -60,13 +60,13 @@ export interface WhatsAppCartConfig {
 export function buildWhatsAppCartURL(config: WhatsAppCartConfig): string {
   const siteUrl = getSiteUrl(config.siteUrl);
   const sellerPhone =
-    config.sellerPhone ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '';
+    config.sellerPhone ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
 
   let message = `Hi! I'm interested in purchasing the following items:\n\n`;
-  
+
   config.items.forEach((item, index) => {
     const itemLink = `${siteUrl}/shop/${item.productSlug}?size=${encodeURIComponent(
-      item.size
+      item.size,
     )}&color=${encodeURIComponent(item.color)}`;
 
     message += `${index + 1}. *${item.productName}*\n`;
@@ -76,7 +76,7 @@ export function buildWhatsAppCartURL(config: WhatsAppCartConfig): string {
     message += `   💰 Subtotal: LKR ${(item.price * item.quantity).toLocaleString()}\n`;
     message += `   🔗 Link: ${itemLink}\n\n`;
   });
-  
+
   message += `*Total: LKR ${config.total.toLocaleString()}*\n\n`;
   message += `Please let me know about availability and payment details. Thank you!`;
 

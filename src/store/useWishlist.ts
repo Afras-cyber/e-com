@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface WishlistItem {
   id: string;
@@ -36,7 +36,7 @@ export const useWishlist = create<WishlistStore>()(
       clearWishlist: () => set({ items: [] }),
     }),
     {
-      name: 'stepkicks-wishlist',
-    }
-  )
+      name: "crkshoes-wishlist",
+    },
+  ),
 );

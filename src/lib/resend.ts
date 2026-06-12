@@ -1,10 +1,11 @@
-import { Resend } from 'resend';
-import { siteConfig } from '@/config/site';
+import { Resend } from "resend";
+import { siteConfig } from "@/config/site";
 
 export const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL ?? `orders@${siteConfig.url.replace(/^https?:\/\//, '')}`;
+  process.env.RESEND_FROM_EMAIL ??
+  `orders@${siteConfig.url.replace(/^https?:\/\//, "")}`;
 
 // ─── Email Senders ────────────────────────────────────────────────────────────
 
@@ -21,7 +22,7 @@ export async function sendOrderConfirmation({
   items: any[];
   totalAmount: number;
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://stepkicks.lk';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://crkshoes.lk";
   return resend.emails.send({
     from: FROM_EMAIL,
     to: toEmail,
@@ -30,9 +31,13 @@ export async function sendOrderConfirmation({
       <h2>Hi ${customerName}, thanks for your interest!</h2>
       <p>We've received your inquiry for:</p>
       <ul>
-        ${items.map(item => `
+        ${items
+          .map(
+            (item) => `
           <li><strong>${item.productName}</strong> (Size: ${item.selectedSize}) x ${item.quantity} - LKR ${item.price.toLocaleString()}</li>
-        `).join('')}
+        `,
+          )
+          .join("")}
       </ul>
       <p><strong>Total: LKR ${totalAmount.toLocaleString()}</strong></p>
       <p>Our team will contact you on WhatsApp shortly.</p>
@@ -69,9 +74,13 @@ export async function sendNewOrderNotification({
       <p><strong>Phone:</strong> ${customerPhone}</p>
       <h3 style="margin-top: 20px;">Items:</h3>
       <ul>
-        ${items.map(item => `
+        ${items
+          .map(
+            (item) => `
           <li><strong>${item.productName}</strong> (Size: ${item.selectedSize} | Color: ${item.selectedColor}) x ${item.quantity}</li>
-        `).join('')}
+        `,
+          )
+          .join("")}
       </ul>
       <p><strong>Total Value: LKR ${totalAmount.toLocaleString()}</strong></p>
       <p><a href="${adminUrl}/admin/orders">View in Admin Panel →</a></p>

@@ -1,53 +1,63 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { StarLinear, SendSquareLinear, CheckCircleLinear } from "solar-icon-set";;
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react";
+import {
+  StarLinear,
+  SendSquareLinear,
+  CheckCircleLinear,
+} from "solar-icon-set";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function TestimonialForm({ onClose }: { onClose: () => void }) {
   const [formData, setFormData] = useState({
-    customerName: '',
-    review: '',
+    customerName: "",
+    review: "",
     rating: 5,
-    productName: ''
+    productName: "",
   });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
+    setStatus("loading");
     try {
-      const res = await fetch('/api/testimonials/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/testimonials/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       if (res.ok) {
-        setStatus('success');
+        setStatus("success");
       } else {
-        setStatus('error');
+        setStatus("error");
       }
     } catch (error) {
-      setStatus('error');
+      setStatus("error");
     }
   };
 
   return (
     <div className="bg-background border rounded-3xl p-6 md:p-8 max-w-xl w-full mx-auto shadow-2xl relative">
       <AnimatePresence mode="wait">
-        {status === 'success' ? (
-          <motion.div 
+        {status === "success" ? (
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="text-center py-10"
           >
             <CheckCircleLinear className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
             <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
-            <p className="text-muted-foreground mb-6">Your review has been submitted and is pending approval.</p>
-            <Button onClick={onClose} variant="outline">Close</Button>
+            <p className="text-muted-foreground mb-6">
+              Your review has been submitted and is pending approval.
+            </p>
+            <Button onClick={onClose} variant="outline">
+              Close
+            </Button>
           </motion.div>
         ) : (
           <motion.div
@@ -60,19 +70,25 @@ export default function TestimonialForm({ onClose }: { onClose: () => void }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Your Name</label>
-                  <Input 
-                    placeholder="Alex Johnson" 
-                    required 
+                  <Input
+                    placeholder="Alex Johnson"
+                    required
                     value={formData.customerName}
-                    onChange={e => setFormData({...formData, customerName: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, customerName: e.target.value })
+                    }
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Product Bought (Optional)</label>
-                  <Input 
-                    placeholder="Air Jordan 1" 
+                  <label className="text-sm font-medium">
+                    Product Bought (Optional)
+                  </label>
+                  <Input
+                    placeholder="Air Jordan 1"
                     value={formData.productName}
-                    onChange={e => setFormData({...formData, productName: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, productName: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -84,11 +100,11 @@ export default function TestimonialForm({ onClose }: { onClose: () => void }) {
                     <button
                       key={star}
                       type="button"
-                      onClick={() => setFormData({...formData, rating: star})}
+                      onClick={() => setFormData({ ...formData, rating: star })}
                       className="focus:outline-none transition-transform hover:scale-110"
                     >
-                      <StarLinear 
-                        className={`w-8 h-8 ${star <= formData.rating ? 'fill-amber-500 text-amber-500' : 'text-muted'}`} 
+                      <StarLinear
+                        className={`w-8 h-8 ${star <= formData.rating ? "fill-amber-500 text-amber-500" : "text-muted"}`}
                       />
                     </button>
                   ))}
@@ -97,38 +113,44 @@ export default function TestimonialForm({ onClose }: { onClose: () => void }) {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Your Review</label>
-                <Textarea 
-                  placeholder="Tell us what you think about StepKicks..." 
+                <Textarea
+                  placeholder="Tell us what you think about CRK Shoes..."
                   className="min-h-[120px] resize-none"
                   required
                   value={formData.review}
-                  onChange={e => setFormData({...formData, review: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, review: e.target.value })
+                  }
                 />
               </div>
 
               <div className="flex gap-4 pt-4">
-                <Button 
-                  type="button" 
-                  variant="ghost" 
+                <Button
+                  type="button"
+                  variant="ghost"
                   className="flex-1"
                   onClick={onClose}
                 >
                   Cancel
                 </Button>
-                <Button 
-                  type="submit" 
-                  disabled={status === 'loading'}
+                <Button
+                  type="submit"
+                  disabled={status === "loading"}
                   className="flex-1 gap-2"
                 >
-                  {status === 'loading' ? 'Submitting...' : (
+                  {status === "loading" ? (
+                    "Submitting..."
+                  ) : (
                     <>
                       Submit Review <SendSquareLinear className="w-4 h-4" />
                     </>
                   )}
                 </Button>
               </div>
-              {status === 'error' && (
-                <p className="text-destructive text-sm text-center">Failed to submit. Please try again.</p>
+              {status === "error" && (
+                <p className="text-destructive text-sm text-center">
+                  Failed to submit. Please try again.
+                </p>
               )}
             </form>
           </motion.div>
