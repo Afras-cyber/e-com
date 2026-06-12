@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { IProduct } from '@/types/product';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { IProduct } from "@/types/product";
 
 export interface CartItem {
   product: IProduct;
@@ -16,7 +16,12 @@ interface CartStore {
   isOpen: boolean;
 
   addItem: (product: IProduct, size: string, color: string) => void;
-  updateQuantity: (productId: string, size: string, color: string, quantity: number) => void;
+  updateQuantity: (
+    productId: string,
+    size: string,
+    color: string,
+    quantity: number,
+  ) => void;
   removeItem: (productId: string, size: string, color: string) => void;
   clearCart: () => void;
   toggleCart: () => void;
@@ -39,7 +44,7 @@ export const useCartStore = create<CartStore>()(
             (i) =>
               i.product._id === product._id &&
               i.selectedSize === selectedSize &&
-              i.selectedColor === selectedColor
+              i.selectedColor === selectedColor,
           );
           if (existing) {
             return {
@@ -48,16 +53,19 @@ export const useCartStore = create<CartStore>()(
                 i.selectedSize === selectedSize &&
                 i.selectedColor === selectedColor
                   ? { ...i, quantity: i.quantity + 1 }
-                  : i
+                  : i,
               ),
             };
           }
           return {
-            items: [...state.items, { product, selectedSize, selectedColor, quantity: 1 }],
+            items: [
+              ...state.items,
+              { product, selectedSize, selectedColor, quantity: 1 },
+            ],
           };
         });
       },
-      
+
       updateQuantity: (productId, size, color, quantity) => {
         set((state) => ({
           items: state.items.map((i) =>
@@ -65,7 +73,7 @@ export const useCartStore = create<CartStore>()(
             i.selectedSize === size &&
             i.selectedColor === color
               ? { ...i, quantity: Math.max(1, quantity) }
-              : i
+              : i,
           ),
         }));
       },
@@ -74,9 +82,11 @@ export const useCartStore = create<CartStore>()(
         set((state) => ({
           items: state.items.filter(
             (i) =>
-              !(i.product._id === productId &&
+              !(
+                i.product._id === productId &&
                 i.selectedSize === size &&
-                i.selectedColor === color)
+                i.selectedColor === color
+              ),
           ),
         }));
       },
@@ -89,16 +99,17 @@ export const useCartStore = create<CartStore>()(
       total: () =>
         get().items.reduce(
           (sum, item) =>
-            sum + (item.product.discountPrice ?? item.product.price) * item.quantity,
-          0
+            sum +
+            (item.product.discountPrice ?? item.product.price) * item.quantity,
+          0,
         ),
 
       itemCount: () =>
         get().items.reduce((sum, item) => sum + item.quantity, 0),
     }),
     {
-      name: 'stepkicks-cart',
+      name: "crkshoes-cart",
       partialize: (state) => ({ items: state.items }),
-    }
-  )
+    },
+  ),
 );

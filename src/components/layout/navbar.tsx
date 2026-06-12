@@ -1,17 +1,22 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { CartLargeLinear, HamburgerMenuLinear, MagniferLinear, HeartLinear } from "solar-icon-set";;
-import { Button } from '../ui/button';
-import { useCartStore } from '@/store/useCartStore';
-import { useWishlist } from '@/store/useWishlist';
-import { useUIStore } from '@/store/useUIStore';
-import { cn } from '@/lib/utils';
-import CartDrawer from './CartDrawer';
-import MobileMenu from './MobileMenu';
-import SearchDialog from './SearchDialog';
-import { useEffect, useState } from 'react';
-import { siteConfig } from '@/config/site';
+import Link from "next/link";
+import {
+  CartLargeLinear,
+  HamburgerMenuLinear,
+  MagniferLinear,
+  HeartLinear,
+} from "solar-icon-set";
+import { Button } from "../ui/button";
+import { useCartStore } from "@/store/useCartStore";
+import { useWishlist } from "@/store/useWishlist";
+import { useUIStore } from "@/store/useUIStore";
+import { cn } from "@/lib/utils";
+import CartDrawer from "./CartDrawer";
+import MobileMenu from "./MobileMenu";
+import SearchDialog from "./SearchDialog";
+import { useEffect, useState } from "react";
+import { siteConfig } from "@/config/site";
 
 export default function Navbar() {
   const { itemCount, openCart } = useCartStore();
@@ -25,16 +30,16 @@ export default function Navbar() {
     setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setSearchOpen(true);
       }
     };
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
@@ -42,28 +47,29 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          'sticky top-0 z-50 w-full transition-all duration-300',
+          "sticky top-0 z-50 w-full transition-all duration-300",
           scrolled
-            ? 'bg-background/85 backdrop-blur-xl border-b border-border/60 shadow-sm py-2'
-            : 'bg-transparent py-4'
+            ? "bg-background/85 backdrop-blur-xl border-b border-border/60 shadow-sm py-2"
+            : "bg-transparent py-4",
         )}
       >
         <div className="max-w-7xl mx-auto flex h-14 items-center px-4 sm:px-6">
-
           {/* Desktop: Logo + Nav */}
           <div className="mr-auto hidden md:flex items-center gap-10">
             <Link href="/" className="flex items-center group">
               <span className="text-2xl font-black tracking-tighter uppercase text-foreground group-hover:opacity-80 transition-opacity">
-                {siteConfig.name.slice(0, 4)}
-                <span className="text-primary italic">{siteConfig.name.slice(4)}</span>
+                {siteConfig.name.slice(0, 3)}
+                <span className="text-primary italic">
+                  {siteConfig.name.slice(3)}
+                </span>
               </span>
             </Link>
 
             <nav className="flex items-center gap-7 text-sm font-bold uppercase tracking-widest">
               {[
-                { href: '/shop', label: 'Shop' },
-                { href: '/track', label: 'Track' },
-                { href: '/about', label: 'About' },
+                { href: "/shop", label: "Shop" },
+                { href: "/track", label: "Track" },
+                { href: "/about", label: "About" },
               ].map(({ href, label }) => (
                 <Link
                   key={href}
@@ -88,16 +94,20 @@ export default function Navbar() {
           </div>
 
           {/* Mobile: Centered Logo */}
-          <Link href="/" className="flex md:hidden flex-1 items-center justify-center">
+          <Link
+            href="/"
+            className="flex md:hidden flex-1 items-center justify-center"
+          >
             <span className="text-xl font-black tracking-tighter uppercase text-foreground">
               {siteConfig.name.slice(0, 4)}
-              <span className="text-primary italic">{siteConfig.name.slice(4)}</span>
+              <span className="text-primary italic">
+                {siteConfig.name.slice(4)}
+              </span>
             </span>
           </Link>
 
           {/* Right: Actions */}
           <div className="flex items-center gap-1 ml-auto md:ml-0">
-
             {/* MagniferLinear */}
             <Button
               variant="ghost"
@@ -122,8 +132,10 @@ export default function Navbar() {
               >
                 <HeartLinear
                   className={cn(
-                    'h-5 w-5 transition-all',
-                    mounted && items.length > 0 ? 'fill-red-500 text-red-500' : ''
+                    "h-5 w-5 transition-all",
+                    mounted && items.length > 0
+                      ? "fill-red-500 text-red-500"
+                      : "",
                   )}
                 />
                 {mounted && items.length > 0 && (
