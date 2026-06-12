@@ -1,7 +1,6 @@
 import { LetterLinear, PhoneLinear, MapPointLinear } from "solar-icon-set";
-import { Instagram, Facebook } from "@/components/shared/BrandIcons";
-import { Button } from "@/components/ui/button";
 import ContactForm from "@/components/contact/ContactForm";
+import SocialLinks from "@/components/contact/SocialLinks";
 
 export default function ContactPage() {
   return (
@@ -76,28 +75,7 @@ export default function ContactPage() {
 
               <div>
                 <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-                <div className="flex gap-4">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                    onClick={() =>
-                      window.open(
-                        "https://www.instagram.com/c_r_k_shoes/?hl=en",
-                        "_blank",
-                      )
-                    }
-                  >
-                    <Instagram size={20} />
-                  </Button>
-                  {/* <Button
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
-                    <Facebook size={20} />
-                  </Button> */}
-                </div>
+                <SocialLinks />
               </div>
             </div>
 
