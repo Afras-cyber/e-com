@@ -15,9 +15,18 @@ export async function GET(request: Request) {
 
     const query: any = {};
 
-    // Filters
-    if (searchParams.get('category')) query.category = searchParams.get('category');
-    if (searchParams.get('subcategory')) query.subcategory = searchParams.get('subcategory');
+    // Filters — category: case-insensitive match against stored category string OR slug
+    if (searchParams.get('category')) {
+      const catParam = searchParams.get('category') as string;
+      // Also try converting slug format (e.g. "football-boot") to title-like form ("Football Boot")
+      const slugToName = catParam.replace(/-/g, ' ');
+      query.category = { $regex: new RegExp(`^(${catParam}|${slugToName})$`, 'i') };
+    }
+    if (searchParams.get('subcategory')) {
+      const subParam = searchParams.get('subcategory') as string;
+      const slugToName = subParam.replace(/-/g, ' ');
+      query.subcategory = { $regex: new RegExp(`^(${subParam}|${slugToName})$`, 'i') };
+    }
     if (searchParams.get('brand')) query.brand = { $in: searchParams.get('brand')?.split(',') };
     if (searchParams.get('sizes')) query.sizes = { $in: searchParams.get('sizes')?.split(',') };
     if (searchParams.get('colors')) query['colors.name'] = { $in: searchParams.get('colors')?.split(',') };
