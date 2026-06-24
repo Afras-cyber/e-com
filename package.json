@@ -13,6 +13,7 @@
     "@aws-sdk/s3-request-presigner": "^3.1038.0",
     "@base-ui/react": "^1.4.1",
     "@hookform/resolvers": "^5.2.2",
+    "@react-pdf/renderer": "^4.5.1",
     "@tanstack/react-query": "^5.100.6",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
