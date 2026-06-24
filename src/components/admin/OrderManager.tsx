@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { toast } from "sonner";
 import { siteConfig } from "@/config/site";
+import { buildInvoiceWhatsAppURL } from "@/lib/whatsapp";
 
 export default function OrderManager({ id }: { id: string }) {
   const router = useRouter();
@@ -289,6 +290,43 @@ Thank you for choosing ${siteConfig.name}!`.trim();
                   Notify customer manually
                 </p>
               </div>
+
+              {/* Invoice & Receipts */}
+              <div className="pt-4 border-t space-y-4">
+                <label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  Invoice & PDF
+                </label>
+                <div className="flex flex-col gap-2">
+                  <Button
+                    className="w-full gap-2 bg-black hover:bg-neutral-800 text-white font-bold"
+                    onClick={() => {
+                      const invoiceUrl = `${window.location.origin}/api/orders/${order.orderNumber}/invoice`;
+                      const whatsappUrl = buildInvoiceWhatsAppURL({
+                        customerName: order.customer.name,
+                        customerPhone: order.customer.phone,
+                        orderNumber: order.orderNumber,
+                        invoiceUrl: invoiceUrl,
+                        totalAmount: order.negotiatedTotal ?? order.totalAmount,
+                      });
+                      window.open(whatsappUrl, "_blank");
+                    }}
+                  >
+                    <ChatLineLinear className="h-4 w-4" />
+                    Send Invoice via WhatsApp
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="w-full gap-2 font-bold"
+                    onClick={() => {
+                      window.open(`/api/orders/${order.orderNumber}/invoice`, "_blank");
+                    }}
+                  >
+                    Download Invoice PDF
+                  </Button>
+                </div>
+              </div>
+
 
               <div className="pt-4 border-t space-y-4">
                 <label className="text-sm font-medium">

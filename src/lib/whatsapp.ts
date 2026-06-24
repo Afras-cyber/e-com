@@ -82,3 +82,36 @@ export function buildWhatsAppCartURL(config: WhatsAppCartConfig): string {
 
   return `https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`;
 }
+
+export interface WhatsAppInvoiceConfig {
+  customerName: string;
+  customerPhone: string;
+  orderNumber: string;
+  invoiceUrl: string;
+  totalAmount: number;
+  sellerPhone?: string;
+}
+
+export function buildInvoiceWhatsAppURL(config: WhatsAppInvoiceConfig): string {
+  const sellerPhone =
+    config.sellerPhone ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+  
+  // Format target customer phone for WhatsApp link. We want to send the message to the customer's phone!
+  // Note: if the admin wants to send the message to the customer, the wa.me link should target the customer's phone:
+  // wa.me/customerPhone?text=message
+  const targetPhone = config.customerPhone.replace(/\+/g, "").replace(/\s/g, "");
+
+  const message = `Hi ${config.customerName}! 🎉 Thank you for your purchase!
+
+Your order *${config.orderNumber}* has been confirmed.
+
+📄 Here is your invoice:
+${config.invoiceUrl}
+
+💰 Total Amount: LKR ${config.totalAmount.toLocaleString()}
+
+Thank you for choosing CRK Shoes! 🛍️`.trim();
+
+  return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
+}
+
