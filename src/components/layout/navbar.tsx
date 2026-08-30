@@ -6,6 +6,10 @@ import {
   HamburgerMenuLinear,
   MagniferLinear,
   HeartLinear,
+  MoonBold,
+  CardSearchBold,
+  MenuDotsBold,
+  CartBold,
 } from "solar-icon-set";
 import { Button } from "../ui/button";
 import { useCartStore } from "@/store/useCartStore";
@@ -17,11 +21,14 @@ import MobileMenu from "./MobileMenu";
 import SearchDialog from "./SearchDialog";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
+// import { Moon, Search, ShoppingBag, Menu } from "";
+import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const { itemCount, openCart } = useCartStore();
   const { items } = useWishlist();
   const { toggleMobileMenu } = useUIStore();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -47,120 +54,117 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          "sticky top-0 z-50 w-full transition-all duration-300",
+          "sticky top-0 z-40 backdrop-blur-xl border-b transition-colors duration-300 w-full max-w-full overflow-hidden",
           scrolled
-            ? "bg-background/85 backdrop-blur-xl border-b border-border/60 shadow-sm py-2"
-            : "bg-transparent py-4",
+            ? "dark:bg-[#1A1A1A]/85 dark:border-[#2A2A2A] bg-[#FAF9F6]/85 border-[#E8E8EA]"
+            : "dark:bg-[#1A1A1A]/60 dark:border-[#2A2A2A]/50 bg-[#FAF9F6]/60 border-[#E8E8EA]/50",
         )}
       >
-        <div className="max-w-7xl mx-auto flex h-14 items-center px-4 sm:px-6">
-          {/* Desktop: Logo + Nav */}
-          <div className="mr-auto hidden md:flex items-center gap-10">
+        <div className="mx-auto max-w-[1440px] w-full px-5 md:px-8 h-[72px] flex items-center justify-between">
+          {/* Logo + Desktop Nav */}
+          <div className="flex items-center gap-10">
             <Link href="/" className="flex items-center group">
-              <span className="text-2xl font-black tracking-tighter uppercase text-foreground group-hover:opacity-80 transition-opacity">
-                {siteConfig.name.slice(0, 3)}
-                <span className="text-primary italic">
-                  {siteConfig.name.slice(3)}
+              <button
+                data-nav-tick="0"
+                className="flex items-baseline gap-[6px] select-none shrink-0"
+                aria-label="Legacy Shoes Home"
+              >
+                <span className="font-serif font-[900] tracking-[-0.03em] text-[22px] md:text-[24px] dark:text-white text-[#1A1A1A]">
+                  LEGACY
                 </span>
-              </span>
+                <span className="font-sans font-[300] tracking-[0.32em] text-[11px] md:text-[12px] opacity-70 dark:text-gray-400 text-[#1A1A1A]">
+                  SHOES
+                </span>
+                <span className="ml-1 w-[5px] h-[5px] rounded-full bg-gradient-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] inline-block translate-y-[-6px]"></span>
+              </button>
             </Link>
 
-            <nav className="flex items-center gap-7 text-sm font-bold uppercase tracking-widest">
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-9 text-[12px] font-sans font-medium tracking-[0.22em]">
               {[
-                { href: "/shop", label: "Shop" },
-                { href: "/track", label: "Track" },
-                { href: "/about", label: "About" },
+                { label: "HOME", href: "/" },
+                { label: "SHOP", href: "/shop" },
+                { label: "TRACK ORDER", href: "/track" },
               ].map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="relative text-foreground/60 hover:text-foreground transition-colors after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
-                >
-                  {label}
+                <Link key={href} href={href}>
+                  <button
+                    data-nav-tick="0"
+                    className="relative py-1 transition-all dark:text-gray-300 dark:hover:text-white text-[#1A1A1A] hover:text-[#1A1A1A] opacity-60 hover:opacity-100 group"
+                  >
+                    {label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-gradient-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] group-hover:w-full transition-all"></span>
+                  </button>
                 </Link>
               ))}
             </nav>
           </div>
 
-          {/* Mobile: Hamburger */}
-          <div className="flex md:hidden mr-3">
+          {/* Right Actions */}
+          <div className="flex items-center gap-2 md:gap-2.5 shrink-0">
+            {/* Theme Toggle */}
             <button
-              onClick={toggleMobileMenu}
-              className="p-2 -ml-2 text-foreground/70 hover:text-foreground transition-colors"
-              aria-label="Open menu"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="w-10 h-10 rounded-full border grid place-items-center transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white"
+              aria-label="Toggle dark mode"
+              title="Toggle light/dark"
+              type="button"
             >
-              <HamburgerMenuLinear className="h-6 w-6" />
+              <MoonBold className="w-4 h-4" />
             </button>
-          </div>
 
-          {/* Mobile: Centered Logo */}
-          <Link
-            href="/"
-            className="flex md:hidden flex-1 items-center justify-center"
-          >
-            <span className="text-xl font-black tracking-tighter uppercase text-foreground">
-              {siteConfig.name.slice(0, 4)}
-              <span className="text-primary italic">
-                {siteConfig.name.slice(4)}
-              </span>
-            </span>
-          </Link>
-
-          {/* Right: Actions */}
-          <div className="flex items-center gap-1 ml-auto md:ml-0">
-            {/* MagniferLinear */}
+            {/* Search */}
             <Button
               variant="ghost"
               size="icon"
-              className="text-foreground/60 hover:text-primary hover:bg-primary/10 relative group transition-colors"
+              className="w-10 h-10 rounded-full border transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white"
               onClick={() => setSearchOpen(true)}
-              aria-label="MagniferLinear"
+              aria-label="Search"
             >
-              <MagniferLinear className="h-5 w-5" />
-              <kbd className="hidden lg:inline-flex absolute -bottom-8 left-1/2 -translate-x-1/2 pointer-events-none h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                <span className="text-xs">⌘</span>K
-              </kbd>
+              <CardSearchBold className="w-4 h-4" />
             </Button>
-
-            {/* Wishlist */}
-            <Link href="/wishlist">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-foreground/60 hover:text-primary hover:bg-primary/10 relative transition-colors"
-                aria-label="Wishlist"
-              >
-                <HeartLinear
-                  className={cn(
-                    "h-5 w-5 transition-all",
-                    mounted && items.length > 0
-                      ? "fill-red-500 text-red-500"
-                      : "",
-                  )}
-                />
-                {mounted && items.length > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-red-500 text-[9px] font-black text-white flex items-center justify-center border-2 border-background">
-                    {items.length}
-                  </span>
-                )}
-              </Button>
-            </Link>
 
             {/* Cart */}
             <Button
               variant="ghost"
               size="icon"
-              className="relative text-foreground/60 hover:text-primary hover:bg-primary/10 transition-colors"
+              className="w-10 h-10 rounded-full border relative transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white"
               onClick={openCart}
               aria-label="Cart"
             >
-              <CartLargeLinear className="h-5 w-5" />
+              <CartBold className="w-4 h-4" />
               {mounted && itemCount() > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 h-5 w-5 rounded-full bg-primary text-[10px] font-black text-primary-foreground flex items-center justify-center border-2 border-background">
+                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-[#D4AF37] text-[10px] font-black `text-[#1A1A1A] flex items-center justify-center border-2 dark:border-[#1A1A1A] border-white">
                   {itemCount()}
                 </span>
               )}
             </Button>
+
+            {/* WhatsApp - Desktop Only */}
+            <a
+              href="https://wa.me/94771234567?text=Hi%20Legacy%20Shoes!"
+              target="_blank"
+              rel="noopener"
+              className="hidden md:grid w-10 h-10 rounded-full border place-items-center transition-colors dark:bg-[#D4AF37]/20 dark:border-[#D4AF37]/40 dark:text-[#D4AF37] dark:hover:bg-[#D4AF37] dark:hover:text-[#1A1A1A] bg-white border-[#D4AF37]/30 text-[#8B6F1F] hover:bg-[#D4AF37] hover:text-white"
+              aria-label="WhatsApp"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-4 h-4"
+                aria-hidden="true"
+              >
+                <path d="M19.05 4.91A9.82 9.82 0 0 0 12.03 2C6.55 2 2.08 6.47 2.08 11.95c0 1.75.46 3.46 1.33 4.97L2 22l5.22-1.37a9.84 9.84 0 0 0 4.7 1.2h.01c5.48 0 9.95-4.47 9.95-9.95a9.83 9.83 0 0 0-2.83-6.97Zm-7.02 15.1h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.1.81.83-3.02-.2-.31a8.2 8.2 0 0 1-1.27-4.42c0-4.55 3.7-8.25 8.26-8.25a8.2 8.2 0 0 1 5.82 2.41 8.2 8.2 0 0 1 2.41 5.82c0 4.56-3.7 8.26-8.25 8.26Z" />
+              </svg>
+            </a>
+
+            {/* Mobile Menu - Mobile Only */}
+            <button
+              onClick={toggleMobileMenu}
+              className="lg:hidden w-10 h-10 rounded-full grid place-items-center ml-1 dark:bg-white dark:text-[#1A1A1A] bg-[#1A1A1A] text-white transition-colors"
+              aria-label="Open menu"
+            >
+              <MenuDotsBold className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </header>

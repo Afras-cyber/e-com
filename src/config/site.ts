@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: process.env.NEXT_PUBLIC_SITE_NAME || "CKR Shoes",
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "Legacy Shoes",
   shortName: "SK",
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||

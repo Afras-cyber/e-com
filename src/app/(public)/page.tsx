@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { ArrowRightLinear, ShieldCheckLinear, BusLinear, HistoryLinear, BoltLinear } from "solar-icon-set";;
+import {
+  ArrowRightLinear,
+  ShieldCheckLinear,
+  BusLinear,
+  HistoryLinear,
+  BoltLinear,
+} from "solar-icon-set";
 import { Button } from "@/components/ui/button";
 import HeroBanner from "@/components/home/HeroBanner";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
@@ -47,13 +53,20 @@ const features = [
 ];
 
 const brands = [
-  "Nike", "Adidas", "Puma", "Jordan", "New Balance", "Converse", "Gucci", "Prada",
+  "Nike",
+  "Adidas",
+  "Puma",
+  "Jordan",
+  "New Balance",
+  "Converse",
+  "Gucci",
+  "Prada",
 ];
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
-
+     
       {/* ── Hero ── */}
       <HeroBanner />
 
@@ -116,12 +129,12 @@ export default function Home() {
       <section className="py-20 sm:py-28 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="relative overflow-hidden rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-foreground to-foreground/80 dark:from-zinc-100 dark:to-zinc-300 px-8 py-16 sm:px-16 sm:py-20 text-center shadow-2xl shadow-foreground/10 dark:shadow-zinc-200/10">
-
             {/* Background pattern */}
             <div
               className="absolute inset-0 opacity-[0.04]"
               style={{
-                backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
+                backgroundImage:
+                  "radial-gradient(circle, white 1px, transparent 1px)",
                 backgroundSize: "24px 24px",
               }}
             />
@@ -133,13 +146,12 @@ export default function Home() {
                 Limited Collection
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-4 sm:mb-6 leading-tight text-background dark:text-zinc-950">
-                Ready to Step Up{" "}
-                <br className="hidden sm:block" />
-                Your{" "}
-                <span className="italic text-primary">Game?</span>
+                Ready to Step Up <br className="hidden sm:block" />
+                Your <span className="italic text-primary">Game?</span>
               </h2>
               <p className="text-base sm:text-lg text-background/60 dark:text-zinc-600 max-w-xl mx-auto mb-8 sm:mb-10 leading-relaxed">
-                Explore our full collection of premium sneakers, bags, and accessories at unbeatable prices.
+                Explore our full collection of premium sneakers, bags, and
+                accessories at unbeatable prices.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/shop">
