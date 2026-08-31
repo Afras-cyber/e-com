@@ -201,6 +201,23 @@
   animation: float-orb 4s ease-in-out infinite;
 }
 
+/* ── Hero Section Float Animation ── */
+@keyframes pulse-float {
+  0%, 100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-12px);
+    opacity: 0.95;
+  }
+}
+
+.animate-pulse-float,
+.animate-float {
+  animation: pulse-float 3.5s ease-in-out infinite;
+}
+
 /* ── Glass card hover: driven by CSS custom properties set inline ── */
 .glass-card {
   transition: box-shadow 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);

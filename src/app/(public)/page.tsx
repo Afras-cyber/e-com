@@ -12,6 +12,7 @@ import FeaturedProducts from "@/components/home/FeaturedProducts";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import CategorySection from "@/components/home/CategorySection";
 import NewsletterSignup from "@/components/home/NewsletterSignup";
+import HeroSection from "@/components/home/HeroSectionLS";
 
 const features = [
   {
@@ -66,41 +67,8 @@ const brands = [
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
-     
-      {/* ── Hero ── */}
-      <HeroBanner />
-
-      {/* ── Feature Cards ── */}
-      <section className="relative -mt-14 sm:-mt-20 z-10 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            {features.map((feature, i) => (
-              <div
-                key={i}
-                className={`${feature.bgClass} border ${feature.borderClass} bg-background/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-lg shadow-black/5 dark:shadow-black/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}
-              >
-                <div className={`mb-3 ${feature.iconClass}`}>
-                  <feature.icon size={22} strokeWidth={2.5} />
-                </div>
-                <h3 className="font-bold text-sm sm:text-base mb-0.5 text-foreground">
-                  {feature.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-snug">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Categories ── */}
-      <CategorySection />
-
-      {/* ── Featured Products ── */}
-      <FeaturedProducts />
-
-      {/* ── Brand Marquee ── */}
+     <HeroSection/>
+        {/* ── Brand Marquee ── */}
       <section className="py-16 sm:py-24 bg-muted/40 dark:bg-zinc-900/40 overflow-hidden border-y border-border dark:border-zinc-800/60">
         <div className="max-w-7xl mx-auto px-4 mb-8 sm:mb-12">
           <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.3em] text-primary text-center mb-2">
@@ -121,6 +89,40 @@ export default function Home() {
           ))}
         </div>
       </section>
+      {/* ── Hero ── */}
+      {/* <HeroBanner /> */}
+
+      {/* ── Feature Cards ── */}
+      {/* <section className="relative -mt-14 sm:-mt-20 z-10 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {features.map((feature, i) => (
+              <div
+                key={i}
+                className={`${feature.bgClass} border ${feature.borderClass} bg-background/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-lg shadow-black/5 dark:shadow-black/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}
+              >
+                <div className={`mb-3 ${feature.iconClass}`}>
+                  <feature.icon size={22} strokeWidth={2.5} />
+                </div>
+                <h3 className="font-bold text-sm sm:text-base mb-0.5 text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-snug">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section> */}
+
+      {/* ── Categories ── */}
+      {/* <CategorySection /> */}
+
+      {/* ── Featured Products ── */}
+      <FeaturedProducts />
+
+   
 
       {/* ── Testimonials ── */}
       <TestimonialsSection />
