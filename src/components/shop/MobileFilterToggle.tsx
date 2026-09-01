@@ -10,10 +10,14 @@ export default function MobileFilterToggle({
   hasActiveFilters,
   categories = [],
   brands = [],
+  availableSizes = [],
+  availableColors = [],
 }: {
   hasActiveFilters: boolean;
   categories?: any[];
   brands?: any[];
+  availableSizes?: string[];
+  availableColors?: any[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -78,6 +82,8 @@ export default function MobileFilterToggle({
                 <ProductFilters
                   categories={categories}
                   brands={brands}
+                  availableSizes={availableSizes}
+                  availableColors={availableColors}
                   onFilterChange={() => {}}
                 />
               </div>

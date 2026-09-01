@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { CheckReadLinear, ChatLineBold } from 'solar-icon-set';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
@@ -9,6 +10,8 @@ import { siteConfig } from '@/config/site';
 interface ProductFiltersProps {
   categories?: any[];
   brands?: any[];
+  availableSizes?: string[];
+  availableColors?: Array<{ name: string; hex: string; isLight?: boolean }>;
   className?: string;
   onFilterChange?: () => void;
 }
@@ -41,9 +44,42 @@ const SLIDER_MIN = 0;
 const SLIDER_MAX = 100000;
 const SLIDER_STEP = 1000;
 
+function isLightColor(hex: string): boolean {
+  if (!hex) return false;
+  const cleanHex = hex.replace('#', '');
+  if (cleanHex.length === 3) {
+    const r = parseInt(cleanHex[0] + cleanHex[0], 16);
+    const g = parseInt(cleanHex[1] + cleanHex[1], 16);
+    const b = parseInt(cleanHex[2] + cleanHex[2], 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.8;
+  }
+  if (cleanHex.length === 6) {
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.8;
+  }
+  return false;
+}
+
+function sortSizes(sizes: string[]): string[] {
+  return [...sizes].sort((a, b) => {
+    const numA = parseFloat(a);
+    const numB = parseFloat(b);
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return numA - numB;
+    }
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+  });
+}
+
 export default function ProductFilters({
   categories = [],
   brands = [],
+  availableSizes = [],
+  availableColors = [],
   className,
   onFilterChange,
 }: ProductFiltersProps) {
@@ -113,15 +149,94 @@ export default function ProductFilters({
 
   // Current active filters
   const currentCategory = searchParams.get('category');
-  const currentBrands = searchParams.get('brand')?.split(',').filter(Boolean) || [];
-  const currentSizes = searchParams.get('sizes')?.split(',').filter(Boolean) || [];
-  const currentColors = searchParams.get('colors')?.split(',').filter(Boolean) || [];
+  const currentBrands = useMemo(
+    () => searchParams.get('brand')?.split(',').filter(Boolean) || [],
+    [searchParams]
+  );
+  const currentSizes = useMemo(
+    () => searchParams.get('sizes')?.split(',').filter(Boolean) || [],
+    [searchParams]
+  );
+  const currentColors = useMemo(
+    () => searchParams.get('colors')?.split(',').filter(Boolean) || [],
+    [searchParams]
+  );
   const isInStock = searchParams.get('isAvailable') === 'true';
   const isLimitedEdition = searchParams.get('isFeatured') === 'true';
   const isPreOrder = searchParams.get('preOrder') === 'true';
   const minPriceParam = searchParams.get('minPrice');
   const maxPriceParam = searchParams.get('maxPrice');
   const isOnSale = searchParams.get('isOnSale') === 'true';
+
+  // Backend query for distinct sizes (with category support)
+  const { data: remoteSizes } = useQuery({
+    queryKey: ['product-sizes', currentCategory],
+    queryFn: async () => {
+      const url = currentCategory
+        ? `/api/products/sizes?category=${encodeURIComponent(currentCategory)}`
+        : '/api/products/sizes';
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch sizes');
+      const data = await res.json();
+      return (data.sizes as string[]) || [];
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    placeholderData: (previousData) => previousData,
+  });
+
+  // Backend query for distinct colors (with category support)
+  const { data: remoteColors } = useQuery({
+    queryKey: ['product-colors', currentCategory],
+    queryFn: async () => {
+      const url = currentCategory
+        ? `/api/products/colors?category=${encodeURIComponent(currentCategory)}`
+        : '/api/products/colors';
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch colors');
+      const data = await res.json();
+      return (data.colors as Array<{ name: string; hex: string; isLight?: boolean }>) || [];
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    placeholderData: (previousData) => previousData,
+  });
+
+  // Selected category data if applicable
+  const selectedCategoryData = useMemo(() => {
+    if (!currentCategory) return null;
+    return categories.find(
+      (c) =>
+        c.slug.toLowerCase() === currentCategory.toLowerCase() ||
+        c.name.toLowerCase() === currentCategory.toLowerCase()
+    );
+  }, [categories, currentCategory]);
+
+  // Optimized sizes resolution: Remote -> Props -> Category sizes -> Default sizes
+  const sizesToDisplay = useMemo(() => {
+    if (remoteSizes && remoteSizes.length > 0) {
+      return remoteSizes;
+    }
+    if (availableSizes && availableSizes.length > 0) {
+      return availableSizes;
+    }
+    if (selectedCategoryData?.sizes && selectedCategoryData.sizes.length > 0) {
+      return sortSizes(selectedCategoryData.sizes);
+    }
+    return DEFAULT_SIZES;
+  }, [remoteSizes, availableSizes, selectedCategoryData]);
+
+  // Optimized colors resolution: Remote -> Props -> Default color options
+  const colorsToDisplay = useMemo(() => {
+    if (remoteColors && remoteColors.length > 0) {
+      return remoteColors;
+    }
+    if (availableColors && availableColors.length > 0) {
+      return availableColors.map((c) => ({
+        ...c,
+        isLight: c.isLight !== undefined ? c.isLight : isLightColor(c.hex),
+      }));
+    }
+    return COLOR_OPTIONS;
+  }, [remoteColors, availableColors]);
 
   // Price range local state for smooth sliding
   const [minPrice, setMinPrice] = useState<number>(
@@ -136,24 +251,27 @@ export default function ProductFilters({
     setMaxPrice(maxPriceParam ? Number(maxPriceParam) : SLIDER_MAX);
   }, [minPriceParam, maxPriceParam]);
 
-  const applyPriceFilter = (min: number, max: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (min > SLIDER_MIN) {
-      params.set('minPrice', min.toString());
-    } else {
-      params.delete('minPrice');
-    }
+  const applyPriceFilter = useCallback(
+    (min: number, max: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (min > SLIDER_MIN) {
+        params.set('minPrice', min.toString());
+      } else {
+        params.delete('minPrice');
+      }
 
-    if (max < SLIDER_MAX) {
-      params.set('maxPrice', max.toString());
-    } else {
-      params.delete('maxPrice');
-    }
+      if (max < SLIDER_MAX) {
+        params.set('maxPrice', max.toString());
+      } else {
+        params.delete('maxPrice');
+      }
 
-    params.set('page', '1');
-    router.push(`/shop?${params.toString()}`, { scroll: false });
-    onFilterChange?.();
-  };
+      params.set('page', '1');
+      router.push(`/shop?${params.toString()}`, { scroll: false });
+      onFilterChange?.();
+    },
+    [searchParams, router, onFilterChange]
+  );
 
   const handleMinSliderChange = (val: number) => {
     const value = Math.min(val, maxPrice - SLIDER_STEP);
@@ -185,41 +303,29 @@ export default function ProductFilters({
     maxPriceParam != null;
 
   // Brands list
-  const brandList =
-    brands.length > 0
-      ? brands.map((b, i) => ({
-          name: b.name,
-          count: DEFAULT_BRANDS[i % DEFAULT_BRANDS.length]?.count || 5,
-        }))
-      : DEFAULT_BRANDS;
+  const brandList = useMemo(
+    () =>
+      brands.length > 0
+        ? brands.map((b, i) => ({
+            name: b.name,
+            count: DEFAULT_BRANDS[i % DEFAULT_BRANDS.length]?.count || 5,
+          }))
+        : DEFAULT_BRANDS,
+    [brands]
+  );
 
   // Categories list
-  const categoryList =
-    categories.length > 0
-      ? categories
-      : [
-          { name: 'Running Lab', slug: 'running-lab' },
-          { name: 'Street Culture', slug: 'street-culture' },
-          { name: 'Luxe Leather', slug: 'luxe-leather' },
-        ];
-
-  // Sizes list
-  let sizesToDisplay = DEFAULT_SIZES;
-  const selectedCategoryData = currentCategory
-    ? categories.find(
-        (c) =>
-          c.slug.toLowerCase() === currentCategory.toLowerCase() ||
-          c.name.toLowerCase() === currentCategory.toLowerCase()
-      )
-    : null;
-
-  if (
-    selectedCategoryData &&
-    selectedCategoryData.sizes &&
-    selectedCategoryData.sizes.length > 0
-  ) {
-    sizesToDisplay = selectedCategoryData.sizes;
-  }
+  const categoryList = useMemo(
+    () =>
+      categories.length > 0
+        ? categories
+        : [
+            { name: 'Running Lab', slug: 'running-lab' },
+            { name: 'Street Culture', slug: 'street-culture' },
+            { name: 'Luxe Leather', slug: 'luxe-leather' },
+          ],
+    [categories]
+  );
 
   // Calculate percentages for slider track highlight
   const minPercent = Math.max(
@@ -232,7 +338,7 @@ export default function ProductFilters({
   );
 
   return (
-    <div className={cn("space-y-6 select-none", className)}>
+    <div className={cn('space-y-6 select-none', className)}>
       {/* Outer Card Container */}
       <div className="bg-white dark:bg-[#1A1A1A] rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 border border-[#ECEAE4] dark:border-[#2A2A2A] shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] transition-colors">
         {/* Header: FILTERS & Clear All */}
@@ -282,20 +388,20 @@ export default function ProductFilters({
                     <div className="flex items-center gap-3">
                       <div
                         className={cn(
-                          "w-4.5 h-4.5 rounded-md border flex items-center justify-center transition-all",
+                          'w-4.5 h-4.5 rounded-md border flex items-center justify-center transition-all',
                           isSelected
-                            ? "bg-[#B8975A] border-[#B8975A] text-white shadow-xs"
-                            : "border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]"
+                            ? 'bg-[#B8975A] border-[#B8975A] text-white shadow-xs'
+                            : 'border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]'
                         )}
                       >
                         {isSelected && <CheckReadLinear className="w-3 h-3 text-white" />}
                       </div>
                       <span
                         className={cn(
-                          "text-xs sm:text-sm font-medium transition-colors",
+                          'text-xs sm:text-sm font-medium transition-colors',
                           isSelected
-                            ? "text-foreground font-semibold"
-                            : "text-foreground/80 group-hover:text-foreground"
+                            ? 'text-foreground font-semibold'
+                            : 'text-foreground/80 group-hover:text-foreground'
                         )}
                       >
                         {brand.name}
@@ -345,20 +451,20 @@ export default function ProductFilters({
                   >
                     <div
                       className={cn(
-                        "w-4.5 h-4.5 rounded-md border flex items-center justify-center transition-all",
+                        'w-4.5 h-4.5 rounded-md border flex items-center justify-center transition-all',
                         isSelected
-                          ? "bg-[#B8975A] border-[#B8975A] text-white shadow-xs"
-                          : "border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]"
+                          ? 'bg-[#B8975A] border-[#B8975A] text-white shadow-xs'
+                          : 'border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]'
                       )}
                     >
                       {isSelected && <CheckReadLinear className="w-3 h-3 text-white" />}
                     </div>
                     <span
                       className={cn(
-                        "text-xs sm:text-sm font-medium transition-colors",
+                        'text-xs sm:text-sm font-medium transition-colors',
                         isSelected
-                          ? "text-foreground font-semibold"
-                          : "text-foreground/80 group-hover:text-foreground"
+                          ? 'text-foreground font-semibold'
+                          : 'text-foreground/80 group-hover:text-foreground'
                       )}
                     >
                       {cat.name}
@@ -398,10 +504,10 @@ export default function ProductFilters({
                     type="button"
                     onClick={() => setFilter('sizes', size, true)}
                     className={cn(
-                      "h-9 sm:h-10 rounded-full border text-xs sm:text-sm font-medium transition-all flex items-center justify-center cursor-pointer",
+                      'h-9 sm:h-10 rounded-full border text-xs sm:text-sm font-medium transition-all flex items-center justify-center cursor-pointer',
                       isSelected
-                        ? "bg-[#B8975A] border-[#B8975A] text-white shadow-xs font-bold"
-                        : "border-[#ECEAE4] dark:border-[#333] bg-background dark:bg-[#1F1F1F] text-foreground/90 hover:border-[#B8975A] hover:text-[#B8975A]"
+                        ? 'bg-[#B8975A] border-[#B8975A] text-white shadow-xs font-bold'
+                        : 'border-[#ECEAE4] dark:border-[#333] bg-background dark:bg-[#1F1F1F] text-foreground/90 hover:border-[#B8975A] hover:text-[#B8975A]'
                     )}
                   >
                     {size}
@@ -454,20 +560,17 @@ export default function ProductFilters({
                   step={SLIDER_STEP}
                   value={minPrice}
                   onChange={(e) => handleMinSliderChange(Number(e.target.value))}
-                  className="pointer-events-none appearance-none bg-transparent absolute inset-0 w-full h-full z-10 
-                    [&::-webkit-slider-thumb]:pointer-events-auto 
-                    [&::-webkit-slider-thumb]:appearance-none 
-                    [&::-webkit-slider-thumb]:w-4.5 
-                    [&::-webkit-slider-thumb]:h-4.5 
+                  className="absolute inset-0 w-full h-1.5 opacity-0 cursor-pointer pointer-events-auto appearance-none
+                    [&::-webkit-slider-thumb]:w-4 
+                    [&::-webkit-slider-thumb]:h-4 
                     [&::-webkit-slider-thumb]:rounded-full 
                     [&::-webkit-slider-thumb]:bg-white 
                     [&::-webkit-slider-thumb]:border-2 
                     [&::-webkit-slider-thumb]:border-[#B8975A] 
                     [&::-webkit-slider-thumb]:shadow-md 
-                    [&::-webkit-slider-thumb]:cursor-pointer
-                    [&::-moz-range-thumb]:pointer-events-auto 
-                    [&::-moz-range-thumb]:w-4.5 
-                    [&::-moz-range-thumb]:h-4.5 
+                    [&::-webkit-slider-thumb]:cursor-pointer 
+                    [&::-moz-range-thumb]:w-4 
+                    [&::-moz-range-thumb]:h-4 
                     [&::-moz-range-thumb]:rounded-full 
                     [&::-moz-range-thumb]:bg-white 
                     [&::-moz-range-thumb]:border-2 
@@ -482,20 +585,17 @@ export default function ProductFilters({
                   step={SLIDER_STEP}
                   value={maxPrice}
                   onChange={(e) => handleMaxSliderChange(Number(e.target.value))}
-                  className="pointer-events-none appearance-none bg-transparent absolute inset-0 w-full h-full z-20 
-                    [&::-webkit-slider-thumb]:pointer-events-auto 
-                    [&::-webkit-slider-thumb]:appearance-none 
-                    [&::-webkit-slider-thumb]:w-4.5 
-                    [&::-webkit-slider-thumb]:h-4.5 
+                  className="absolute inset-0 w-full h-1.5 opacity-0 cursor-pointer pointer-events-auto appearance-none
+                    [&::-webkit-slider-thumb]:w-4 
+                    [&::-webkit-slider-thumb]:h-4 
                     [&::-webkit-slider-thumb]:rounded-full 
                     [&::-webkit-slider-thumb]:bg-white 
                     [&::-webkit-slider-thumb]:border-2 
                     [&::-webkit-slider-thumb]:border-[#B8975A] 
                     [&::-webkit-slider-thumb]:shadow-md 
-                    [&::-webkit-slider-thumb]:cursor-pointer
-                    [&::-moz-range-thumb]:pointer-events-auto 
-                    [&::-moz-range-thumb]:w-4.5 
-                    [&::-moz-range-thumb]:h-4.5 
+                    [&::-webkit-slider-thumb]:cursor-pointer 
+                    [&::-moz-range-thumb]:w-4 
+                    [&::-moz-range-thumb]:h-4 
                     [&::-moz-range-thumb]:rounded-full 
                     [&::-moz-range-thumb]:bg-white 
                     [&::-moz-range-thumb]:border-2 
@@ -557,8 +657,10 @@ export default function ProductFilters({
 
           {openSections.color && (
             <div className="mt-4 flex items-center gap-3 flex-wrap">
-              {COLOR_OPTIONS.map((color) => {
-                const isSelected = currentColors.includes(color.name);
+              {colorsToDisplay.map((color) => {
+                const isSelected = currentColors.some(
+                  (c) => c.toLowerCase() === color.name.toLowerCase()
+                );
                 return (
                   <button
                     key={color.name}
@@ -567,11 +669,11 @@ export default function ProductFilters({
                     onClick={() => setFilter('colors', color.name, true)}
                     style={{ backgroundColor: color.hex }}
                     className={cn(
-                      "w-7 h-7 sm:w-8 sm:h-8 rounded-full shadow-xs transition-all hover:scale-110 cursor-pointer relative",
-                      color.isLight && "border border-[#DCDAD4] dark:border-[#444]",
+                      'w-7 h-7 sm:w-8 sm:h-8 rounded-full shadow-xs transition-all hover:scale-110 cursor-pointer relative',
+                      color.isLight && 'border border-[#DCDAD4] dark:border-[#444]',
                       isSelected
-                        ? "ring-2 ring-offset-2 ring-[#B8975A] dark:ring-offset-[#1A1A1A] scale-105"
-                        : "hover:ring-1 hover:ring-[#B8975A]/50"
+                        ? 'ring-2 ring-offset-2 ring-[#B8975A] dark:ring-offset-[#1A1A1A] scale-105'
+                        : 'hover:ring-1 hover:ring-[#B8975A]/50'
                     )}
                     aria-label={`Filter by color ${color.name}`}
                   />
@@ -608,20 +710,20 @@ export default function ProductFilters({
               >
                 <div
                   className={cn(
-                    "w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-all",
+                    'w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-all',
                     isInStock
-                      ? "border-[#B8975A] bg-[#B8975A] text-white"
-                      : "border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]"
+                      ? 'border-[#B8975A] bg-[#B8975A] text-white'
+                      : 'border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]'
                   )}
                 >
                   {isInStock && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                 </div>
                 <span
                   className={cn(
-                    "text-xs sm:text-sm font-medium transition-colors",
+                    'text-xs sm:text-sm font-medium transition-colors',
                     isInStock
-                      ? "text-foreground font-semibold"
-                      : "text-foreground/80 group-hover:text-foreground"
+                      ? 'text-foreground font-semibold'
+                      : 'text-foreground/80 group-hover:text-foreground'
                   )}
                 >
                   In Stock
@@ -635,20 +737,20 @@ export default function ProductFilters({
               >
                 <div
                   className={cn(
-                    "w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-all",
+                    'w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-all',
                     isLimitedEdition
-                      ? "border-[#B8975A] bg-[#B8975A] text-white"
-                      : "border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]"
+                      ? 'border-[#B8975A] bg-[#B8975A] text-white'
+                      : 'border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]'
                   )}
                 >
                   {isLimitedEdition && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                 </div>
                 <span
                   className={cn(
-                    "text-xs sm:text-sm font-medium transition-colors",
+                    'text-xs sm:text-sm font-medium transition-colors',
                     isLimitedEdition
-                      ? "text-foreground font-semibold"
-                      : "text-foreground/80 group-hover:text-foreground"
+                      ? 'text-foreground font-semibold'
+                      : 'text-foreground/80 group-hover:text-foreground'
                   )}
                 >
                   Limited Edition
@@ -662,20 +764,20 @@ export default function ProductFilters({
               >
                 <div
                   className={cn(
-                    "w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-all",
+                    'w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-all',
                     isPreOrder
-                      ? "border-[#B8975A] bg-[#B8975A] text-white"
-                      : "border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]"
+                      ? 'border-[#B8975A] bg-[#B8975A] text-white'
+                      : 'border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]'
                   )}
                 >
                   {isPreOrder && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                 </div>
                 <span
                   className={cn(
-                    "text-xs sm:text-sm font-medium transition-colors",
+                    'text-xs sm:text-sm font-medium transition-colors',
                     isPreOrder
-                      ? "text-foreground font-semibold"
-                      : "text-foreground/80 group-hover:text-foreground"
+                      ? 'text-foreground font-semibold'
+                      : 'text-foreground/80 group-hover:text-foreground'
                   )}
                 >
                   Pre-Order
@@ -696,7 +798,7 @@ export default function ProductFilters({
         </p>
         <a
           href={`https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(
-            "Hi Legacy Shoes, I need sizing help with shoes."
+            'Hi Legacy Shoes, I need sizing help with shoes.'
           )}`}
           target="_blank"
           rel="noopener noreferrer"

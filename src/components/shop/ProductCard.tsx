@@ -3,11 +3,7 @@
 import { memo, useCallback, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  HeartLinear,
-  HeartBold,
-  ChatLineBold,
-} from "solar-icon-set";
+import { HeartLinear, HeartBold, ChatLineBold } from "solar-icon-set";
 import { IProduct } from "@/types/product";
 import { formatPrice, calcDiscountPercent } from "@/lib/format-price";
 import { buildWhatsAppURL } from "@/lib/whatsapp";
@@ -95,13 +91,26 @@ function ProductCard({
       });
       toast.success("Added to wishlist");
     },
-    [active, addItem, removeItem, product._id, product.name, product.slug, price, cover],
+    [
+      active,
+      addItem,
+      removeItem,
+      product._id,
+      product.name,
+      product.slug,
+      price,
+      cover,
+    ],
   );
 
   return (
     <article className="@container group relative flex flex-col overflow-hidden rounded-[1.25rem] sm:rounded-[1.75rem] lg:rounded-[2rem] bg-white dark:bg-[#1A1A1A] shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.35)] ring-1 ring-[#E8E8EA]/80 dark:ring-[#2A2A2A] transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_56px_rgba(0,0,0,0.10)]">
       <div className="relative aspect-square overflow-hidden bg-linear-to-b from-[#F8F6F2] to-[#EEEAE3] dark:from-[#242424] dark:to-[#161616]">
-        <Link href={href} className="absolute inset-0" aria-label={product.name}>
+        <Link
+          href={href}
+          className="absolute inset-0"
+          aria-label={product.name}
+        >
           {cover ? (
             <Image
               src={cover}
@@ -167,13 +176,16 @@ function ProductCard({
         ) : null}
       </div>
 
-      <Link href={href} className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3 sm:px-5 sm:pb-5 sm:pt-4">
+      <Link
+        href={href}
+        className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3 sm:px-5 sm:pb-5 sm:pt-4"
+      >
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <p className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.16em] text-[#9A9A9A] dark:text-[#7A7A7A]">
+            <p className="text-[8px] sm:text-[9px] font-medium uppercase tracking-[0.16em] text-[#9A9A9A] dark:text-[#7A7A7A]">
               {product.brand}
             </p>
-            <h3 className="mt-0.5 font-serif text-[15px] sm:text-lg font-bold uppercase tracking-tight text-[#1A1A1A] dark:text-[#F5F5F5] line-clamp-1">
+            <h3 className="mt-0.5 font-serif text-[10x] sm:text-sm font-bold uppercase tracking-tight text-[#1A1A1A] dark:text-[#F5F5F5] line-clamp-1">
               {product.name}
             </h3>
           </div>

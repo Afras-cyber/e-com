@@ -8,6 +8,18 @@ import { RefreshLinear } from "solar-icon-set";
 import connectDB from "@/lib/db/mongoose";
 import Category from "@/lib/db/models/Category";
 import Brand from "@/lib/db/models/Brand";
+import Product from "@/lib/db/models/Product";
+
+function sortSizes(sizes: string[]): string[] {
+  return [...sizes].sort((a, b) => {
+    const numA = parseFloat(a);
+    const numB = parseFloat(b);
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return numA - numB;
+    }
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+  });
+}
 
 export default async function ShopPage({
   searchParams,
@@ -44,13 +56,37 @@ export default async function ShopPage({
     filters.isOnSale;
 
   await connectDB();
-  const [dbCategories, dbBrands] = await Promise.all([
+  const [dbCategories, dbBrands, dbSizes, dbColors] = await Promise.all([
     Category.find({ isActive: true }).sort({ order: 1, name: 1 }).lean(),
     Brand.find({ isActive: true }).sort({ name: 1 }).lean(),
+    Product.distinct("sizes", { isAvailable: true }),
+    Product.aggregate([
+      { $match: { isAvailable: true, "colors.0": { $exists: true } } },
+      { $unwind: "$colors" },
+      {
+        $match: {
+          "colors.name": { $exists: true, $ne: "" },
+          "colors.hex": { $exists: true, $ne: "" },
+        },
+      },
+      {
+        $group: {
+          _id: { $toLower: "$colors.name" },
+          name: { $first: "$colors.name" },
+          hex: { $first: "$colors.hex" },
+        },
+      },
+      { $sort: { name: 1 } },
+    ]),
   ]);
 
   const categoriesData = JSON.parse(JSON.stringify(dbCategories));
   const brandsData = JSON.parse(JSON.stringify(dbBrands));
+  const rawSizes = (dbSizes || []).filter(
+    (s): s is string => typeof s === "string" && s.trim().length > 0
+  );
+  const sizesData = sortSizes(rawSizes);
+  const colorsData = JSON.parse(JSON.stringify(dbColors || []));
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
@@ -79,6 +115,8 @@ export default async function ShopPage({
               hasActiveFilters={!!hasActiveFilters}
               categories={categoriesData}
               brands={brandsData}
+              availableSizes={sizesData}
+              availableColors={colorsData}
             />
           </div>
         </div>
@@ -93,7 +131,12 @@ export default async function ShopPage({
                 <div className="animate-pulse h-96 bg-muted rounded-[28px]" />
               }
             >
-              <ProductFilters categories={categoriesData} brands={brandsData} />
+              <ProductFilters
+                categories={categoriesData}
+                brands={brandsData}
+                availableSizes={sizesData}
+                availableColors={colorsData}
+              />
             </Suspense>
           </div>
         </aside>
