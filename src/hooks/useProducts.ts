@@ -10,6 +10,7 @@ async function fetchProducts(filters: ProductFilters): Promise<ProductsResponse>
   if (filters.sort) params.append('sort', filters.sort);
   if (filters.isOnSale) params.append('isOnSale', 'true');
   if (filters.isFeatured) params.append('isFeatured', 'true');
+  if (filters.isAvailable) params.append('isAvailable', 'true');
   if (filters.page) params.append('page', filters.page.toString());
   
   if (filters.brand?.length) params.append('brand', filters.brand.join(','));
@@ -19,13 +20,7 @@ async function fetchProducts(filters: ProductFilters): Promise<ProductsResponse>
   if (filters.minPrice) params.append('minPrice', filters.minPrice.toString());
   if (filters.maxPrice) params.append('maxPrice', filters.maxPrice.toString());
 
-  const response = await fetch(`/api/products?${params.toString()}`, {
-    cache: 'no-store',
-    headers: {
-      'Pragma': 'no-cache',
-      'Cache-Control': 'no-cache'
-    }
-  });
+  const response = await fetch(`/api/products?${params.toString()}`);
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }

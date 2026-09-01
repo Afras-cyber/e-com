@@ -44,7 +44,7 @@ export interface ProductFilters {
   isOnSale?: boolean;
   isAvailable?: boolean;
   isFeatured?: boolean;
-  sort?: 'price-asc' | 'price-desc' | 'newest' | 'best-rated';
+  sort?: 'price-asc' | 'price-desc' | 'newest' | 'best-rated' | 'featured' | 'popular';
   page?: number;
   limit?: number;
   search?: string;

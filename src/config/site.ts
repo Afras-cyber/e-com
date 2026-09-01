@@ -1,13 +1,13 @@
 export const siteConfig = {
-  name: process.env.NEXT_PUBLIC_SITE_NAME || "CKR Shoes",
-  shortName: "SK",
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "Legacy Shoes",
+  shortName: "LS",
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    "CKR Shoes — Your destination for premium shoes and accessories. Authentic quality, delivered fast to your doorstep.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://ckrshoes.lk",
-  ogImage: "https://ckrshoes.lk/og.jpg",
+    "LEGACY Shoes — Your destination for premium shoes and accessories. Authentic quality, delivered fast to your doorstep.",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://legacyshoes.lk",
+  ogImage: "https://legacyshoes.lk/og.jpg",
   contact: {
-    email: process.env.NEXT_PUBLIC_SITE_EMAIL || "info@ckrshoes.lk",
+    email: process.env.NEXT_PUBLIC_SITE_EMAIL || "[EMAIL_ADDRESS]",
     phone: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94 77 675 6287",
     whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "94776756287",
     address:
@@ -15,7 +15,7 @@ export const siteConfig = {
       "123, Galle Road, Colombo 03, Sri Lanka",
   },
   social: {
-    instagram: "https://www.instagram.com/c_r_k_shoes/?hl=en",
+    instagram: "https://www.instagram.com/legacy_shoes_lanka/?hl=en",
     // facebook: "https://facebook.com/stepkicks",
     // tiktok: "https://tiktok.com/@stepkicks",
   },

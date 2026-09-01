@@ -1,12 +1,25 @@
 import ProductGrid from "@/components/shop/ProductGrid";
 import ProductFilters from "@/components/shop/ProductFilters";
 import MobileFilterToggle from "@/components/shop/MobileFilterToggle";
+import ProductSortDropdown from "@/components/shop/ProductSortDropdown";
 import { ProductFilters as FilterType } from "@/types/product";
 import { Suspense } from "react";
-import { RefreshLinear } from "solar-icon-set";;
+import { RefreshLinear } from "solar-icon-set";
 import connectDB from "@/lib/db/mongoose";
 import Category from "@/lib/db/models/Category";
 import Brand from "@/lib/db/models/Brand";
+import Product from "@/lib/db/models/Product";
+
+function sortSizes(sizes: string[]): string[] {
+  return [...sizes].sort((a, b) => {
+    const numA = parseFloat(a);
+    const numB = parseFloat(b);
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return numA - numB;
+    }
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+  });
+}
 
 export default async function ShopPage({
   searchParams,
@@ -22,6 +35,10 @@ export default async function ShopPage({
     sort: resolvedParams.sort as any,
     page: resolvedParams.page ? parseInt(resolvedParams.page) : 1,
     isOnSale: resolvedParams.isOnSale === "true",
+    isAvailable: resolvedParams.isAvailable === "true",
+    isFeatured: resolvedParams.isFeatured === "true",
+    minPrice: resolvedParams.minPrice ? Number(resolvedParams.minPrice) : undefined,
+    maxPrice: resolvedParams.maxPrice ? Number(resolvedParams.maxPrice) : undefined,
     brand: resolvedParams.brand?.split(","),
     sizes: resolvedParams.sizes?.split(","),
     colors: resolvedParams.colors?.split(","),
@@ -31,19 +48,50 @@ export default async function ShopPage({
     filters.category ||
     filters.brand?.length ||
     filters.sizes?.length ||
+    filters.colors?.length ||
+    filters.minPrice != null ||
+    filters.maxPrice != null ||
+    filters.isAvailable ||
+    filters.isFeatured ||
     filters.isOnSale;
 
   await connectDB();
-  const dbCategories = await Category.find({ isActive: true }).sort({ order: 1, name: 1 }).lean();
-  const dbBrands = await Brand.find({ isActive: true }).sort({ name: 1 }).lean();
-  
+  const [dbCategories, dbBrands, dbSizes, dbColors] = await Promise.all([
+    Category.find({ isActive: true }).sort({ order: 1, name: 1 }).lean(),
+    Brand.find({ isActive: true }).sort({ name: 1 }).lean(),
+    Product.distinct("sizes", { isAvailable: true }),
+    Product.aggregate([
+      { $match: { isAvailable: true, "colors.0": { $exists: true } } },
+      { $unwind: "$colors" },
+      {
+        $match: {
+          "colors.name": { $exists: true, $ne: "" },
+          "colors.hex": { $exists: true, $ne: "" },
+        },
+      },
+      {
+        $group: {
+          _id: { $toLower: "$colors.name" },
+          name: { $first: "$colors.name" },
+          hex: { $first: "$colors.hex" },
+        },
+      },
+      { $sort: { name: 1 } },
+    ]),
+  ]);
+
   const categoriesData = JSON.parse(JSON.stringify(dbCategories));
   const brandsData = JSON.parse(JSON.stringify(dbBrands));
+  const rawSizes = (dbSizes || []).filter(
+    (s): s is string => typeof s === "string" && s.trim().length > 0
+  );
+  const sizesData = sortSizes(rawSizes);
+  const colorsData = JSON.parse(JSON.stringify(dbColors || []));
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-10 gap-2">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight">
             Shop Collection
@@ -55,22 +103,40 @@ export default async function ShopPage({
           )}
         </div>
 
-        {/* Mobile filter toggle */}
-        <div className="md:hidden">
-          <MobileFilterToggle hasActiveFilters={!!hasActiveFilters} categories={categoriesData} brands={brandsData} />
+        {/* Right Corner Controls: Showing count, On Sale toggle, Sort Dropdown & Mobile Filter */}
+        <div className="flex items-center justify-between md:justify-end gap-2.5 sm:gap-3 flex-wrap">
+          <Suspense fallback={<div className="h-10 w-48 bg-muted animate-pulse rounded-full" />}>
+            <ProductSortDropdown filters={filters} />
+          </Suspense>
+
+          {/* Mobile filter toggle */}
+          <div className="md:hidden">
+            <MobileFilterToggle
+              hasActiveFilters={!!hasActiveFilters}
+              categories={categoriesData}
+              brands={brandsData}
+              availableSizes={sizesData}
+              availableColors={colorsData}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
         {/* Filters Sidebar — desktop only (inline) */}
-        <aside className="w-full lg:w-64 shrink-0 hidden md:block">
+        <aside className="w-full md:w-72 lg:w-80 shrink-0 hidden md:block">
           <div className="sticky top-24">
             <Suspense
               fallback={
-                <div className="animate-pulse h-64 bg-muted rounded-xl" />
+                <div className="animate-pulse h-96 bg-muted rounded-[28px]" />
               }
             >
-              <ProductFilters categories={categoriesData} brands={brandsData} />
+              <ProductFilters
+                categories={categoriesData}
+                brands={brandsData}
+                availableSizes={sizesData}
+                availableColors={colorsData}
+              />
             </Suspense>
           </div>
         </aside>

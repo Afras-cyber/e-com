@@ -5,7 +5,17 @@ import { notFound } from "next/navigation";
 import ProductDetailsClientWrapper from "@/components/shop/ProductDetailsClientWrapper";
 import RelatedProducts from "@/components/shop/RelatedProducts";
 import { Suspense } from "react";
-import { RefreshLinear } from "solar-icon-set";
+import Link from "next/link";
+import { AltArrowRightLinear, ShieldCheckLinear, DeliveryLinear, RefreshLinear } from "solar-icon-set";
+import { cache } from "react";
+
+const getProductBySlug = cache(async (slug: string) => {
+  await connectDB();
+  return Product.findOne({
+    slug,
+    isAvailable: true,
+  }).lean();
+});
 
 export async function generateMetadata({
   params,
@@ -13,11 +23,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  await connectDB();
-  const product = await Product.findOne({
-    slug: resolvedParams.slug,
-    isAvailable: true,
-  }).lean();
+  const product = await getProductBySlug(resolvedParams.slug);
 
   if (!product) {
     return {
@@ -28,12 +34,12 @@ export async function generateMetadata({
   return {
     title: `${product.name} | CRK Shoes`,
     description:
-      product.seoDescription || product.description.substring(0, 160),
+      product.seoDescription || product.description?.substring(0, 160) || "",
     openGraph: {
-      images: [product.images[0]],
+      images: product.images?.[0] ? [product.images[0]] : [],
       title: product.name,
       description:
-        product.seoDescription || product.description.substring(0, 160),
+        product.seoDescription || product.description?.substring(0, 160) || "",
     },
   };
 }
@@ -44,57 +50,167 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const resolvedParams = await params;
-
-  await connectDB();
-  const product = await Product.findOneAndUpdate(
-    { slug: resolvedParams.slug, isAvailable: true },
-    { $inc: { viewCount: 1 } },
-    { returnDocument: "after" },
-  ).lean();
+  const product = await getProductBySlug(resolvedParams.slug);
 
   if (!product) {
     notFound();
   }
 
+  // Increment view count in background without blocking render
+  Product.updateOne({ _id: product._id }, { $inc: { viewCount: 1 } }).exec().catch(() => {});
+
   // Convert ObjectIds to strings to pass to client components
   const serializedProduct = JSON.parse(JSON.stringify(product));
 
+  const categoryName = serializedProduct.subcategory || serializedProduct.category || "Footwear";
+
   return (
-    <div className="min-h-screen">
-      {/* Main Product Section */}
-      <div className="container mx-auto px-4 py-6 sm:py-10">
+    <div className="min-h-screen bg-background text-foreground scroll-smooth pb-16 sm:pb-24">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-2 sm:pb-4">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 sm:gap-2 text-xs text-muted-foreground overflow-x-auto scrollbar-none py-1">
+          <Link
+            href="/"
+            className="hover:text-foreground transition-colors shrink-0 font-medium"
+          >
+            Home
+          </Link>
+          <span className="text-muted-foreground/50">/</span>
+          <Link
+            href="/shop"
+            className="hover:text-foreground transition-colors shrink-0 font-medium"
+          >
+            Shop
+          </Link>
+          <span className="text-muted-foreground/50">/</span>
+          <Link
+            href={`/shop?category=${encodeURIComponent(serializedProduct.category || "")}`}
+            className="hover:text-foreground transition-colors shrink-0 font-medium capitalize"
+          >
+            {categoryName}
+          </Link>
+          <span className="text-muted-foreground/50">/</span>
+          <span className="text-foreground font-semibold truncate max-w-[200px] sm:max-w-[320px]">
+            {serializedProduct.name}
+          </span>
+        </nav>
+      </div>
+
+      {/* Main Product Showcase & Info Section */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-6">
         <Suspense
-          fallback={<div className="h-96 bg-muted animate-pulse rounded-2xl" />}
+          fallback={
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 animate-pulse">
+              <div className="lg:col-span-7 aspect-square bg-muted/40 rounded-3xl" />
+              <div className="lg:col-span-5 space-y-4">
+                <div className="h-6 w-24 bg-muted/60 rounded-full" />
+                <div className="h-10 w-3/4 bg-muted/60 rounded-xl" />
+                <div className="h-8 w-1/2 bg-muted/60 rounded-xl" />
+                <div className="h-24 bg-muted/40 rounded-2xl" />
+                <div className="h-12 w-full bg-muted/60 rounded-2xl" />
+              </div>
+            </div>
+          }
         >
           <ProductDetailsClientWrapper product={serializedProduct} />
         </Suspense>
-      </div>
+      </main>
 
-      {/* Description Section */}
-      <div className="container mx-auto px-4">
-        <div className="max-w-3xl py-12 sm:py-16 border-t">
-          <h2 className="text-xl sm:text-2xl font-black tracking-tight mb-6 uppercase">
-            About This Product
-          </h2>
-          <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none text-muted-foreground leading-relaxed">
-            <p className="whitespace-pre-wrap">
-              {serializedProduct.description}
-            </p>
+      {/* Product Details, Specs & About Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 pt-10 sm:pt-12 border-t border-border/60">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* Left Column: Story / Description */}
+          <div className="lg:col-span-7">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-tight text-foreground mb-4">
+              About This Edition
+            </h2>
+            <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none text-muted-foreground leading-relaxed">
+              <p className="whitespace-pre-wrap">
+                {serializedProduct.description || serializedProduct.shortDescription}
+              </p>
+            </div>
+
+            {/* Feature Highlights Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+              <div className="p-4 rounded-2xl bg-muted/20 border border-border/60 flex items-start gap-3">
+                <ShieldCheckLinear className="w-5 h-5 text-[#C39A4D] shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-sm text-foreground">Verified Authenticity</h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    100% genuine brand originals sourced directly with manufacturer certification.
+                  </p>
+                </div>
+              </div>
+              <div className="p-4 rounded-2xl bg-muted/20 border border-border/60 flex items-start gap-3">
+                <DeliveryLinear className="w-5 h-5 text-[#C39A4D] shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-sm text-foreground">Express Islandwide Dispatch</h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Carefully packaged and delivered straight to your door with tracking.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Specifications Table */}
+          <div className="lg:col-span-5">
+            <div className="bg-[#FAF8F4] dark:bg-[#1C1B19] rounded-3xl p-6 sm:p-7 border border-[#ECE7DA] dark:border-white/10 shadow-xs">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-[#C39A4D] mb-1">
+                Product Details
+              </h3>
+              <h4 className="font-serif text-xl font-bold uppercase tracking-tight text-foreground mb-4">
+                Specifications
+              </h4>
+
+              <div className="space-y-3 text-xs sm:text-sm">
+                <div className="flex justify-between py-2 border-b border-border/40">
+                  <span className="text-muted-foreground font-medium">Brand</span>
+                  <span className="font-bold text-foreground capitalize">{serializedProduct.brand}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border/40">
+                  <span className="text-muted-foreground font-medium">Category</span>
+                  <span className="font-bold text-foreground capitalize">{categoryName}</span>
+                </div>
+                {serializedProduct.colors && serializedProduct.colors.length > 0 && (
+                  <div className="flex justify-between py-2 border-b border-border/40">
+                    <span className="text-muted-foreground font-medium">Available Colors</span>
+                    <span className="font-bold text-foreground">
+                      {serializedProduct.colors.map((c: any) => c.name).join(", ")}
+                    </span>
+                  </div>
+                )}
+                {serializedProduct.sizes && serializedProduct.sizes.length > 0 && (
+                  <div className="flex justify-between py-2 border-b border-border/40">
+                    <span className="text-muted-foreground font-medium">Available Sizes (US)</span>
+                    <span className="font-bold text-foreground">
+                      {serializedProduct.sizes.join(", ")}
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between py-2">
+                  <span className="text-muted-foreground font-medium">Authenticity</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400">100% Original</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Related Products */}
-      <Suspense
-        fallback={
-          <div className="h-64 bg-muted animate-pulse rounded-xl mx-4 mb-10" />
-        }
-      >
-        <RelatedProducts
-          category={serializedProduct.category}
-          currentProductId={serializedProduct._id}
-        />
-      </Suspense>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <Suspense
+          fallback={
+            <div className="h-64 bg-muted animate-pulse rounded-2xl mx-auto mb-10" />
+          }
+        >
+          <RelatedProducts
+            category={serializedProduct.category}
+            currentProductId={serializedProduct._id}
+          />
+        </Suspense>
+      </div>
     </div>
   );
 }

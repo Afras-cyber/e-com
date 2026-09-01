@@ -1,12 +1,13 @@
 {
-  "name": "stepkicks",
-  "version": "0.1.0",
+  "name": "legacyshoes",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "clean": "node -e \"fs.rmSync('.next', {recursive: true, force: true})\""
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1038.0",

@@ -81,11 +81,10 @@ export default function TestimonialsSection() {
                   {[...Array(5)].map((_, i) => (
                     <StarLinear
                       key={i}
-                      className={`w-4 h-4 ${
-                        i < testimonial.rating
-                          ? 'fill-amber-400 text-amber-400'
-                          : 'fill-muted text-muted stroke-muted-foreground/30'
-                      }`}
+                      className={`w-4 h-4 ${i < testimonial.rating
+                        ? 'fill-amber-400 text-amber-400'
+                        : 'fill-muted text-muted stroke-muted-foreground/30'
+                        }`}
                     />
                   ))}
                   <span className="ml-2 text-xs font-bold text-muted-foreground">

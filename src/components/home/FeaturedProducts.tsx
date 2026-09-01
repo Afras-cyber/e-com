@@ -9,12 +9,12 @@ import { motion } from 'framer-motion';
 
 function ProductSkeleton() {
   return (
-    <div className="rounded-2xl bg-muted/60 dark:bg-zinc-800/60 overflow-hidden animate-pulse">
-      <div className="aspect-square bg-muted dark:bg-zinc-700/60" />
-      <div className="p-4 space-y-2">
-        <div className="h-3 bg-muted dark:bg-zinc-700/60 rounded w-1/3" />
-        <div className="h-4 bg-muted dark:bg-zinc-700/60 rounded w-2/3" />
-        <div className="h-4 bg-muted dark:bg-zinc-700/60 rounded w-1/4 mt-2" />
+    <div className="overflow-hidden rounded-[1.25rem] sm:rounded-[1.75rem] lg:rounded-[2rem] bg-white dark:bg-[#1A1A1A] shadow-[0_12px_40px_rgba(0,0,0,0.06)] ring-1 ring-[#E8E8EA]/80 dark:ring-[#2A2A2A] animate-pulse">
+      <div className="aspect-square bg-linear-to-b from-[#F8F6F2] to-[#EEEAE3] dark:from-[#242424] dark:to-[#161616]" />
+      <div className="space-y-2 px-3.5 py-3.5 sm:px-5 sm:py-4">
+        <div className="h-2.5 w-1/4 rounded bg-[#EEEAE3] dark:bg-[#2A2A2A]" />
+        <div className="h-4 w-2/3 rounded bg-[#EEEAE3] dark:bg-[#2A2A2A]" />
+        <div className="h-3 w-1/2 rounded bg-[#EEEAE3] dark:bg-[#2A2A2A]" />
       </div>
     </div>
   );
@@ -43,7 +43,7 @@ export default function FeaturedProducts() {
             </p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-tight">
               Featured{" "}
-              <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">
+              <span className="italic text-transparent bg-clip-text bg-linear-to-r from-primary to-primary/60">
                 Hits
               </span>
             </h2>
