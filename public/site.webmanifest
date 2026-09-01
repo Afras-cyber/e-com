@@ -1,0 +1,61 @@
+{
+  "name": "Legacy Shoes - Premium Authentic Footwear",
+  "short_name": "Legacy Shoes",
+  "description": "Your destination for premium authentic shoes and sneakers. Fast delivery across Sri Lanka.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "lang": "en-US",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/website_logo_light_mode.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/website_logo_dark_mode.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/website_logo_light_mode.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "commerce"],
+  "shortcuts": [
+    {
+      "name": "Shop",
+      "short_name": "Shop",
+      "description": "Browse our shoe collection",
+      "url": "/shop",
+      "icons": [
+        {
+          "src": "/website_logo_light_mode.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Track Order",
+      "short_name": "Track",
+      "description": "Track your order status",
+      "url": "/track",
+      "icons": [
+        {
+          "src": "/website_logo_light_mode.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

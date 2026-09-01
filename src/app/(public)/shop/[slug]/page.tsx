@@ -6,8 +6,12 @@ import ProductDetailsClientWrapper from "@/components/shop/ProductDetailsClientW
 import RelatedProducts from "@/components/shop/RelatedProducts";
 import { Suspense } from "react";
 import Link from "next/link";
-import { AltArrowRightLinear, ShieldCheckLinear, DeliveryLinear, RefreshLinear } from "solar-icon-set";
+import {  ShieldCheckLinear, DeliveryLinear } from "solar-icon-set";
 import { cache } from "react";
+import { siteConfig } from "@/config/site";
+import { generateSEOMetadata, truncateDescription, generateProductSchema, generateBreadcrumbSchema } from "@/lib/seo";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { formatPrice } from "@/lib/format-price";
 
 const getProductBySlug = cache(async (slug: string) => {
   await connectDB();
@@ -27,21 +31,41 @@ export async function generateMetadata({
 
   if (!product) {
     return {
-      title: "Product Not Found | CRK Shoes",
+      title: "Product Not Found",
+      description: "The product you are looking for does not exist or is no longer available.",
+      robots: "noindex, nofollow",
     };
   }
 
-  return {
-    title: `${product.name} | CRK Shoes`,
-    description:
-      product.seoDescription || product.description?.substring(0, 160) || "",
-    openGraph: {
-      images: product.images?.[0] ? [product.images[0]] : [],
-      title: product.name,
-      description:
-        product.seoDescription || product.description?.substring(0, 160) || "",
+  const productImage = product.images?.[0] || `${siteConfig.url}/homepage_shoe.png`;
+  const seoDescription = truncateDescription(
+    product.seoDescription || product.description?.substring(0, 160) || product.shortDescription || ""
+  );
+
+  return generateSEOMetadata({
+    title: `${product.name} - ${product.brand || "Premium Shoes"}`,
+    description: seoDescription,
+    ogImage: productImage,
+    ogTitle: product.name,
+    ogDescription: seoDescription,
+    canonicalUrl: `${siteConfig.url}/shop/${product.slug}`,
+    keywords: `${product.name}, ${product.brand}, ${product.category}, shoes, sneakers, ${product.subcategory}, buy online Sri Lanka`,
+    author: siteConfig.name,
+    type: "product",
+    productData: {
+      name: product.name,
+      description: product.description || product.shortDescription || "",
+      price: formatPrice(product.price || 0),
+      priceCurrency: siteConfig.business.currency,
+      image: productImage,
+      rating: (product as any).rating || 4.5,
+      reviewCount: (product as any).reviewCount || 0,
+      availability: product.isAvailable ? "InStock" : "OutOfStock",
+      brand: product.brand || siteConfig.name,
+      sku: (product as any)._id?.toString(),
+      category: product.category || "Footwear",
     },
-  };
+  });
 }
 
 export default async function ProductDetailPage({
@@ -66,6 +90,32 @@ export default async function ProductDetailPage({
 
   return (
     <div className="min-h-screen bg-background text-foreground scroll-smooth pb-16 sm:pb-24">
+      {/* Structured Data */}
+      <StructuredData
+        data={generateProductSchema({
+          name: serializedProduct.name,
+          description: serializedProduct.description || serializedProduct.shortDescription || "",
+          price: formatPrice(serializedProduct.price || 0),
+          priceCurrency: siteConfig.business.currency,
+          image: serializedProduct.images?.[0] || `${siteConfig.url}/homepage_shoe.png`,
+          rating: serializedProduct.rating || 4.5,
+          reviewCount: serializedProduct.reviewCount || 0,
+          availability: serializedProduct.isAvailable ? "InStock" : "OutOfStock",
+          brand: serializedProduct.brand || siteConfig.name,
+          sku: serializedProduct._id?.toString(),
+          category: serializedProduct.category || "Footwear",
+        })}
+      />
+      
+      <StructuredData
+        data={generateBreadcrumbSchema([
+          { name: "Home", url: siteConfig.url },
+          { name: "Shop", url: `${siteConfig.url}/shop` },
+          { name: categoryName, url: `${siteConfig.url}/shop?category=${encodeURIComponent(categoryName)}` },
+          { name: serializedProduct.name, url: `${siteConfig.url}/shop/${serializedProduct.slug}` },
+        ])}
+      />
+
       {/* Breadcrumb Navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-2 sm:pb-4">
         <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 sm:gap-2 text-xs text-muted-foreground overflow-x-auto scrollbar-none py-1">
