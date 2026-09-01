@@ -6,12 +6,29 @@ import { useRouter } from "next/navigation";
 import { UserLoginSchema, UserLoginInput } from "@/lib/validations/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  LetterLinear,
+  LockPasswordLinear,
+  EyeLinear,
+  EyeClosedLinear,
+  ShieldCheckLinear,
+  AltArrowRightLinear,
+  RefreshLinear,
+  SunLinear,
+  MoonLinear,
+  StarShineLinear,
+} from "solar-icon-set";
+import { siteConfig } from "@/config/site";
 
 export default function AdminLogin() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const {
     register,
@@ -30,9 +47,8 @@ export default function AdminLogin() {
         email: data.email,
         password: data.password,
       });
-
       if (result?.error) {
-        setError("Invalid email or password. Please try again.");
+        setError("Invalid credentials. Please verify your email and password.");
       } else {
         router.push("/admin");
         router.refresh();
@@ -44,611 +60,309 @@ export default function AdminLogin() {
     }
   };
 
+  const whatsappUrl = `https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(
+    "Hi! I need help with the admin portal.",
+  )}`;
+
   return (
-    <div style={styles.root}>
-      {/* ── Left brand panel ── */}
-      <div style={styles.brandPanel}>
-        {/* Animated background orbs */}
-        <div style={styles.orb1} />
-        <div style={styles.orb2} />
-        <div style={styles.orb3} />
+    <div className="min-h-screen w-full flex flex-col lg:flex-row select-none overflow-hidden bg-background text-foreground">
+      {/* ─── LEFT PANEL — Cream product showcase ─── */}
+      <div
+        className="relative w-full lg:w-[54%] min-h-[420px] lg:min-h-screen flex flex-col justify-between overflow-hidden dark:hidden"
+        style={{
+          background:
+            "linear-gradient(135deg, #F8F6F0 0%, #F0EDE4 60%, #EAE5D8 100%)",
+        }}
+      >
+        {/* Subtle diagonal texture */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, #B9975B 0px, #B9975B 1px, transparent 1px, transparent 10px)",
+          }}
+        />
 
-        <div style={styles.brandContent}>
-          {/* Logo mark */}
-          <div style={styles.logoMark}>
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-              <path
-                d="M4 28 C8 16, 16 8, 28 10 C36 12, 38 20, 34 26 C30 32, 20 36, 10 34 C6 32, 2 30, 4 28Z"
-                fill="white"
-                opacity="0.9"
-              />
-              <circle cx="28" cy="14" r="4" fill="white" opacity="0.5" />
-            </svg>
-          </div>
-
-          <h1 style={styles.brandName}>CRK Shoes</h1>
-          <p style={styles.brandTagline}>Admin Control Centre</p>
-
-          <div style={styles.divider} />
-
-          <div style={styles.statsList}>
-            <div style={styles.statItem}>
-              <span style={styles.statIcon}>👟</span>
-              <span style={styles.statText}>Premium footwear management</span>
-            </div>
-            <div style={styles.statItem}>
-              <span style={styles.statIcon}>📦</span>
-              <span style={styles.statText}>Real-time order tracking</span>
-            </div>
-            <div style={styles.statItem}>
-              <span style={styles.statIcon}>📊</span>
-              <span style={styles.statText}>Sales analytics & insights</span>
-            </div>
-            <div style={styles.statItem}>
-              <span style={styles.statIcon}>🛡️</span>
-              <span style={styles.statText}>Secure role-based access</span>
-            </div>
-          </div>
+        {/* Top Nav */}
+        <div className="relative z-10 flex items-center justify-between px-8 pt-8">
+          <Link href="/" className="inline-flex items-center gap-2">
+            <span className="font-serif font-black text-xl tracking-widest text-[#121212] uppercase">
+              {siteConfig.name}
+            </span>
+          </Link>
         </div>
 
-        <p style={styles.brandFooter}>© 2026 CRKShoes · All rights reserved</p>
+        {/* Centre — Tilted shoe card */}
+        <div className="relative z-10 flex-1 flex items-center justify-center px-8 py-6">
+          {/* LEGACY watermark */}
+          <span
+            className="absolute inset-0 flex items-center justify-center font-serif font-black uppercase pointer-events-none select-none"
+            style={{
+              fontSize: "clamp(4rem, 11vw, 9rem)",
+              letterSpacing: "0.4em",
+              color: "rgba(185,151,91,0.065)",
+            }}
+            aria-hidden="true"
+          >
+            LEGACY
+          </span>
+
+          {/* Tilted card with shoe */}
+          <div
+            className="relative rounded-2xl overflow-hidden"
+            style={{
+              width: "min(320px, 75vw)",
+              aspectRatio: "1 / 1",
+              background: "linear-gradient(145deg, #FDFCF8 0%, #F3EFE5 100%)",
+              transform: "rotate(-8deg)",
+              boxShadow:
+                "0 40px 90px rgba(0,0,0,0.18), 0 8px 24px rgba(185,151,91,0.12), inset 0 1px 0 rgba(255,255,255,0.9)",
+            }}
+          >
+            <div
+              className="absolute inset-0 rounded-2xl pointer-events-none z-10"
+              style={{ border: "1px solid rgba(212,175,55,0.18)" }}
+            />
+            <Image
+              src="/sample_shoe_01.png"
+              alt="CRK Signature Shoe"
+              fill
+              priority
+              sizes="320px"
+              className="object-contain p-6 drop-shadow-[0_20px_30px_rgba(0,0,0,0.22)]"
+              style={{ transform: "rotate(8deg) scale(1.05)" }}
+            />
+          </div>
+        </div>
       </div>
 
-      {/* ── Right login panel ── */}
-      <div style={styles.loginPanel}>
-        <div style={styles.card}>
-          {/* Card header */}
-          <div style={styles.cardHeader}>
-            <div style={styles.cardLogoRow}>
-              <div style={styles.cardLogoMark}>
-                <svg width="22" height="22" viewBox="0 0 40 40" fill="none">
-                  <path
-                    d="M4 28 C8 16, 16 8, 28 10 C36 12, 38 20, 34 26 C30 32, 20 36, 10 34 C6 32, 2 30, 4 28Z"
-                    fill="white"
-                    opacity="0.9"
-                  />
-                </svg>
-              </div>
-              <span style={styles.cardBrandText}>CRK Shoes</span>
+      {/* Dark mode version of LEFT PANEL */}
+      <div
+        className="hidden relative w-full lg:w-[54%] min-h-[420px] lg:min-h-screen flex-col justify-between overflow-hidden dark:flex"
+        style={{
+          background:
+            "linear-gradient(135deg, #121212 0%, #1a1a1a 60%, #222222 100%)",
+        }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, #B9975B 0px, #B9975B 1px, transparent 1px, transparent 10px)",
+          }}
+        />
+
+        <div className="relative z-10 flex items-center justify-between px-8 pt-8">
+          <Link href="/" className="inline-flex items-center gap-2">
+            <span className="font-serif font-black text-xl tracking-widest text-white uppercase">
+              {siteConfig.name}
+            </span>
+          </Link>
+        </div>
+
+        <div className="relative z-10 flex-1 flex items-center justify-center px-8 py-6">
+          <span
+            className="absolute inset-0 flex items-center justify-center font-serif font-black uppercase pointer-events-none select-none"
+            style={{
+              fontSize: "clamp(4rem, 11vw, 9rem)",
+              letterSpacing: "0.4em",
+              color: "rgba(185,151,91,0.065)",
+            }}
+            aria-hidden="true"
+          >
+            LEGACY
+          </span>
+
+          <div
+            className="relative rounded-2xl overflow-hidden"
+            style={{
+              width: "min(320px, 75vw)",
+              aspectRatio: "1 / 1",
+              background: "linear-gradient(145deg, #1c1c1c 0%, #2a2a2a 100%)",
+              transform: "rotate(-8deg)",
+              boxShadow:
+                "0 40px 90px rgba(0,0,0,0.3), 0 8px 24px rgba(185,151,91,0.12), inset 0 1px 0 rgba(255,255,255,0.05)",
+            }}
+          >
+            <div
+              className="absolute inset-0 rounded-2xl pointer-events-none z-10"
+              style={{ border: "1px solid rgba(212,175,55,0.18)" }}
+            />
+            <Image
+              src="/sample_shoe_01.png"
+              alt="CRK Signature Shoe"
+              fill
+              priority
+              sizes="320px"
+              className="object-contain p-6 drop-shadow-[0_20px_30px_rgba(0,0,0,0.5)]"
+              style={{ transform: "rotate(8deg) scale(1.05)" }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ─── RIGHT PANEL — Login card ─── */}
+      <div className="flex-1 flex flex-col items-center justify-center relative px-5 py-12 bg-[#F4F1EB] dark:bg-black">
+        {/* Theme toggle */}
+        <button
+          type="button"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="absolute top-6 right-6 w-9 h-9 rounded-xl flex items-center justify-center text-[#6B6B6B] dark:text-gray-400 hover:text-[#121212] dark:hover:text-white transition-all cursor-pointer bg-white dark:bg-zinc-900 border border-[#E0DAD0] dark:border-zinc-800 shadow-[0_1px_4px_rgba(0,0,0,0.06)] dark:shadow-none"
+          aria-label="Toggle theme"
+        >
+          {theme === "dark" ? (
+            <SunLinear className="w-4 h-4 text-[#D4AF37]" />
+          ) : (
+            <MoonLinear className="w-4 h-4" />
+          )}
+        </button>
+
+        {/* Floating card */}
+        <div className="w-full max-w-[420px] rounded-3xl p-8 sm:p-9 bg-white dark:bg-zinc-950 border border-[#E8E8EA] dark:border-zinc-800 shadow-[0_24px_80px_rgba(0,0,0,0.08),_0_2px_0_rgba(212,175,55,0.06)_inset] dark:shadow-[0_24px_80px_rgba(0,0,0,0.4),_0_2px_0_rgba(212,175,55,0.06)_inset]">
+          {/* Badge row */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.18em] text-[#B9975B] border border-[#D4AF37]/45">
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-[#D4AF37]" />
+              Est. 2026 • Admin
             </div>
-            <h2 style={styles.cardTitle}>Welcome back</h2>
-            <p style={styles.cardSubtitle}>Sign in to manage your store</p>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/50">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              Private
+            </span>
           </div>
 
+          {/* Heading */}
+          <div className="mb-6">
+            <h1
+              className="font-serif font-black text-[#121212] dark:text-white leading-tight mb-1"
+              style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
+            >
+              Welcome Back
+            </h1>
+            <p className="text-sm text-[#6B6B6B] dark:text-zinc-400 font-medium">
+              Sign in to {siteConfig.name} admin
+            </p>
+            <p className="text-xs text-[#8A8A8A] dark:text-zinc-500 mt-0.5">
+              Secure admin access only
+            </p>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="mb-5 p-3.5 rounded-xl text-red-600 dark:text-red-400 text-xs font-semibold flex items-center gap-2 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+              {error}
+            </div>
+          )}
+
           {/* Form */}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            style={styles.form}
-            noValidate
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Email */}
-            <div style={styles.fieldGroup}>
-              <label htmlFor="email" style={styles.label}>
-                Email address
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B6B6B] dark:text-zinc-400 block">
+                Email Address
               </label>
-              <div style={styles.inputWrapper}>
-                <span style={styles.inputIcon}>
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
-                  </svg>
-                </span>
+              <div className="relative">
+                <LetterLinear className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#B9975B] pointer-events-none" />
                 <input
-                  id="email"
+                  id="admin-email"
                   type="email"
+                  placeholder="admin@crkshoes.lk"
                   autoComplete="email"
-                  placeholder="admin@stepkicks.lk"
                   {...register("email")}
-                  style={{
-                    ...styles.input,
-                    ...(errors.email ? styles.inputError : {}),
-                  }}
+                  className={`w-full h-11 rounded-[10px] pl-10 pr-4 text-sm text-[#121212] dark:text-white bg-[#FAF9F6] dark:bg-zinc-900 outline-none transition-all border ${
+                    errors.email
+                      ? "border-red-400 focus:border-red-400 focus:ring-[3px] focus:ring-red-400/20"
+                      : "border-[#E8E8EA] dark:border-zinc-800 focus:border-[#D4AF37]/55 focus:ring-[3px] focus:ring-[#D4AF37]/15"
+                  }`}
                 />
               </div>
               {errors.email && (
-                <p style={styles.fieldError}>{errors.email.message}</p>
+                <p className="text-[11px] text-red-500 dark:text-red-400 font-medium pl-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             {/* Password */}
-            <div style={styles.fieldGroup}>
-              <label htmlFor="password" style={styles.label}>
-                Password
-              </label>
-              <div style={styles.inputWrapper}>
-                <span style={styles.inputIcon}>
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                </span>
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B6B6B] dark:text-zinc-400 block">
+                  Password
+                </label>
+              </div>
+              <div className="relative">
+                <LockPasswordLinear className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#B9975B] pointer-events-none" />
                 <input
-                  id="password"
+                  id="admin-password"
                   type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
                   autoComplete="current-password"
-                  placeholder="Enter your password"
                   {...register("password")}
-                  style={{
-                    ...styles.input,
-                    paddingRight: "3rem",
-                    ...(errors.password ? styles.inputError : {}),
-                  }}
+                  className={`w-full h-11 rounded-[10px] pl-10 pr-11 text-sm text-[#121212] dark:text-white bg-[#FAF9F6] dark:bg-zinc-900 outline-none transition-all border ${
+                    errors.password
+                      ? "border-red-400 focus:border-red-400 focus:ring-[3px] focus:ring-red-400/20"
+                      : "border-[#E8E8EA] dark:border-zinc-800 focus:border-[#D4AF37]/55 focus:ring-[3px] focus:ring-[#D4AF37]/15"
+                  }`}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword((v) => !v)}
-                  style={styles.eyeBtn}
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8A8A8A] dark:text-zinc-500 hover:text-[#121212] dark:hover:text-white transition-colors cursor-pointer"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
-                    <svg
-                      width="16"
-                      height="16"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                      <line x1="1" y1="1" x2="23" y2="23" />
-                    </svg>
+                    <EyeClosedLinear className="w-[18px] h-[18px]" />
                   ) : (
-                    <svg
-                      width="16"
-                      height="16"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
+                    <EyeLinear className="w-[18px] h-[18px]" />
                   )}
                 </button>
               </div>
               {errors.password && (
-                <p style={styles.fieldError}>{errors.password.message}</p>
+                <p className="text-[11px] text-red-500 dark:text-red-400 font-medium pl-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
-            {/* Global error */}
-            {error && (
-              <div style={styles.errorBanner}>
-                <svg
-                  width="16"
-                  height="16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="12" />
-                  <line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-                <span>{error}</span>
-              </div>
-            )}
-
-            {/* Submit */}
+            {/* Sign in button */}
             <button
+              id="admin-login-submit"
               type="submit"
               disabled={loading}
+              className="w-full h-11 rounded-[10px] font-bold text-sm text-white flex items-center justify-center gap-2 transition-all active:scale-[0.99] disabled:opacity-70 cursor-pointer mt-1"
               style={{
-                ...styles.submitBtn,
-                ...(loading ? styles.submitBtnLoading : {}),
+                background: loading
+                  ? "#C5A880"
+                  : "linear-gradient(90deg, #C5A880 0%, #D4AF37 50%, #B9975B 100%)",
+                boxShadow: "0 4px 18px rgba(212,175,55,0.32)",
+              }}
+              onMouseEnter={(e) => {
+                if (!loading)
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                    "0 6px 28px rgba(212,175,55,0.48)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                  "0 4px 18px rgba(212,175,55,0.32)";
               }}
             >
               {loading ? (
                 <>
-                  <span style={styles.spinner} />
-                  Signing in…
+                  <RefreshLinear className="w-4 h-4 animate-spin" />
+                  <span>Signing in...</span>
                 </>
               ) : (
                 <>
-                  Sign In
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
+                  <span>Sign in to Admin</span>
+                  <AltArrowRightLinear className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
-
-          {/* Footer note */}
-          <p style={styles.secureNote}>
-            <svg
-              width="12"
-              height="12"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
-            Secured by NextAuth
-          </p>
         </div>
       </div>
-
-      {/* Keyframe animations + responsive rules injected inline */}
-      <style>{`
-        @keyframes sk-float1 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50%       { transform: translate(40px, -30px) scale(1.08); }
-        }
-        @keyframes sk-float2 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50%       { transform: translate(-30px, 40px) scale(1.12); }
-        }
-        @keyframes sk-float3 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50%       { transform: translate(20px, 25px) scale(0.95); }
-        }
-        @keyframes sk-spin {
-          to { transform: rotate(360deg); }
-        }
-        @keyframes sk-fadein {
-          from { opacity: 0; transform: translateY(16px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── Input focus glow ── */
-        #email:focus,
-        #password:focus {
-          border-color: rgba(255, 255, 255, 0.35) !important;
-          background: rgba(255, 255, 255, 0.08) !important;
-          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
-        }
-
-        /* ── Submit button hover ── */
-        button[type="submit"]:not(:disabled):hover {
-          opacity: 0.92;
-          transform: translateY(-1px);
-          box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
-        }
-        button[type="submit"]:not(:disabled):active {
-          transform: translateY(0);
-        }
-
-        /* ── Eye button hover ── */
-        button[aria-label]:hover {
-          color: rgba(255, 255, 255, 0.7) !important;
-        }
-
-        /* ── Responsive: hide brand panel on narrow screens ── */
-        @media (max-width: 768px) {
-          .sk-brand-panel { display: none !important; }
-          .sk-login-panel { padding: 24px 16px !important; }
-        }
-      `}</style>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────────
-   Inline styles — no external CSS dependency
-   Works regardless of which layout is active
-───────────────────────────────────────────── */
-const styles: Record<string, React.CSSProperties> = {
-  root: {
-    display: "flex",
-    minHeight: "100vh",
-    fontFamily:
-      '"Momo Trust Sans", ui-sans-serif, system-ui, -apple-system, sans-serif',
-    background: "#0a0a0a",
-  },
-
-  /* ── Brand panel ── */
-  brandPanel: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    width: "42%",
-    minHeight: "100vh",
-    background:
-      "linear-gradient(145deg, #111111 0%, #1a1a1a 40%, #0d0d0d 100%)",
-    overflow: "hidden",
-    padding: "48px 40px",
-    // Hide on small viewports via a CSS media query workaround
-    // (full responsive handling via <style> block below)
-  },
-  orb1: {
-    position: "absolute",
-    top: "-80px",
-    right: "-80px",
-    width: "360px",
-    height: "360px",
-    borderRadius: "50%",
-    background:
-      "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)",
-    animation: "sk-float1 9s ease-in-out infinite",
-  },
-  orb2: {
-    position: "absolute",
-    bottom: "60px",
-    left: "-100px",
-    width: "440px",
-    height: "440px",
-    borderRadius: "50%",
-    background:
-      "radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)",
-    animation: "sk-float2 12s ease-in-out infinite",
-  },
-  orb3: {
-    position: "absolute",
-    top: "45%",
-    left: "30%",
-    width: "220px",
-    height: "220px",
-    borderRadius: "50%",
-    background:
-      "radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)",
-    animation: "sk-float3 7s ease-in-out infinite",
-  },
-  brandContent: {
-    position: "relative",
-    zIndex: 1,
-    animation: "sk-fadein 0.7s ease both",
-  },
-  logoMark: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "64px",
-    height: "64px",
-    borderRadius: "18px",
-    background: "rgba(255,255,255,0.08)",
-    backdropFilter: "blur(8px)",
-    border: "1px solid rgba(255,255,255,0.12)",
-    marginBottom: "28px",
-  },
-  brandName: {
-    fontSize: "2.6rem",
-    fontWeight: 800,
-    letterSpacing: "0.12em",
-    color: "#ffffff",
-    margin: "0 0 8px 0",
-    lineHeight: 1,
-  },
-  brandTagline: {
-    fontSize: "0.875rem",
-    color: "rgba(255,255,255,0.45)",
-    letterSpacing: "0.08em",
-    textTransform: "uppercase",
-    margin: 0,
-  },
-  divider: {
-    width: "48px",
-    height: "2px",
-    background: "rgba(255,255,255,0.15)",
-    borderRadius: "2px",
-    margin: "32px 0",
-  },
-  statsList: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "18px",
-  },
-  statItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: "14px",
-  },
-  statIcon: {
-    fontSize: "1.2rem",
-    flexShrink: 0,
-  },
-  statText: {
-    fontSize: "0.875rem",
-    color: "rgba(255,255,255,0.6)",
-    fontWeight: 400,
-  },
-  brandFooter: {
-    position: "relative",
-    zIndex: 1,
-    fontSize: "0.75rem",
-    color: "rgba(255,255,255,0.25)",
-    margin: 0,
-  },
-
-  /* ── Login panel ── */
-  loginPanel: {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "32px 24px",
-    background: "#0f0f0f",
-  },
-  card: {
-    width: "100%",
-    maxWidth: "420px",
-    animation: "sk-fadein 0.55s ease 0.1s both",
-  },
-  cardHeader: {
-    marginBottom: "36px",
-  },
-  cardLogoRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    marginBottom: "28px",
-  },
-  cardLogoMark: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "36px",
-    height: "36px",
-    borderRadius: "10px",
-    background: "rgba(255,255,255,0.1)",
-    border: "1px solid rgba(255,255,255,0.12)",
-  },
-  cardBrandText: {
-    fontSize: "0.8rem",
-    fontWeight: 700,
-    letterSpacing: "0.14em",
-    color: "rgba(255,255,255,0.5)",
-  },
-  cardTitle: {
-    fontSize: "1.75rem",
-    fontWeight: 700,
-    color: "#ffffff",
-    margin: "0 0 8px 0",
-    letterSpacing: "-0.02em",
-  },
-  cardSubtitle: {
-    fontSize: "0.9rem",
-    color: "rgba(255,255,255,0.4)",
-    margin: 0,
-  },
-
-  /* ── Form ── */
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "20px",
-  },
-  fieldGroup: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-  },
-  label: {
-    fontSize: "0.8rem",
-    fontWeight: 600,
-    color: "rgba(255,255,255,0.65)",
-    letterSpacing: "0.02em",
-  },
-  inputWrapper: {
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-  },
-  inputIcon: {
-    position: "absolute",
-    left: "14px",
-    color: "rgba(255,255,255,0.3)",
-    display: "flex",
-    alignItems: "center",
-    pointerEvents: "none",
-  },
-  input: {
-    width: "100%",
-    height: "48px",
-    paddingLeft: "42px",
-    paddingRight: "14px",
-    borderRadius: "12px",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    borderColor: "rgba(255,255,255,0.1)",
-    background: "rgba(255,255,255,0.05)",
-    color: "#ffffff",
-    fontSize: "0.9rem",
-    outline: "none",
-    transition: "border-color 0.2s, background 0.2s, box-shadow 0.2s",
-    boxSizing: "border-box",
-  },
-  inputError: {
-    borderColor: "rgba(239, 68, 68, 0.6)",
-    background: "rgba(239, 68, 68, 0.05)",
-  },
-  eyeBtn: {
-    position: "absolute",
-    right: "14px",
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    color: "rgba(255,255,255,0.3)",
-    display: "flex",
-    alignItems: "center",
-    padding: "4px",
-    borderRadius: "6px",
-    transition: "color 0.2s",
-  },
-  fieldError: {
-    fontSize: "0.78rem",
-    color: "#f87171",
-    margin: 0,
-  },
-  errorBanner: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    padding: "12px 16px",
-    borderRadius: "10px",
-    background: "rgba(239, 68, 68, 0.1)",
-    border: "1px solid rgba(239, 68, 68, 0.25)",
-    color: "#f87171",
-    fontSize: "0.85rem",
-    fontWeight: 500,
-  },
-  submitBtn: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "10px",
-    width: "100%",
-    height: "50px",
-    borderRadius: "12px",
-    border: "none",
-    background: "#ffffff",
-    color: "#0a0a0a",
-    fontSize: "0.9rem",
-    fontWeight: 700,
-    letterSpacing: "0.02em",
-    cursor: "pointer",
-    transition: "opacity 0.2s, transform 0.15s",
-    marginTop: "4px",
-  },
-  submitBtnLoading: {
-    opacity: 0.7,
-    cursor: "not-allowed",
-  },
-  spinner: {
-    width: "16px",
-    height: "16px",
-    border: "2px solid rgba(10,10,10,0.2)",
-    borderTopColor: "#0a0a0a",
-    borderRadius: "50%",
-    display: "inline-block",
-    animation: "sk-spin 0.7s linear infinite",
-    flexShrink: 0,
-  },
-  secureNote: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "6px",
-    marginTop: "28px",
-    fontSize: "0.73rem",
-    color: "rgba(255,255,255,0.2)",
-  },
-};
