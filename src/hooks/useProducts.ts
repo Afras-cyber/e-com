@@ -10,6 +10,7 @@ async function fetchProducts(filters: ProductFilters): Promise<ProductsResponse>
   if (filters.sort) params.append('sort', filters.sort);
   if (filters.isOnSale) params.append('isOnSale', 'true');
   if (filters.isFeatured) params.append('isFeatured', 'true');
+  if (filters.isAvailable) params.append('isAvailable', 'true');
   if (filters.page) params.append('page', filters.page.toString());
   
   if (filters.brand?.length) params.append('brand', filters.brand.join(','));

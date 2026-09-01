@@ -23,6 +23,10 @@ export default async function ShopPage({
     sort: resolvedParams.sort as any,
     page: resolvedParams.page ? parseInt(resolvedParams.page) : 1,
     isOnSale: resolvedParams.isOnSale === "true",
+    isAvailable: resolvedParams.isAvailable === "true",
+    isFeatured: resolvedParams.isFeatured === "true",
+    minPrice: resolvedParams.minPrice ? Number(resolvedParams.minPrice) : undefined,
+    maxPrice: resolvedParams.maxPrice ? Number(resolvedParams.maxPrice) : undefined,
     brand: resolvedParams.brand?.split(","),
     sizes: resolvedParams.sizes?.split(","),
     colors: resolvedParams.colors?.split(","),
@@ -32,6 +36,11 @@ export default async function ShopPage({
     filters.category ||
     filters.brand?.length ||
     filters.sizes?.length ||
+    filters.colors?.length ||
+    filters.minPrice != null ||
+    filters.maxPrice != null ||
+    filters.isAvailable ||
+    filters.isFeatured ||
     filters.isOnSale;
 
   await connectDB();
@@ -46,7 +55,7 @@ export default async function ShopPage({
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-10 gap-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight">
             Shop Collection
@@ -58,8 +67,8 @@ export default async function ShopPage({
           )}
         </div>
 
-        {/* Right Corner Controls: Showing count, Sort Dropdown & Mobile Filter */}
-        <div className="flex items-center justify-between md:justify-end gap-3 sm:gap-4 flex-wrap">
+        {/* Right Corner Controls: Showing count, On Sale toggle, Sort Dropdown & Mobile Filter */}
+        <div className="flex items-center justify-between md:justify-end gap-2.5 sm:gap-3 flex-wrap">
           <Suspense fallback={<div className="h-10 w-48 bg-muted animate-pulse rounded-full" />}>
             <ProductSortDropdown filters={filters} />
           </Suspense>
@@ -75,13 +84,13 @@ export default async function ShopPage({
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
         {/* Filters Sidebar — desktop only (inline) */}
-        <aside className="w-full lg:w-64 shrink-0 hidden md:block">
+        <aside className="w-full md:w-72 lg:w-80 shrink-0 hidden md:block">
           <div className="sticky top-24">
             <Suspense
               fallback={
-                <div className="animate-pulse h-64 bg-muted rounded-xl" />
+                <div className="animate-pulse h-96 bg-muted rounded-[28px]" />
               }
             >
               <ProductFilters categories={categoriesData} brands={brandsData} />
