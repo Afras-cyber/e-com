@@ -128,10 +128,9 @@ export default function Home() {
       <TestimonialsSection />
 
       {/* ── CTA Banner ── */}
-      <section className="py-20 sm:py-28 px-4">
+      {/* <section className="py-20 sm:py-28 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="relative overflow-hidden rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-foreground to-foreground/80 dark:from-zinc-100 dark:to-zinc-300 px-8 py-16 sm:px-16 sm:py-20 text-center shadow-2xl shadow-foreground/10 dark:shadow-zinc-200/10">
-            {/* Background pattern */}
             <div
               className="absolute inset-0 opacity-[0.04]"
               style={{
@@ -177,10 +176,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── Newsletter ── */}
-      <NewsletterSignup />
+      {/* <NewsletterSignup /> */}
     </div>
   );
 }
