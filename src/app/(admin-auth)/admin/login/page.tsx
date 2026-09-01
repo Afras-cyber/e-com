@@ -267,7 +267,7 @@ export default function AdminLogin() {
                 <input
                   id="admin-email"
                   type="email"
-                  placeholder="admin@crkshoes.lk"
+                  placeholder="admin@legacyshoes.lk"
                   autoComplete="email"
                   {...register("email")}
                   className={`w-full h-11 rounded-[10px] pl-10 pr-4 text-sm text-[#121212] dark:text-white bg-[#FAF9F6] dark:bg-zinc-900 outline-none transition-all border ${

@@ -22,7 +22,7 @@ export async function sendOrderConfirmation({
   items: any[];
   totalAmount: number;
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://crkshoes.lk";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://legacyshoes.lk";
   return resend.emails.send({
     from: FROM_EMAIL,
     to: toEmail,
