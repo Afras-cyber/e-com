@@ -105,7 +105,7 @@ export default function SearchDialog({
             {loading ? (
               <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                 <RefreshLinear className="w-8 h-8 animate-spin mb-2" />
-                <p>Searching CRK Shoes...</p>
+                <p>Searching for Shoes...</p>
               </div>
             ) : results.length > 0 ? (
               <div className="space-y-2">

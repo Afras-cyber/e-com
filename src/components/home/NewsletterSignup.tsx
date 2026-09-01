@@ -68,7 +68,7 @@ export default function NewsletterSignup() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 tracking-tight text-white leading-tight">
               Join the{" "}
               <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">
-                CRK Shoes
+                Legacy Shoes
               </span>{" "}
               Club
             </h2>

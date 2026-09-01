@@ -110,7 +110,7 @@ ${config.invoiceUrl}
 
 💰 Total Amount: LKR ${config.totalAmount.toLocaleString()}
 
-Thank you for choosing CRK Shoes! 🛍️`.trim();
+Thank you for choosing Legacy Shoes! 🛍️`.trim();
 
   return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
 }

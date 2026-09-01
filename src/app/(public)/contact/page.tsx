@@ -62,7 +62,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold text-lg">Location</h3>
                       <p className="text-muted-foreground">
-                        CRK Shoes Flagship Store
+                        Legacy Shoes Flagship Store
                         <br />
                        
                         <br />

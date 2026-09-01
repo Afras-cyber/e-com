@@ -114,7 +114,7 @@ export default function TestimonialForm({ onClose }: { onClose: () => void }) {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Your Review</label>
                 <Textarea
-                  placeholder="Tell us what you think about CRK Shoes..."
+                  placeholder="Tell us what you think about Legacy Shoes..."
                   className="min-h-[120px] resize-none"
                   required
                   value={formData.review}

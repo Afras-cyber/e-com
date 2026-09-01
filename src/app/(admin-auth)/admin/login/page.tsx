@@ -125,7 +125,7 @@ export default function AdminLogin() {
             />
             <Image
               src="/sample_shoe_01.png"
-              alt="CRK Signature Shoe"
+              alt="Legacy Signature Shoe"
               fill
               priority
               sizes="320px"
@@ -190,7 +190,7 @@ export default function AdminLogin() {
             />
             <Image
               src="/sample_shoe_01.png"
-              alt="CRK Signature Shoe"
+              alt="LS Signature Shoe"
               fill
               priority
               sizes="320px"
