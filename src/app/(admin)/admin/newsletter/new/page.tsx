@@ -112,7 +112,7 @@ export default function NewCampaignPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, subject: e.target.value })
                 }
-                placeholder="Exciting updates from CRK Shoes!"
+                placeholder="Exciting updates from Legacy Shoes!"
                 className="w-full h-12 px-4 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-medium"
               />
             </div>

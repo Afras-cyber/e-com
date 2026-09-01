@@ -44,7 +44,7 @@ export default function AboutPage() {
                 <span className="text-primary">Market Leader</span>
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                CRK Shoes began in 2022 with a simple mission: to bridge the gap
+                Legacy Shoes began in 2022 with a simple mission: to bridge the gap
                 between global luxury fashion and the Sri Lankan market. What
                 started as a small Instagram boutique has grown into a trusted
                 ecosystem for collectors and fashion lovers alike.
@@ -81,7 +81,7 @@ export default function AboutPage() {
               </div>
               <div className="absolute -bottom-8 -right-8 bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-xl border border-zinc-100 dark:border-zinc-800 max-w-[240px]">
                 <p className="text-sm font-medium italic text-zinc-500 dark:text-zinc-400">
-                  "CRK Shoes isn't just a store; it's a culture. We're building
+                  "Legacy Shoes isn't just a store; it's a culture. We're building
                   a community of style-conscious individuals."
                 </p>
                 <div className="mt-4 flex items-center gap-3">
@@ -91,7 +91,7 @@ export default function AboutPage() {
                       Rilah K
                     </p>
                     <p className="text-[10px] text-muted-foreground">
-                      Founder, CRK Shoes
+                      Founder, Legacy Shoes
                     </p>
                   </div>
                 </div>
@@ -106,7 +106,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
-              Why Choose CRK Shoes?
+              Why Choose Legacy Shoes?
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               We've built our reputation on three core pillars that define
