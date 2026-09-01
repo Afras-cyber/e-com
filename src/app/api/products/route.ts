@@ -56,8 +56,10 @@ export async function GET(request: Request) {
     let sort: any = { createdAt: -1 };
     const sortParam = searchParams.get('sort');
     if (sortParam === 'price-asc') sort = { price: 1 };
-    if (sortParam === 'price-desc') sort = { price: -1 };
-    if (sortParam === 'best-rated') sort = { rating: -1 };
+    else if (sortParam === 'price-desc') sort = { price: -1 };
+    else if (sortParam === 'best-rated' || sortParam === 'popular') sort = { rating: -1, reviewCount: -1 };
+    else if (sortParam === 'featured') sort = { isFeatured: -1, createdAt: -1 };
+    else if (sortParam === 'newest') sort = { createdAt: -1 };
 
     const [products, total] = await Promise.all([
       Product.find(query).sort(sort).skip(skip).limit(limit).lean(),

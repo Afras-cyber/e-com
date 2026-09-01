@@ -1,9 +1,10 @@
 import ProductGrid from "@/components/shop/ProductGrid";
 import ProductFilters from "@/components/shop/ProductFilters";
 import MobileFilterToggle from "@/components/shop/MobileFilterToggle";
+import ProductSortDropdown from "@/components/shop/ProductSortDropdown";
 import { ProductFilters as FilterType } from "@/types/product";
 import { Suspense } from "react";
-import { RefreshLinear } from "solar-icon-set";;
+import { RefreshLinear } from "solar-icon-set";
 import connectDB from "@/lib/db/mongoose";
 import Category from "@/lib/db/models/Category";
 import Brand from "@/lib/db/models/Brand";
@@ -38,14 +39,14 @@ export default async function ShopPage({
     Category.find({ isActive: true }).sort({ order: 1, name: 1 }).lean(),
     Brand.find({ isActive: true }).sort({ name: 1 }).lean(),
   ]);
-  
+
   const categoriesData = JSON.parse(JSON.stringify(dbCategories));
   const brandsData = JSON.parse(JSON.stringify(dbBrands));
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-10 gap-2">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-10 gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight">
             Shop Collection
@@ -57,9 +58,20 @@ export default async function ShopPage({
           )}
         </div>
 
-        {/* Mobile filter toggle */}
-        <div className="md:hidden">
-          <MobileFilterToggle hasActiveFilters={!!hasActiveFilters} categories={categoriesData} brands={brandsData} />
+        {/* Right Corner Controls: Showing count, Sort Dropdown & Mobile Filter */}
+        <div className="flex items-center justify-between md:justify-end gap-3 sm:gap-4 flex-wrap">
+          <Suspense fallback={<div className="h-10 w-48 bg-muted animate-pulse rounded-full" />}>
+            <ProductSortDropdown filters={filters} />
+          </Suspense>
+
+          {/* Mobile filter toggle */}
+          <div className="md:hidden">
+            <MobileFilterToggle
+              hasActiveFilters={!!hasActiveFilters}
+              categories={categoriesData}
+              brands={brandsData}
+            />
+          </div>
         </div>
       </div>
 

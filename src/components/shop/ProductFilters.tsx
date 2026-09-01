@@ -38,7 +38,6 @@ export default function ProductFilters({ categories = [], brands = [] }: { categ
   );
 
   const currentCategory = searchParams.get('category');
-  const currentSort = searchParams.get('sort') || 'newest';
   const currentBrands = searchParams.get('brand')?.split(',') || [];
   const currentSizes = searchParams.get('sizes')?.split(',') || [];
   const isOnSale = searchParams.get('isOnSale') === 'true';
@@ -137,19 +136,7 @@ export default function ProductFilters({ categories = [], brands = [] }: { categ
         </div>
       </div>
 
-      <div className="border-t pt-6">
-        <h3 className="font-bold text-sm uppercase tracking-widest mb-4">Sort By</h3>
-        <select 
-          value={currentSort}
-          onChange={(e) => setFilter('sort', e.target.value)}
-          className="w-full text-sm border-2 rounded-lg p-2.5 bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 border-border font-medium"
-        >
-          <option value="newest">Newest Arrivals</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="best-rated">Best Rated</option>
-        </select>
-      </div>
+
 
       <div className="border-t pt-6">
         <div className="flex items-center justify-between">
