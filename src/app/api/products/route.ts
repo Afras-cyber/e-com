@@ -4,6 +4,10 @@ import Product from '@/lib/db/models/Product';
 import { ProductSchema } from '@/lib/validations/product.schema';
 import { auth } from '@/lib/auth';
 
+function escapeRegex(str: string) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 export async function GET(request: Request) {
   try {
     await connectDB();
@@ -18,14 +22,17 @@ export async function GET(request: Request) {
     // Filters — category: case-insensitive match against stored category string OR slug
     if (searchParams.get('category')) {
       const catParam = searchParams.get('category') as string;
-      // Also try converting slug format (e.g. "football-boot") to title-like form ("Football Boot")
       const slugToName = catParam.replace(/-/g, ' ');
-      query.category = { $regex: new RegExp(`^(${catParam}|${slugToName})$`, 'i') };
+      query.category = {
+        $regex: new RegExp(`^(${escapeRegex(catParam)}|${escapeRegex(slugToName)})$`, 'i'),
+      };
     }
     if (searchParams.get('subcategory')) {
       const subParam = searchParams.get('subcategory') as string;
       const slugToName = subParam.replace(/-/g, ' ');
-      query.subcategory = { $regex: new RegExp(`^(${subParam}|${slugToName})$`, 'i') };
+      query.subcategory = {
+        $regex: new RegExp(`^(${escapeRegex(subParam)}|${escapeRegex(slugToName)})$`, 'i'),
+      };
     }
     if (searchParams.get('brand')) query.brand = { $in: searchParams.get('brand')?.split(',') };
     if (searchParams.get('sizes')) query.sizes = { $in: searchParams.get('sizes')?.split(',') };
@@ -52,8 +59,10 @@ export async function GET(request: Request) {
     if (sortParam === 'price-desc') sort = { price: -1 };
     if (sortParam === 'best-rated') sort = { rating: -1 };
 
-    const products = await Product.find(query).sort(sort).skip(skip).limit(limit).lean();
-    const total = await Product.countDocuments(query);
+    const [products, total] = await Promise.all([
+      Product.find(query).sort(sort).skip(skip).limit(limit).lean(),
+      Product.countDocuments(query),
+    ]);
 
     return NextResponse.json({
       products,

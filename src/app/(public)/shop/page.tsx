@@ -34,8 +34,10 @@ export default async function ShopPage({
     filters.isOnSale;
 
   await connectDB();
-  const dbCategories = await Category.find({ isActive: true }).sort({ order: 1, name: 1 }).lean();
-  const dbBrands = await Brand.find({ isActive: true }).sort({ name: 1 }).lean();
+  const [dbCategories, dbBrands] = await Promise.all([
+    Category.find({ isActive: true }).sort({ order: 1, name: 1 }).lean(),
+    Brand.find({ isActive: true }).sort({ name: 1 }).lean(),
+  ]);
   
   const categoriesData = JSON.parse(JSON.stringify(dbCategories));
   const brandsData = JSON.parse(JSON.stringify(dbBrands));

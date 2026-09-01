@@ -7,17 +7,23 @@ import RelatedProducts from "@/components/shop/RelatedProducts";
 import { Suspense } from "react";
 import { RefreshLinear } from "solar-icon-set";
 
+import { cache } from "react";
+
+const getProductBySlug = cache(async (slug: string) => {
+  await connectDB();
+  return Product.findOne({
+    slug,
+    isAvailable: true,
+  }).lean();
+});
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  await connectDB();
-  const product = await Product.findOne({
-    slug: resolvedParams.slug,
-    isAvailable: true,
-  }).lean();
+  const product = await getProductBySlug(resolvedParams.slug);
 
   if (!product) {
     return {
@@ -28,12 +34,12 @@ export async function generateMetadata({
   return {
     title: `${product.name} | CRK Shoes`,
     description:
-      product.seoDescription || product.description.substring(0, 160),
+      product.seoDescription || product.description?.substring(0, 160) || "",
     openGraph: {
-      images: [product.images[0]],
+      images: product.images?.[0] ? [product.images[0]] : [],
       title: product.name,
       description:
-        product.seoDescription || product.description.substring(0, 160),
+        product.seoDescription || product.description?.substring(0, 160) || "",
     },
   };
 }
@@ -44,17 +50,14 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const resolvedParams = await params;
-
-  await connectDB();
-  const product = await Product.findOneAndUpdate(
-    { slug: resolvedParams.slug, isAvailable: true },
-    { $inc: { viewCount: 1 } },
-    { returnDocument: "after" },
-  ).lean();
+  const product = await getProductBySlug(resolvedParams.slug);
 
   if (!product) {
     notFound();
   }
+
+  // Increment view count in background without blocking render
+  Product.updateOne({ _id: product._id }, { $inc: { viewCount: 1 } }).exec().catch(() => {});
 
   // Convert ObjectIds to strings to pass to client components
   const serializedProduct = JSON.parse(JSON.stringify(product));

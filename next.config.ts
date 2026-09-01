@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    optimizePackageImports: [
+      "solar-icon-set",
+      "framer-motion",
+      "@tanstack/react-query",
+      "date-fns",
+      "lucide-react",
+    ],
+  },
   images: {
     remotePatterns: [
       {
