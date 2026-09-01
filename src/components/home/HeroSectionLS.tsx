@@ -113,7 +113,7 @@ export default function HeroSection() {
               </div>
               <div>
                 <div className="text-[13px] font-sans font-bold leading-none text-[#1A1A1A] dark:text-[#F5F5F5]">
-                  $189 — AERO MAX
+                  AERO MAX
                 </div>
                 <div className="text-[11px] mt-1 font-sans text-[#6B6B6B] dark:text-[#A8A9AD]">
                   Authentic • In stock

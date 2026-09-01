@@ -1,19 +1,32 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import {
-  ArrowRightLinear,
   ShieldCheckLinear,
   BusLinear,
   HistoryLinear,
   BoltLinear,
 } from "solar-icon-set";
-import { Button } from "@/components/ui/button";
-import HeroBanner from "@/components/home/HeroBanner";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { generateSEOMetadata, truncateDescription, generateBreadcrumbSchema } from "@/lib/seo";
+import { siteConfig } from "@/config/site";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
-import CategorySection from "@/components/home/CategorySection";
-import NewsletterSignup from "@/components/home/NewsletterSignup";
 import WhatsAppOrderTracker from "@/components/home/whatsappOrderTrack";
 import HeroSection from "@/components/home/HeroSectionLS";
+
+export const metadata: Metadata = generateSEOMetadata({
+  title: `Premium Authentic Shoes | ${siteConfig.name}`,
+  description: truncateDescription(
+    "Discover authentic premium shoes and sneakers from top brands. Fast 2-4 days delivery across Sri Lanka. 100% genuine, easy returns, and WhatsApp ordering."
+  ),
+  ogImage: `${siteConfig.url}/homepage_shoe.png`,
+  ogTitle: `${siteConfig.name} - Your Destination for Premium Shoes`,
+  ogDescription: "Shop authentic premium shoes with fast delivery across Sri Lanka. Quality guaranteed, easy returns.",
+  canonicalUrl: siteConfig.url,
+  keywords: "shoes, authentic sneakers, premium footwear, buy shoes online, Sri Lanka shoes, casual shoes, sports shoes, designer shoes",
+  author: siteConfig.name,
+  type: "website",
+});
 
 const features = [
   {
@@ -68,6 +81,12 @@ const brands = [
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
+      <StructuredData
+        data={generateBreadcrumbSchema([
+          { name: "Home", url: siteConfig.url },
+        ])}
+      />
+      
       <HeroSection />
       {/* ── Brand Marquee ── */}
       <section className="py-16 sm:py-24 bg-muted/40 dark:bg-zinc-900/40 overflow-hidden border-y border-border dark:border-zinc-800/60">

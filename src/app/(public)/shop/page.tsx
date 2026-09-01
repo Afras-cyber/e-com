@@ -5,10 +5,14 @@ import ProductSortDropdown from "@/components/shop/ProductSortDropdown";
 import { ProductFilters as FilterType } from "@/types/product";
 import { Suspense } from "react";
 import { RefreshLinear } from "solar-icon-set";
+import { Metadata } from "next";
 import connectDB from "@/lib/db/mongoose";
 import Category from "@/lib/db/models/Category";
 import Brand from "@/lib/db/models/Brand";
 import Product from "@/lib/db/models/Product";
+import { generateSEOMetadata, truncateDescription, generateBreadcrumbSchema } from "@/lib/seo";
+import { siteConfig } from "@/config/site";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 function sortSizes(sizes: string[]): string[] {
   return [...sizes].sort((a, b) => {
@@ -20,6 +24,20 @@ function sortSizes(sizes: string[]): string[] {
     return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
   });
 }
+
+export const metadata: Metadata = generateSEOMetadata({
+  title: "Shop Premium Shoes & Sneakers",
+  description: truncateDescription(
+    "Browse our extensive collection of authentic premium shoes from top brands. Filter by size, color, brand, and price. Fast delivery across Sri Lanka."
+  ),
+  ogImage: `${siteConfig.url}/homepage_shoe.png`,
+  ogTitle: "Shop Premium Authentic Shoes",
+  ogDescription: "Browse and buy authentic premium shoes. Multiple brands, sizes, and styles available.",
+  canonicalUrl: `${siteConfig.url}/shop`,
+  keywords: "buy shoes online, premium sneakers, authentic footwear, shoe brands, Sri Lanka, sale shoes, casual shoes, sports shoes",
+  author: siteConfig.name,
+  type: "website",
+});
 
 export default async function ShopPage({
   searchParams,
@@ -90,6 +108,13 @@ export default async function ShopPage({
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
+      <StructuredData
+        data={generateBreadcrumbSchema([
+          { name: "Home", url: siteConfig.url },
+          { name: "Shop", url: `${siteConfig.url}/shop` },
+        ])}
+      />
+
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
         <div>
@@ -142,7 +167,7 @@ export default async function ShopPage({
         </aside>
 
         {/* Product Grid */}
-        <div className="flex-1">
+        <div className="flex-1 w-full">
           <Suspense
             fallback={
               <div className="flex items-center justify-center min-h-[400px]">

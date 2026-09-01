@@ -49,7 +49,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold text-lg">Email</h3>
                       <p className="text-muted-foreground">
-                        crkshoes@gmail.com
+                        legacyshoes@gmail.com
                       </p>
                       {/* <p className="text-muted-foreground">orders@stepkicks.lk</p> */}
                     </div>

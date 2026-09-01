@@ -18,7 +18,7 @@ function getSiteUrl(overrideUrl?: string): string {
   }
 
   // 3. Server-side: use env variable, with a sensible fallback
-  return process.env.NEXT_PUBLIC_SITE_URL || "https://crkshoes.lk";
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://legacyshoes.lk";
 }
 
 export function buildWhatsAppURL(config: WhatsAppMessageConfig): string {

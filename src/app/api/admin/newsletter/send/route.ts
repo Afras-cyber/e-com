@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     // For now, we'll send a single broadcast if possible, or iterate.
 
     const { data, error } = await resend.emails.send({
-      from: "CRK Shoes <newsletter@crkshoes.shop>", // Ensure this domain is verified in Resend
+      from: "CRK Shoes <newsletter@legacyshoes.shop>", // Ensure this domain is verified in Resend
       to: emails,
       subject: subject,
       html: `

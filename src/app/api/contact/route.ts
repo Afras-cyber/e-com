@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
     const { data, error } = await resend.emails.send({
       from: "CRK Shoes Contact <onboarding@resend.dev>",
-      to: process.env.ADMIN_EMAIL || "admin@crkshoes.shop",
+      to: process.env.ADMIN_EMAIL || "admin@legacyshoes.shop",
       subject: `New Contact Form: ${subject || "General Inquiry"}`,
       html: `
         <h2>New Message from CRK Shoes Contact Form</h2>
