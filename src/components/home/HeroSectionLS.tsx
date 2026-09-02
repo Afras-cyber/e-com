@@ -62,13 +62,14 @@ export default function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="mt-6 sm:mt-8 md:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 md:gap-4">
-              <Link href="/shop">
-                <button className="h-10 sm:h-12 md:h-13 px-4 sm:px-6 md:px-8 rounded-full text-xs sm:text-sm md:text-sm font-semibold tracking-wide inline-flex items-center justify-center gap-2 md:gap-3 shadow-lg hover:shadow-xl bg-linear-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] text-white hover:opacity-90 transition-all duration-200 whitespace-nowrap shrink-0">
-                  Shop Collection
-                  <span className="w-5 sm:w-6 md:w-7 h-5 sm:h-6 md:h-7 rounded-full bg-white/90 text-[#8B6F1F] grid place-items-center shrink-0">
-                    <ArrowUpBold className="w-3 sm:w-3.5 md:w-4 h-3 sm:h-3.5 md:h-4" />
-                  </span>
-                </button>
+              <Link
+                href="/shop"
+                className="h-10 sm:h-12 md:h-13 px-4 sm:px-6 md:px-8 rounded-full text-xs sm:text-sm md:text-sm font-semibold tracking-wide inline-flex items-center justify-center gap-2 md:gap-3 shadow-lg hover:shadow-xl bg-linear-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] text-white hover:opacity-90 transition-all duration-200 whitespace-nowrap shrink-0 "
+              >
+                Shop Collection
+                <span className="w-5 sm:w-6 md:w-7 h-5 sm:h-6 md:h-7 rounded-full bg-white/90 text-[#8B6F1F] grid place-items-center shrink-0">
+                  <ArrowUpBold className="w-3 sm:w-3.5 md:w-4 h-3 sm:h-3.5 md:h-4" />
+                </span>
               </Link>
               <a
                 href="https://wa.me/94771234567?text=Hi%20Legacy%20Shoes%2C%20I'd%20like%20to%20chat%20about%20your%20collection"
