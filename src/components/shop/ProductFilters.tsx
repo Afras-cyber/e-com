@@ -356,6 +356,62 @@ export default function ProductFilters({
             </button>
           )}
         </div>
+        {/* 2. CATEGORY Section */}
+        <div className="pt-6 border-t border-[#ECEAE4] dark:border-[#282828] mt-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs sm:text-sm font-black tracking-widest uppercase text-foreground">
+              Category
+            </h3>
+            <button
+              type="button"
+              onClick={() => toggleSection('category')}
+              className="w-5 h-5 rounded-full border border-[#ECEAE4] dark:border-[#333] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer select-none"
+              aria-label="Toggle Category section"
+            >
+              <span className="text-xs leading-none font-bold">
+                {openSections.category ? '−' : '+'}
+              </span>
+            </button>
+          </div>
+
+          {openSections.category && (
+            <div className="mt-4 space-y-2.5">
+              {categoryList.map((cat) => {
+                const isSelected =
+                  currentCategory === cat.slug ||
+                  currentCategory?.toLowerCase() === cat.name.toLowerCase();
+                return (
+                  <label
+                    key={cat.slug}
+                    className="flex items-center gap-3 group cursor-pointer py-0.5"
+                    onClick={() => setFilter('category', cat.slug)}
+                  >
+                    <div
+                      className={cn(
+                        'w-4.5 h-4.5 rounded-md border flex items-center justify-center transition-all',
+                        isSelected
+                          ? 'bg-[#B8975A] border-[#B8975A] text-white shadow-xs'
+                          : 'border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]'
+                      )}
+                    >
+                      {isSelected && <CheckReadLinear className="w-3 h-3 text-white" />}
+                    </div>
+                    <span
+                      className={cn(
+                        'text-xs sm:text-sm font-medium transition-colors',
+                        isSelected
+                          ? 'text-foreground font-semibold'
+                          : 'text-foreground/80 group-hover:text-foreground'
+                      )}
+                    >
+                      {cat.name}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         {/* 1. BRAND Section */}
         <div className="pt-6">
@@ -419,62 +475,6 @@ export default function ProductFilters({
           )}
         </div>
 
-        {/* 2. CATEGORY Section */}
-        <div className="pt-6 border-t border-[#ECEAE4] dark:border-[#282828] mt-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs sm:text-sm font-black tracking-widest uppercase text-foreground">
-              Category
-            </h3>
-            <button
-              type="button"
-              onClick={() => toggleSection('category')}
-              className="w-5 h-5 rounded-full border border-[#ECEAE4] dark:border-[#333] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer select-none"
-              aria-label="Toggle Category section"
-            >
-              <span className="text-xs leading-none font-bold">
-                {openSections.category ? '−' : '+'}
-              </span>
-            </button>
-          </div>
-
-          {openSections.category && (
-            <div className="mt-4 space-y-2.5">
-              {categoryList.map((cat) => {
-                const isSelected =
-                  currentCategory === cat.slug ||
-                  currentCategory?.toLowerCase() === cat.name.toLowerCase();
-                return (
-                  <label
-                    key={cat.slug}
-                    className="flex items-center gap-3 group cursor-pointer py-0.5"
-                    onClick={() => setFilter('category', cat.slug)}
-                  >
-                    <div
-                      className={cn(
-                        'w-4.5 h-4.5 rounded-md border flex items-center justify-center transition-all',
-                        isSelected
-                          ? 'bg-[#B8975A] border-[#B8975A] text-white shadow-xs'
-                          : 'border-[#D8D5CC] dark:border-[#383838] bg-transparent group-hover:border-[#B8975A]'
-                      )}
-                    >
-                      {isSelected && <CheckReadLinear className="w-3 h-3 text-white" />}
-                    </div>
-                    <span
-                      className={cn(
-                        'text-xs sm:text-sm font-medium transition-colors',
-                        isSelected
-                          ? 'text-foreground font-semibold'
-                          : 'text-foreground/80 group-hover:text-foreground'
-                      )}
-                    >
-                      {cat.name}
-                    </span>
-                  </label>
-                );
-              })}
-            </div>
-          )}
-        </div>
 
         {/* 3. SIZE (US) Section */}
         <div className="pt-6 border-t border-[#ECEAE4] dark:border-[#282828] mt-6">
