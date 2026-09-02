@@ -14,7 +14,7 @@ const testimonials = [
   {
     customerName: "Afras Mohamed",
     rating: 5,
-    review: "The Bugatti sneakers are absolutely stunning! The quality is top-notch and they were delivered within 2 days in Colombo. Highly recommend StepKicks!",
+    review: "The Bugatti sneakers are absolutely stunning! The quality is top-notch and they were delivered within 2 days in Colombo. Highly recommend Legacy Sports!",
     productName: "Bugatti Men's Premium Sneakers",
     isApproved: true,
     isFeatured: true,
@@ -45,7 +45,7 @@ const testimonials = [
   {
     customerName: "Hussain R.",
     rating: 5,
-    review: "StepKicks never disappoints. Premium quality sneakers at reasonable prices.",
+    review: "Legacy sports never disappoints. Premium quality sneakers at reasonable prices.",
     isApproved: true,
     isFeatured: false,
   }

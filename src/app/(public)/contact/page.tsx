@@ -49,7 +49,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold text-lg">Email</h3>
                       <p className="text-muted-foreground">
-                        legacyshoes@gmail.com
+                        legacysports@gmail.com
                       </p>
                       {/* <p className="text-muted-foreground">orders@stepkicks.lk</p> */}
                     </div>
@@ -62,7 +62,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold text-lg">Location</h3>
                       <p className="text-muted-foreground">
-                        Legacy Shoes Flagship Store
+                        Legacy Sports Flagship Store
                         <br />
                        
                         <br />

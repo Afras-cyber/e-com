@@ -2,7 +2,7 @@
 
 ## 🎯 Mission Accomplished
 
-Comprehensive SEO optimization has been successfully implemented for **Legacy Shoes** website across all major pages:
+Comprehensive SEO optimization has been successfully implemented for **Legacy Sports** website across all major pages:
 - ✅ Home page
 - ✅ Shop page  
 - ✅ Single product page
@@ -165,9 +165,9 @@ track order, order status, shipping tracking, delivery updates
 
 Add to `.env.local`:
 ```
-NEXT_PUBLIC_SITE_NAME=Legacy Shoes
+NEXT_PUBLIC_SITE_NAME=Legacy Sports
 NEXT_PUBLIC_SITE_DESCRIPTION=Your destination for premium shoes
-NEXT_PUBLIC_SITE_URL=https://legacyshoes.lk
+NEXT_PUBLIC_SITE_URL=https://legacysports.lk
 NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your_code_here
 ```
 

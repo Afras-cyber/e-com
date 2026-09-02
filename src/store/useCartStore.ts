@@ -50,8 +50,8 @@ export const useCartStore = create<CartStore>()(
             return {
               items: state.items.map((i) =>
                 i.product._id === product._id &&
-                i.selectedSize === selectedSize &&
-                i.selectedColor === selectedColor
+                  i.selectedSize === selectedSize &&
+                  i.selectedColor === selectedColor
                   ? { ...i, quantity: i.quantity + 1 }
                   : i,
               ),
@@ -70,8 +70,8 @@ export const useCartStore = create<CartStore>()(
         set((state) => ({
           items: state.items.map((i) =>
             i.product._id === productId &&
-            i.selectedSize === size &&
-            i.selectedColor === color
+              i.selectedSize === size &&
+              i.selectedColor === color
               ? { ...i, quantity: Math.max(1, quantity) }
               : i,
           ),
@@ -108,7 +108,7 @@ export const useCartStore = create<CartStore>()(
         get().items.reduce((sum, item) => sum + item.quantity, 0),
     }),
     {
-      name: "legacyshoes-cart",
+      name: "legacysports-cart",
       partialize: (state) => ({ items: state.items }),
     },
   ),

@@ -16,12 +16,12 @@ export default function Footer() {
                 LEGACY
               </span>
               <span className="text-xs tracking-[0.25em] text-zinc-400 dark:text-zinc-500 font-sans uppercase">
-                SHOES
+                SPORTS
               </span>
             </Link>
 
             <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-sm font-normal">
-              The curated destination for authentic branded shoes in Sri Lanka. Boutique service, WhatsApp ordering, legacy quality.
+              The curated destination for authentic branded shoes in Sri Lanka. WhatsApp ordering, legacy quality.
             </p>
 
             <div>
@@ -136,7 +136,7 @@ export default function Footer() {
           {/* BOUTIQUE INFO Column */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-900 dark:text-zinc-100 mb-5">
-              BOUTIQUE INFO
+              SHOP INFO
             </h4>
 
             <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed font-normal">
@@ -145,12 +145,9 @@ export default function Footer() {
 
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-200/90 dark:border-zinc-800 bg-[#FAF9F5] dark:bg-zinc-900 text-xs text-zinc-600 dark:text-zinc-300 font-medium my-2 shadow-2xs">
               <ShieldCheckLinear className="w-4 h-4 text-[#C29B53] shrink-0" />
-              <span>Authentic guarantee • 14-day exchange</span>
+              <span>Authentic guarantee • Island-wide delivery</span>
             </div>
 
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium">
-              Colombo • Kandy • Galle • Island-wide delivery
-            </p>
           </div>
         </div>
 

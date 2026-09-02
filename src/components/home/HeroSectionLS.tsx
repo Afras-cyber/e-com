@@ -72,7 +72,7 @@ export default function HeroSection() {
                 </span>
               </Link>
               <a
-                href="https://wa.me/94771234567?text=Hi%20Legacy%20Shoes%2C%20I'd%20like%20to%20chat%20about%20your%20collection"
+                href="https://wa.me/94771234567?text=Hi%20Legacy%20Sports%2C%20I'd%20like%20to%20chat%20about%20your%20collection"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-10 sm:h-12 md:h-13 px-4 sm:px-6 md:px-7 rounded-full border text-xs sm:text-sm md:text-sm font-semibold tracking-wide inline-flex items-center justify-center gap-2 md:gap-2.5 border-[#D4AF37]/30 dark:border-[#D4AF37]/20 bg-white dark:bg-[#1A1A1A] hover:border-[#B9975B] dark:hover:border-[#B9975B] hover:bg-[#FAF9F6] dark:hover:bg-[#2A2A2A] transition-all duration-200 whitespace-nowrap text-[#1A1A1A] dark:text-[#E8E8E8]"

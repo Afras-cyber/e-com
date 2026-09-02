@@ -90,7 +90,7 @@
 ## 🔍 Testing Checklist
 
 ### Home Page
-- [ ] Title: "Premium Authentic Shoes | Legacy Shoes"
+- [ ] Title: "Premium Authentic Shoes | Legacy Sports"
 - [ ] Description includes: authentic, delivery, returns, WhatsApp
 - [ ] Breadcrumb structured data present
 - [ ] Open Graph tags with homepage_shoe.png

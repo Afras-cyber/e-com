@@ -4,7 +4,7 @@ import Category from '../src/lib/db/models/Category';
 import Brand from '../src/lib/db/models/Brand';
 import dotenv from 'dotenv';
 
-const slugify = (text: string) => 
+const slugify = (text: string) =>
   text.toString().toLowerCase()
     .replace(/\s+/g, '-')
     .replace(/[^\w\-]+/g, '')
@@ -60,7 +60,7 @@ const dummyProducts = [
     name: "Urban Style Casual Loafers",
     shortDescription: "Elegant casual slip-on loafers.",
     description: "Step out in elegance with these casual loafers. Slip-on design with a comfortable insole makes them your go-to choice for smart-casual events.",
-    brand: "StepKicks",
+    brand: "legacy-sports",
     category: "shoes",
     subcategory: "loafers",
     price: 8500,

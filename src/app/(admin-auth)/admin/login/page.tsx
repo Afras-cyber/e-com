@@ -267,14 +267,13 @@ export default function AdminLogin() {
                 <input
                   id="admin-email"
                   type="email"
-                  placeholder="admin@legacyshoes.lk"
+                  placeholder="admin@legacysports.lk"
                   autoComplete="email"
                   {...register("email")}
-                  className={`w-full h-11 rounded-[10px] pl-10 pr-4 text-sm text-[#121212] dark:text-white bg-[#FAF9F6] dark:bg-zinc-900 outline-none transition-all border ${
-                    errors.email
+                  className={`w-full h-11 rounded-[10px] pl-10 pr-4 text-sm text-[#121212] dark:text-white bg-[#FAF9F6] dark:bg-zinc-900 outline-none transition-all border ${errors.email
                       ? "border-red-400 focus:border-red-400 focus:ring-[3px] focus:ring-red-400/20"
                       : "border-[#E8E8EA] dark:border-zinc-800 focus:border-[#D4AF37]/55 focus:ring-[3px] focus:ring-[#D4AF37]/15"
-                  }`}
+                    }`}
                 />
               </div>
               {errors.email && (
@@ -299,11 +298,10 @@ export default function AdminLogin() {
                   placeholder="••••••••"
                   autoComplete="current-password"
                   {...register("password")}
-                  className={`w-full h-11 rounded-[10px] pl-10 pr-11 text-sm text-[#121212] dark:text-white bg-[#FAF9F6] dark:bg-zinc-900 outline-none transition-all border ${
-                    errors.password
+                  className={`w-full h-11 rounded-[10px] pl-10 pr-11 text-sm text-[#121212] dark:text-white bg-[#FAF9F6] dark:bg-zinc-900 outline-none transition-all border ${errors.password
                       ? "border-red-400 focus:border-red-400 focus:ring-[3px] focus:ring-red-400/20"
                       : "border-[#E8E8EA] dark:border-zinc-800 focus:border-[#D4AF37]/55 focus:ring-[3px] focus:ring-[#D4AF37]/15"
-                  }`}
+                    }`}
                 />
                 <button
                   type="button"

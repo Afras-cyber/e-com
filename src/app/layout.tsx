@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "sneakers",
     "authentic shoes",
     "Sri Lanka",
-    "Legacy Shoes",
+    "Legacy Sports",
     "premium shoes",
     "online shoe store",
   ],
@@ -87,7 +87,7 @@ export default function RootLayout({
           sizes="180x180"
         />
         <link rel="manifest" href="/site.webmanifest" />
-        
+
         {/* Preconnect to external resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -95,7 +95,7 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        
+
         {/* Google Fonts preload */}
         <link
           rel="preload"

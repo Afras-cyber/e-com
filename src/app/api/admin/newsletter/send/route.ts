@@ -42,19 +42,19 @@ export async function POST(request: Request) {
     // For now, we'll send a single broadcast if possible, or iterate.
 
     const { data, error } = await resend.emails.send({
-      from: "Legacy Shoes <newsletter@legacyshoes.shop>", // Ensure this domain is verified in Resend
+      from: "Legacy Sports <newsletter@legacysports.shop>", // Ensure this domain is verified in Resend
       to: emails,
       subject: subject,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 10px; overflow: hidden;">
           <div style="background: #000; color: #fff; padding: 20px; text-align: center;">
-            <h1 style="margin: 0; font-size: 24px; letter-spacing: -1px;">Legacy Shoes</h1>
+            <h1 style="margin: 0; font-size: 24px; letter-spacing: -1px;">Legacy Sports</h1>
           </div>
           <div style="padding: 30px; line-height: 1.6; color: #333;">
             ${content}
           </div>
           <div style="background: #f9f9f9; padding: 20px; text-align: center; font-size: 12px; color: #999;">
-            <p>&copy; 2026 Legacy Shoes. All rights reserved.</p>
+            <p>&copy; 2026 Legacy Sports. All rights reserved.</p>
             <p>You're receiving this because you subscribed to our newsletter.</p>
           </div>
         </div>

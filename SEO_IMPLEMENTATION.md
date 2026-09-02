@@ -1,6 +1,6 @@
 # SEO Implementation Guide
 
-This document outlines the comprehensive SEO implementation for Legacy Shoes website.
+This document outlines the comprehensive SEO implementation for Legacy Sports website.
 
 ## Overview
 
@@ -119,9 +119,9 @@ The website includes enterprise-grade SEO optimization across all key pages:
 To fully utilize all SEO features, add these to your `.env.local`:
 
 ```
-NEXT_PUBLIC_SITE_NAME=Legacy Shoes
+NEXT_PUBLIC_SITE_NAME=Legacy Sports
 NEXT_PUBLIC_SITE_DESCRIPTION=Your destination for premium shoes and accessories
-NEXT_PUBLIC_SITE_URL=https://legacyshoes.lk
+NEXT_PUBLIC_SITE_URL=https://legacysports.lk
 NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your_google_verification_code_here
 ```
 
