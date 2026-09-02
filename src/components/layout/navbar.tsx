@@ -2,14 +2,10 @@
 
 import Link from "next/link";
 import {
-  CartLargeLinear,
-  HamburgerMenuLinear,
-  MagniferLinear,
-  HeartLinear,
-  MoonBold,
-  CardSearchBold,
-  MenuDotsBold,
   CartBold,
+  MagniferOutline,
+  MenuDotsBold,
+  MoonBold,
 } from "solar-icon-set";
 import { Button } from "../ui/button";
 import { useCartStore } from "@/store/useCartStore";
@@ -120,7 +116,7 @@ export default function Navbar() {
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
             >
-              <CardSearchBold className="w-4 h-4" />
+              <MagniferOutline className="w-4 h-4" />
             </Button>
 
             {/* Cart */}
