@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     await connectDB();
-    const categories = await Category.find({}).sort({ order: 1, name: 1 });
+    const categories = await Category.find({}).sort({ order: 1, name: 1 }).lean();
     return NextResponse.json(categories);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

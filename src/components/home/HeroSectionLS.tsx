@@ -62,14 +62,15 @@ export default function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="mt-6 sm:mt-8 md:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 md:gap-4">
-            <Link href="/shop">
-              <button className="h-10 sm:h-12 md:h-13 px-4 sm:px-6 md:px-8 rounded-full text-xs sm:text-sm md:text-sm font-semibold tracking-wide inline-flex items-center justify-center gap-2 md:gap-3 shadow-lg hover:shadow-xl bg-linear-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] text-white hover:opacity-90 transition-all duration-200 whitespace-nowrap shrink-0">
+              <Link
+                href="/shop"
+                className="h-10 sm:h-12 md:h-13 px-4 sm:px-6 md:px-8 rounded-full text-xs sm:text-sm md:text-sm font-semibold tracking-wide inline-flex items-center justify-center gap-2 md:gap-3 shadow-lg hover:shadow-xl bg-linear-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] text-white hover:opacity-90 transition-all duration-200 whitespace-nowrap shrink-0 "
+              >
                 Shop Collection
                 <span className="w-5 sm:w-6 md:w-7 h-5 sm:h-6 md:h-7 rounded-full bg-white/90 text-[#8B6F1F] grid place-items-center shrink-0">
                   <ArrowUpBold className="w-3 sm:w-3.5 md:w-4 h-3 sm:h-3.5 md:h-4" />
                 </span>
-              </button>
-            </Link>
+              </Link>
               <a
                 href="https://wa.me/94771234567?text=Hi%20Legacy%20Shoes%2C%20I'd%20like%20to%20chat%20about%20your%20collection"
                 target="_blank"
@@ -110,7 +111,7 @@ export default function HeroSection() {
               />
             </div>
 
-            <div className="absolute left-[5%] md:left-[8%] top-[14%] z-20 rounded-[16px] shadow-[0_12px_40px_rgba(0,0,0,0.10)] border px-4 py-3 flex items-center gap-3 bg-white dark:bg-[#1A1A1A] border-[#E8E8EA] dark:border-[#2A2A2A]">
+            {/* <div className="absolute left-[5%] md:left-[8%] top-[14%] z-20 rounded-[16px] shadow-[0_12px_40px_rgba(0,0,0,0.10)] border px-4 py-3 flex items-center gap-3 bg-white dark:bg-[#1A1A1A] border-[#E8E8EA] dark:border-[#2A2A2A]">
               <div className="w-10 h-10 rounded-full grid place-items-center text-white bg-linear-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880]">
                 <DollarBold className="w-5 h-5" />
               </div>
@@ -122,7 +123,7 @@ export default function HeroSection() {
                   Authentic • In stock
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="absolute right-[4%] md:right-[8%] bottom-[12%] z-20 bg-[#1A1A1A] text-white rounded-[14px] shadow-[0_12px_40px_rgba(0,0,0,0.25)] px-4 py-3 flex items-center gap-2.5 border border-white/10">
               <ChatLineBold className="w-4 h-4 text-[#D4AF37] shrink-0" />

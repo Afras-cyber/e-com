@@ -90,6 +90,7 @@ const OrderSchema = new Schema<IOrderDocument>(
 // Indexes
 OrderSchema.index({ status: 1 });
 OrderSchema.index({ createdAt: -1 });
+OrderSchema.index({ status: 1, updatedAt: 1 });
 OrderSchema.index({ 'customer.phone': 1 });
 
 // Auto-generate order number
@@ -104,11 +105,6 @@ OrderSchema.pre('validate', async function () {
     }
   }
 });
-
-// Force refresh model in development to avoid schema caching issues
-if (process.env.NODE_ENV === 'development') {
-  delete (mongoose as any).models.Order;
-}
 
 const Order: Model<IOrderDocument> =
   mongoose.models.Order || mongoose.model<IOrderDocument>('Order', OrderSchema);

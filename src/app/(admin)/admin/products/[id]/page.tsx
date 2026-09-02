@@ -11,7 +11,7 @@ export default async function EditProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  
+
   await connectDB();
   const product = await Product.findById(id).lean();
 
@@ -24,12 +24,6 @@ export default async function EditProductPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Edit Product</h1>
-        <p className="text-muted-foreground">
-          Update your product details and inventory.
-        </p>
-      </div>
       <ProductForm initialData={serializedProduct} />
     </div>
   );

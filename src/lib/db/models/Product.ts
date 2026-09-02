@@ -80,6 +80,9 @@ const ProductSchema = new Schema<IProductDocument>(
 ProductSchema.index({ category: 1 });
 ProductSchema.index({ isFeatured: 1 });
 ProductSchema.index({ isOnSale: 1 });
+ProductSchema.index({ isAvailable: 1, isFeatured: 1 });
+ProductSchema.index({ isAvailable: 1, isOnSale: 1 });
+ProductSchema.index({ category: 1, isAvailable: 1 });
 ProductSchema.index({ createdAt: -1 });
 ProductSchema.index({ name: "text", tags: "text" });
 

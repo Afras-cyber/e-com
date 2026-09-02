@@ -23,18 +23,18 @@ if (!global.mongoose) {
 }
 
 async function connectDB(): Promise<typeof mongoose> {
-  if (cached.conn && mongoose.connection.readyState === 1) {
+  if (cached.conn && (cached.conn.connection?.readyState === 1 || mongoose.connection.readyState === 1)) {
     return cached.conn;
   }
 
-  if (!cached.promise || mongoose.connection.readyState === 0) {
+  if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
+      bufferCommands: true,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
     };
-    cached.promise = mongoose.connect(MONGODB_URI, opts);
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((m) => m);
   }
 
   try {

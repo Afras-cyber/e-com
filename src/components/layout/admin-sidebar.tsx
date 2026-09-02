@@ -29,7 +29,7 @@ export default function AdminSidebar() {
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r bg-background sm:flex">
       <div className="flex h-16 items-center border-b px-6">
         <Link href="/admin" className="flex items-center gap-2 font-semibold">
-          <span className="text-xl">{siteConfig.name} Admin</span>
+          <span className="text-xl">Admin</span>
         </Link>
       </div>
       <div className="flex flex-1 flex-col overflow-y-auto py-4">
