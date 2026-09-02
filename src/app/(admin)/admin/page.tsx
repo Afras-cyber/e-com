@@ -11,54 +11,68 @@ import { startOfDay, subDays, format } from "date-fns";
 
 export default async function AdminDashboard() {
   const session = await auth();
-
   await connectDB();
 
-  // Basic stats
-  const totalOrders = await Order.countDocuments();
-  const pendingOrders = await Order.countDocuments({ status: "inquiry" });
-  const totalProducts = await Product.countDocuments();
+  const sevenDaysAgo = startOfDay(subDays(new Date(), 6));
 
-  // Calculate total revenue for delivered orders
-  const deliveredOrders = await Order.find({ status: "delivered" }).lean();
-  const revenue = deliveredOrders.reduce((sum, order: any) => {
-    return sum + (order.negotiatedTotal || order.totalAmount || order.product?.negotiatedPrice || order.product?.price || 0);
-  }, 0);
-
-  // Generate chart data for last 7 days
-  const last7DaysData = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = subDays(new Date(), i);
-    const dayStart = startOfDay(d);
-    const dayEnd = new Date(dayStart);
-    dayEnd.setHours(23, 59, 59, 999);
-
-    const dayOrders = await Order.find({
+  const [
+    totalOrders,
+    pendingOrders,
+    totalProducts,
+    revenueData,
+    last7DaysOrders,
+    recentOrders,
+    trendingProducts,
+  ] = await Promise.all([
+    Order.countDocuments(),
+    Order.countDocuments({ status: "inquiry" }),
+    Product.countDocuments(),
+    Order.aggregate([
+      { $match: { status: "delivered" } },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: {
+            $sum: { $ifNull: ["$negotiatedTotal", "$totalAmount"] },
+          },
+        },
+      },
+    ]),
+    Order.find({
       status: "delivered",
-      updatedAt: { $gte: dayStart, $lte: dayEnd }
-    }).lean();
+      updatedAt: { $gte: sevenDaysAgo },
+    })
+      .select("negotiatedTotal totalAmount updatedAt")
+      .lean(),
+    Order.find().sort({ createdAt: -1 }).limit(5).lean(),
+    Product.find().sort({ viewCount: -1 }).limit(5).lean(),
+  ]);
 
-    const dayRevenue = dayOrders.reduce((sum, order: any) => 
-      sum + (order.negotiatedTotal || order.totalAmount || order.product?.negotiatedPrice || order.product?.price || 0), 0
-    );
+  const revenue = revenueData[0]?.totalRevenue || 0;
 
-    last7DaysData.push({
-      label: format(d, 'EEE'),
-      value: dayRevenue
-    });
-  }
+  // Generate chart data for last 7 days from in-memory fetched orders
+  const last7DaysData = Array.from({ length: 7 }, (_, index) => {
+    const i = 6 - index;
+    const d = subDays(new Date(), i);
+    const dayStart = startOfDay(d).getTime();
+    const dayEnd = new Date(startOfDay(d)).setHours(23, 59, 59, 999);
 
-  // Fetch recent orders
-  const recentOrders = await Order.find()
-    .sort({ createdAt: -1 })
-    .limit(5)
-    .lean();
+    const dayRevenue = last7DaysOrders
+      .filter((order: any) => {
+        const time = new Date(order.updatedAt).getTime();
+        return time >= dayStart && time <= dayEnd;
+      })
+      .reduce(
+        (sum: number, order: any) =>
+          sum + (order.negotiatedTotal || order.totalAmount || 0),
+        0
+      );
 
-  // Fetch trending products
-  const trendingProducts = await Product.find()
-    .sort({ viewCount: -1 })
-    .limit(5)
-    .lean();
+    return {
+      label: format(d, "EEE"),
+      value: dayRevenue,
+    };
+  });
 
   return (
     <div className="flex flex-col gap-8">

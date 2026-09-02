@@ -98,13 +98,17 @@ export default async function ShopPage({
     ]),
   ]);
 
-  const categoriesData = JSON.parse(JSON.stringify(dbCategories));
-  const brandsData = JSON.parse(JSON.stringify(dbBrands));
+  const categoriesData = dbCategories.map((c: any) => ({ ...c, _id: c._id.toString() }));
+  const brandsData = dbBrands.map((b: any) => ({ ...b, _id: b._id.toString() }));
   const rawSizes = (dbSizes || []).filter(
     (s): s is string => typeof s === "string" && s.trim().length > 0
   );
   const sizesData = sortSizes(rawSizes);
-  const colorsData = JSON.parse(JSON.stringify(dbColors || []));
+  const colorsData = (dbColors || []).map((col: any) => ({
+    _id: col._id,
+    name: col.name,
+    hex: col.hex,
+  }));
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
