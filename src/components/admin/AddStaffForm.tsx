@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 
 export default function AddStaffForm({ onSuccess }: { onSuccess: () => void }) {
   const [loading, setLoading] = useState(false);
-  
+
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateStaffInput>({
     resolver: zodResolver(CreateStaffSchema),
   });
@@ -48,7 +48,7 @@ export default function AddStaffForm({ onSuccess }: { onSuccess: () => void }) {
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Email Address</label>
-          <input {...register('email')} type="email" className="w-full p-2 border rounded-md" placeholder="john@stepkicks.lk" />
+          <input {...register('email')} type="email" className="w-full p-2 border rounded-md" placeholder="john@legacysports.lk" />
           {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
         </div>
       </div>

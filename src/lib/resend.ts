@@ -22,7 +22,7 @@ export async function sendOrderConfirmation({
   items: any[];
   totalAmount: number;
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://legacyshoes.lk";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://legacysports.lk";
   return resend.emails.send({
     from: FROM_EMAIL,
     to: toEmail,
@@ -32,12 +32,12 @@ export async function sendOrderConfirmation({
       <p>We've received your inquiry for:</p>
       <ul>
         ${items
-          .map(
-            (item) => `
+        .map(
+          (item) => `
           <li><strong>${item.productName}</strong> (Size: ${item.selectedSize}) x ${item.quantity} - LKR ${item.price.toLocaleString()}</li>
         `,
-          )
-          .join("")}
+        )
+        .join("")}
       </ul>
       <p><strong>Total: LKR ${totalAmount.toLocaleString()}</strong></p>
       <p>Our team will contact you on WhatsApp shortly.</p>
@@ -75,12 +75,12 @@ export async function sendNewOrderNotification({
       <h3 style="margin-top: 20px;">Items:</h3>
       <ul>
         ${items
-          .map(
-            (item) => `
+        .map(
+          (item) => `
           <li><strong>${item.productName}</strong> (Size: ${item.selectedSize} | Color: ${item.selectedColor}) x ${item.quantity}</li>
         `,
-          )
-          .join("")}
+        )
+        .join("")}
       </ul>
       <p><strong>Total Value: LKR ${totalAmount.toLocaleString()}</strong></p>
       <p><a href="${adminUrl}/admin/orders">View in Admin Panel →</a></p>

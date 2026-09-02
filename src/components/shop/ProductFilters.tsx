@@ -307,9 +307,9 @@ export default function ProductFilters({
     () =>
       brands.length > 0
         ? brands.map((b, i) => ({
-            name: b.name,
-            count: DEFAULT_BRANDS[i % DEFAULT_BRANDS.length]?.count || 5,
-          }))
+          name: b.name,
+          count: DEFAULT_BRANDS[i % DEFAULT_BRANDS.length]?.count || 5,
+        }))
         : DEFAULT_BRANDS,
     [brands]
   );
@@ -320,10 +320,10 @@ export default function ProductFilters({
       categories.length > 0
         ? categories
         : [
-            { name: 'Running Lab', slug: 'running-lab' },
-            { name: 'Street Culture', slug: 'street-culture' },
-            { name: 'Luxe Leather', slug: 'luxe-leather' },
-          ],
+          { name: 'Running Lab', slug: 'running-lab' },
+          { name: 'Street Culture', slug: 'street-culture' },
+          { name: 'Luxe Leather', slug: 'luxe-leather' },
+        ],
     [categories]
   );
 
@@ -798,7 +798,7 @@ export default function ProductFilters({
         </p>
         <a
           href={`https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(
-            'Hi Legacy Shoes, I need sizing help with shoes.'
+            'Hi Legacy Sports, I need sizing help with shoes.'
           )}`}
           target="_blank"
           rel="noopener noreferrer"

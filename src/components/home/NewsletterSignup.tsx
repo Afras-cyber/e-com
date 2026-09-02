@@ -68,7 +68,7 @@ export default function NewsletterSignup() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 tracking-tight text-white leading-tight">
               Join the{" "}
               <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">
-                Legacy Shoes
+                Legacy Sports
               </span>{" "}
               Club
             </h2>
@@ -122,7 +122,7 @@ export default function NewsletterSignup() {
                       className={cn(
                         "h-14 bg-white/5 border-white/10 text-white placeholder:text-zinc-500 rounded-2xl focus-visible:ring-primary focus-visible:border-primary/50",
                         status === "error" &&
-                          "border-destructive focus-visible:ring-destructive",
+                        "border-destructive focus-visible:ring-destructive",
                       )}
                     />
                     {status === "error" && (

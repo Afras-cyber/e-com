@@ -18,7 +18,7 @@ function getSiteUrl(overrideUrl?: string): string {
   }
 
   // 3. Server-side: use env variable, with a sensible fallback
-  return process.env.NEXT_PUBLIC_SITE_URL || "https://legacyshoes.lk";
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://legacysports.lk";
 }
 
 export function buildWhatsAppURL(config: WhatsAppMessageConfig): string {
@@ -95,7 +95,7 @@ export interface WhatsAppInvoiceConfig {
 export function buildInvoiceWhatsAppURL(config: WhatsAppInvoiceConfig): string {
   const sellerPhone =
     config.sellerPhone ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
-  
+
   // Format target customer phone for WhatsApp link. We want to send the message to the customer's phone!
   // Note: if the admin wants to send the message to the customer, the wa.me link should target the customer's phone:
   // wa.me/customerPhone?text=message
@@ -110,7 +110,7 @@ ${config.invoiceUrl}
 
 💰 Total Amount: LKR ${config.totalAmount.toLocaleString()}
 
-Thank you for choosing Legacy Shoes! 🛍️`.trim();
+Thank you for choosing Legacy Sports! 🛍️`.trim();
 
   return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
 }

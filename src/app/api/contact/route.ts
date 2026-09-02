@@ -15,11 +15,11 @@ export async function POST(req: Request) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: "Legacy Shoes Contact <onboarding@resend.dev>",
-      to: process.env.ADMIN_EMAIL || "admin@legacyshoes.shop",
+      from: "Legacy Sports Contact <onboarding@resend.dev>",
+      to: process.env.ADMIN_EMAIL || "admin@legacysports.shop",
       subject: `New Contact Form: ${subject || "General Inquiry"}`,
       html: `
-        <h2>New Message from Legacy Shoes Contact Form</h2>
+        <h2>New Message from Legacy Sports Contact Form</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Subject:</strong> ${subject || "N/A"}</p>

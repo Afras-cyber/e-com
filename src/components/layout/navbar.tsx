@@ -67,13 +67,13 @@ export default function Navbar() {
               <button
                 data-nav-tick="0"
                 className="flex items-baseline gap-[6px] select-none shrink-0"
-                aria-label="Legacy Shoes Home"
+                aria-label="Legacy Sports Home"
               >
                 <span className="font-serif font-[900] tracking-[-0.03em] text-[22px] md:text-[24px] dark:text-white text-[#1A1A1A]">
                   LEGACY
                 </span>
                 <span className="font-sans font-[300] tracking-[0.32em] text-[11px] md:text-[12px] opacity-70 dark:text-gray-400 text-[#1A1A1A]">
-                  SHOES
+                  SPORTS
                 </span>
                 <span className="ml-1 w-[5px] h-[5px] rounded-full bg-gradient-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] inline-block translate-y-[-6px]"></span>
               </button>
@@ -141,7 +141,7 @@ export default function Navbar() {
 
             {/* WhatsApp - Desktop Only */}
             <a
-              href="https://wa.me/94771234567?text=Hi%20Legacy%20Shoes!"
+              href="https://wa.me/94771234567?text=Hi%20Legacy%20Sports!"
               target="_blank"
               rel="noopener"
               className="hidden md:grid w-10 h-10 rounded-full border place-items-center transition-colors dark:bg-[#D4AF37]/20 dark:border-[#D4AF37]/40 dark:text-[#D4AF37] dark:hover:bg-[#D4AF37] dark:hover:text-[#1A1A1A] bg-white border-[#D4AF37]/30 text-[#8B6F1F] hover:bg-[#D4AF37] hover:text-white"

@@ -105,7 +105,7 @@
 ```
 <head>
   <!-- Basic Meta Tags -->
-  <title>{Page Title} | Legacy Shoes</title>
+  <title>{Page Title} | Legacy Sports</title>
   <meta name="description" content="{160 char description}">
   <meta name="keywords" content="{comma-separated keywords}">
   <meta name="robots" content="index, follow">
@@ -155,7 +155,7 @@
     "price": "8,500",
     "priceCurrency": "LKR",
     "availability": "https://schema.org/InStock",
-    "url": "https://legacyshoes.lk/shop/nike-air-max-90"
+    "url": "https://legacysports.lk/shop/nike-air-max-90"
   },
   "category": "Footwear",
   "sku": "PRODUCT_ID_123",
@@ -178,25 +178,25 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://legacyshoes.lk"
+      "item": "https://legacysports.lk"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Shop",
-      "item": "https://legacyshoes.lk/shop"
+      "item": "https://legacysports.lk/shop"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "Sneakers",
-      "item": "https://legacyshoes.lk/shop?category=Sneakers"
+      "item": "https://legacysports.lk/shop?category=Sneakers"
     },
     {
       "@type": "ListItem",
       "position": 4,
       "name": "Nike Air Max 90",
-      "item": "https://legacyshoes.lk/shop/nike-air-max-90"
+      "item": "https://legacysports.lk/shop/nike-air-max-90"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
-  "name": "Legacy Shoes - Premium Authentic Footwear",
-  "short_name": "Legacy Shoes",
+  "name": "Legacy Sports - Premium Authentic Footwear",
+  "short_name": "Legacy Sports",
   "description": "Your destination for premium authentic shoes and sneakers. Fast delivery across Sri Lanka.",
   "start_url": "/",
   "scope": "/",
@@ -31,7 +31,10 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["shopping", "commerce"],
+  "categories": [
+    "shopping",
+    "commerce"
+  ],
   "shortcuts": [
     {
       "name": "Shop",

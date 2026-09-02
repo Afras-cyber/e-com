@@ -16,7 +16,7 @@ export default function Footer() {
                 LEGACY
               </span>
               <span className="text-xs tracking-[0.25em] text-zinc-400 dark:text-zinc-500 font-sans uppercase">
-                SHOES
+                SPORTS
               </span>
             </Link>
 
