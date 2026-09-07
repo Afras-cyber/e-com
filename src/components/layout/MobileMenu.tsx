@@ -1,19 +1,29 @@
-'use client';
+"use client";
 
-import { useUIStore } from '@/store/useUIStore';
-import { useWishlist } from '@/store/useWishlist';
-import { CloseCircleLinear, MagniferLinear, HeartLinear, BagLinear, StarsLinear, BoxLinear, MapPointLinear, InfoCircleLinear, PhoneLinear } from "solar-icon-set";;
-import { Button } from '@/components/ui/button';
-import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { siteConfig } from '@/config/site';
+import { useUIStore } from "@/store/useUIStore";
+import { useWishlist } from "@/store/useWishlist";
+import {
+  CloseCircleLinear,
+  MagniferLinear,
+  HeartLinear,
+  BagLinear,
+  StarsLinear,
+  // BoxLinear,
+  MapPointLinear,
+  // InfoCircleLinear,
+  // PhoneLinear,
+} from "solar-icon-set";
+import { Button } from "@/components/ui/button";
+import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { siteConfig } from "@/config/site";
 
 export default function MobileMenu() {
   const { isMobileMenuOpen, closeMobileMenu } = useUIStore();
   const { items: wishlistItems } = useWishlist();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -25,14 +35,19 @@ export default function MobileMenu() {
   };
 
   const navLinks = [
-    { label: 'Home', href: '/', icon: StarsLinear },
-    { label: 'Shop All', href: '/shop', icon: BagLinear },
-    { label: 'Sneakers', href: '/shop?category=shoes', icon: MapPointLinear },
-    { label: 'Bags', href: '/shop?category=bags', icon: BoxLinear },
-    { label: 'Track Order', href: '/track', icon: MapPointLinear },
-    { label: 'Wishlist', href: '/wishlist', icon: HeartLinear, badge: wishlistItems.length },
-    { label: 'About Us', href: '/about', icon: InfoCircleLinear },
-    { label: 'Contact', href: '/contact', icon: PhoneLinear },
+    { label: "Home", href: "/", icon: StarsLinear },
+    { label: "Shop All", href: "/shop", icon: BagLinear },
+    { label: "Sneakers", href: "/shop?category=shoes", icon: MapPointLinear },
+    // { label: "Bags", href: "/shop?category=bags", icon: BoxLinear },
+    { label: "Track Order", href: "/track", icon: MapPointLinear },
+    {
+      label: "Wishlist",
+      href: "/wishlist",
+      icon: HeartLinear,
+      badge: wishlistItems.length,
+    },
+    // { label: 'About Us', href: '/about', icon: InfoCircleLinear },
+    // { label: "Contact", href: "/contact", icon: PhoneLinear },
   ];
 
   return (
@@ -47,18 +62,26 @@ export default function MobileMenu() {
             className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm md:hidden"
           />
           <motion.div
-            initial={{ x: '-100%' }}
+            initial={{ x: "-100%" }}
             animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed top-0 left-0 h-full w-full max-w-[320px] bg-background shadow-2xl z-50 flex flex-col border-r md:hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b">
               <span className="text-xl font-black tracking-tighter uppercase">
-                {siteConfig.name.slice(0, 4)}<span className="text-primary italic">{siteConfig.name.slice(4)}</span>
+                {siteConfig.name.slice(0, 4)}
+                <span className="text-primary italic">
+                  {siteConfig.name.slice(4)}
+                </span>
               </span>
-              <Button variant="ghost" size="icon" onClick={closeMobileMenu} className="rounded-full">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={closeMobileMenu}
+                className="rounded-full"
+              >
                 <CloseCircleLinear className="w-5 h-5" />
               </Button>
             </div>
@@ -69,7 +92,7 @@ export default function MobileMenu() {
                 <MagniferLinear className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="text"
-                  placeholder="MagniferLinear products..."
+                  placeholder="Search products..."
                   className="w-full bg-muted/50 border rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -99,16 +122,39 @@ export default function MobileMenu() {
               </nav>
             </div>
 
-            {/* WhatsApp CTA at bottom */}
-            <div className="p-4 border-t bg-muted/10">
-              <a 
+            {/* WhatsApp & Social CTAs at bottom */}
+            <div className="p-4 border-t bg-muted/10 flex flex-col gap-2.5">
+              <a
                 href={`https://wa.me/${siteConfig.contact.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-[#1da851] transition-colors active:scale-[0.98]"
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-[#1da851] transition-colors active:scale-[0.98]"
               >
-                💬 Chat on WhatsApp
+                <span>💬</span>
+                <span>Chat on WhatsApp</span>
               </a>
+              <div className="grid grid-cols-2 gap-2">
+                <a
+                  href={siteConfig.social.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-[#D4AF37]/40 text-[#B58D4B] dark:text-[#D4AF37] font-semibold text-xs hover:bg-[#D4AF37]/10 transition-colors"
+                >
+                  <span>📸</span>
+                  <span>Instagram</span>
+                </a>
+                {siteConfig.social.facebook && (
+                  <a
+                    href={siteConfig.social.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold text-xs hover:bg-muted/50 transition-colors"
+                  >
+                    <span>👍</span>
+                    <span>Facebook</span>
+                  </a>
+                )}
+              </div>
             </div>
           </motion.div>
         </>

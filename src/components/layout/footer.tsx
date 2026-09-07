@@ -6,7 +6,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white dark:bg-zinc-950 border-t border-zinc-200/80 dark:border-zinc-800/80 text-zinc-500 dark:text-zinc-400 pt-16 sm:pt-20 pb-10">
+    <footer className="bg-white dark:bg-zinc-950 border-t border-zinc-200/80 dark:border-zinc-800/80 text-zinc-500 dark:text-zinc-400 pt-16 sm:pt-20 pb-24 sm:pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 mb-16">
           {/* Brand Column */}
@@ -100,7 +100,6 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 hover:text-zinc-900 dark:hover:text-white transition-colors"
                 >
-
                   <span>WhatsApp</span>
                 </a>
               </li>
@@ -114,6 +113,18 @@ export default function Footer() {
                   Instagram
                 </a>
               </li>
+              {siteConfig.social.facebook && (
+                <li>
+                  <a
+                    href={siteConfig.social.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors block"
+                  >
+                    Facebook
+                  </a>
+                </li>
+              )}
               <li>
                 <a
                   href="#"
@@ -121,14 +132,6 @@ export default function Footer() {
                 >
                   TikTok
                 </a>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="hover:text-zinc-900 dark:hover:text-white transition-colors block"
-                >
-                  Support
-                </Link>
               </li>
             </ul>
           </div>
@@ -152,29 +155,14 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-zinc-200/70 dark:border-zinc-800/70 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-zinc-400 dark:text-zinc-500 font-medium">
+        <div className="pt-8 border-t border-zinc-200/70 dark:border-zinc-800/70 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-zinc-400 dark:text-zinc-500 font-medium text-center sm:text-left">
           <p>
             © {currentYear} {siteConfig.name.toUpperCase()}. Crafted in Sri Lanka • Golden • Silver • Legacy.
           </p>
           <div className="flex items-center gap-6">
-            <Link
-              href="#"
-              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="#"
-              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Terms
-            </Link>
-            <Link
-              href="#"
-              className="hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
+            <span className="text-zinc-500 dark:text-zinc-400">
               Authentic Guarantee
-            </Link>
+            </span>
           </div>
         </div>
       </div>
