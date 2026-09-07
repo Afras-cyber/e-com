@@ -60,9 +60,9 @@ export default function Navbar() {
           {/* Logo + Desktop Nav */}
           <div className="flex items-center gap-10">
             <Link href="/" className="flex items-center group">
-              <button
+              <span
                 data-nav-tick="0"
-                className="flex items-baseline gap-[6px] select-none shrink-0"
+                className="flex items-baseline gap-[6px] select-none shrink-0 cursor-pointer"
                 aria-label="Legacy Sports Home"
               >
                 <span className="font-serif font-[900] tracking-[-0.03em] text-[22px] md:text-[24px] dark:text-white text-[#1A1A1A]">
@@ -72,7 +72,7 @@ export default function Navbar() {
                   SPORTS
                 </span>
                 <span className="ml-1 w-[5px] h-[5px] rounded-full bg-gradient-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] inline-block translate-y-[-6px]"></span>
-              </button>
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -82,14 +82,14 @@ export default function Navbar() {
                 { label: "SHOP", href: "/shop" },
                 { label: "TRACK ORDER", href: "/track" },
               ].map(({ href, label }) => (
-                <Link key={href} href={href}>
-                  <button
+                <Link key={href} href={href} className="group py-1">
+                  <span
                     data-nav-tick="0"
-                    className="relative py-1 transition-all dark:text-gray-300 dark:hover:text-white text-[#1A1A1A] hover:text-[#1A1A1A] opacity-60 hover:opacity-100 group"
+                    className="relative py-1 transition-all dark:text-gray-300 dark:hover:text-white text-[#1A1A1A] hover:text-[#1A1A1A] opacity-60 hover:opacity-100 block"
                   >
                     {label}
                     <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-gradient-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] group-hover:w-full transition-all"></span>
-                  </button>
+                  </span>
                 </Link>
               ))}
             </nav>
@@ -137,9 +137,9 @@ export default function Navbar() {
 
             {/* WhatsApp - Desktop Only */}
             <a
-              href="https://wa.me/94771234567?text=Hi%20Legacy%20Sports!"
+              href={`https://wa.me/${siteConfig.contact.whatsapp.replace(/\+/g, "")}?text=${encodeURIComponent("Hi Legacy Sports!")}`}
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
               className="hidden md:grid w-10 h-10 rounded-full border place-items-center transition-colors dark:bg-[#D4AF37]/20 dark:border-[#D4AF37]/40 dark:text-[#D4AF37] dark:hover:bg-[#D4AF37] dark:hover:text-[#1A1A1A] bg-white border-[#D4AF37]/30 text-[#8B6F1F] hover:bg-[#D4AF37] hover:text-white"
               aria-label="WhatsApp"
             >

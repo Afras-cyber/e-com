@@ -185,7 +185,7 @@ function ProductCard({
             <p className="text-[8px] sm:text-[9px] font-medium uppercase tracking-[0.16em] text-[#9A9A9A] dark:text-[#7A7A7A]">
               {product.brand}
             </p>
-            <h3 className="mt-0.5 font-serif text-[10x] sm:text-sm font-bold uppercase tracking-tight text-[#1A1A1A] dark:text-[#F5F5F5] line-clamp-1">
+            <h3 className="mt-0.5 font-serif text-[10px] sm:text-sm font-bold uppercase tracking-tight text-[#1A1A1A] dark:text-[#F5F5F5] line-clamp-1">
               {product.name}
             </h3>
           </div>
