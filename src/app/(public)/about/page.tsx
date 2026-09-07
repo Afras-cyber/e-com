@@ -7,10 +7,34 @@ import {
   BoltLinear,
 } from "solar-icon-set";
 import Image from "next/image";
+import { Metadata } from "next";
+import { generateSEOMetadata, truncateDescription, generateBreadcrumbSchema } from "@/lib/seo";
+import { siteConfig } from "@/config/site";
+import { StructuredData } from "@/components/seo/StructuredData";
+
+export const metadata: Metadata = generateSEOMetadata({
+  title: `About Us | ${siteConfig.name}`,
+  description: truncateDescription(
+    "Sri Lanka's premier destination for curated authentic branded shoes, sneakers, and luxury footwear. 100% genuine verified originals with island-wide delivery."
+  ),
+  ogImage: `${siteConfig.url}/homepage_shoe.png`,
+  ogTitle: `About Us - ${siteConfig.name}`,
+  ogDescription: "Discover the story and authenticity guarantee behind Legacy Sports footwear in Sri Lanka.",
+  canonicalUrl: `${siteConfig.url}/about`,
+  keywords: "about legacy sports, authentic shoe boutique Sri Lanka, luxury sneakers Colombo, verified original shoes",
+  author: siteConfig.name,
+  type: "website",
+});
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen">
+      <StructuredData
+        data={generateBreadcrumbSchema([
+          { name: "Home", url: siteConfig.url },
+          { name: "About Us", url: `${siteConfig.url}/about` },
+        ])}
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-zinc-950">
         <div className="absolute inset-0 z-0">

@@ -1,10 +1,36 @@
 import { LetterLinear, PhoneLinear, MapPointLinear } from "solar-icon-set";
 import ContactForm from "@/components/contact/ContactForm";
 import SocialLinks from "@/components/contact/SocialLinks";
+import { Metadata } from "next";
+import { generateSEOMetadata, truncateDescription, generateBreadcrumbSchema, generateLocalBusinessSchema } from "@/lib/seo";
+import { siteConfig } from "@/config/site";
+import { StructuredData } from "@/components/seo/StructuredData";
+
+export const metadata: Metadata = generateSEOMetadata({
+  title: `Contact Us | ${siteConfig.name}`,
+  description: truncateDescription(
+    "Get in touch with Legacy Sports Sri Lanka. Connect via WhatsApp, phone, or email for shoe inquiries, size consultations, and order assistance."
+  ),
+  ogImage: `${siteConfig.url}/homepage_shoe.png`,
+  ogTitle: `Contact Us - ${siteConfig.name}`,
+  ogDescription: "Have questions about our authentic footwear collection? Contact Legacy Sports today.",
+  canonicalUrl: `${siteConfig.url}/contact`,
+  keywords: "contact legacy sports, shoe customer service Sri Lanka, WhatsApp shoe order Colombo, sneaker inquiry",
+  author: siteConfig.name,
+  type: "website",
+});
 
 export default function ContactPage() {
   return (
     <div className="flex flex-col min-h-screen">
+      <StructuredData
+        data={generateBreadcrumbSchema([
+          { name: "Home", url: siteConfig.url },
+          { name: "Contact Us", url: `${siteConfig.url}/contact` },
+        ])}
+      />
+      <StructuredData data={generateLocalBusinessSchema()} />
+
       {/* Header Section */}
       <section className="bg-zinc-50 dark:bg-zinc-950 py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
@@ -33,9 +59,9 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">
-                        PhoneLinear / WhatsApp
+                        Phone / WhatsApp
                       </h3>
-                      <p className="text-muted-foreground">+94 77 675 6287</p>
+                      <p className="text-muted-foreground">{siteConfig.contact.phone}</p>
                       <p className="text-xs text-muted-foreground mt-1">
                         Mon-Sat: 9am - 8pm
                       </p>
@@ -49,27 +75,22 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold text-lg">Email</h3>
                       <p className="text-muted-foreground">
-                        legacysports@gmail.com
+                        {siteConfig.contact.email}
                       </p>
-                      {/* <p className="text-muted-foreground">orders@stepkicks.lk</p> */}
                     </div>
                   </div>
 
-                  {/* <div className="flex items-start gap-4">
+                  <div className="flex items-start gap-4">
                     <div className="p-3 bg-primary/10 rounded-xl text-primary">
                       <MapPointLinear size={24} />
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">Location</h3>
                       <p className="text-muted-foreground">
-                        Legacy Sports Flagship Store
-                        <br />
-                       
-                        <br />
-                        Sri Lanka
+                        {siteConfig.contact.address}
                       </p>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </div>
 

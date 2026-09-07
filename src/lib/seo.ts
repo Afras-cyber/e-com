@@ -127,6 +127,7 @@ export function generateOrganizationSchema() {
  */
 export function generateProductSchema(data: SEOMetadataParams["productData"]) {
   if (!data) return null;
+  const numericPrice = String(data.price).replace(/[^0-9.]/g, "");
 
   return {
     "@context": "https://schema.org",
@@ -140,10 +141,15 @@ export function generateProductSchema(data: SEOMetadataParams["productData"]) {
     },
     offers: {
       "@type": "Offer",
-      price: data.price,
-      priceCurrency: data.priceCurrency,
-      availability: `https://schema.org/${data.availability}`,
+      price: numericPrice || "0",
+      priceCurrency: data.priceCurrency || siteConfig.business.currency || "LKR",
+      availability: `https://schema.org/${data.availability || "InStock"}`,
+      itemCondition: "https://schema.org/NewCondition",
       url: siteConfig.url,
+      seller: {
+        "@type": "Organization",
+        name: siteConfig.name,
+      },
     },
     category: data.category,
     sku: data.sku,

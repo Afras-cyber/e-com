@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { MagniferLinear, BoxLinear, ClockCircleLinear, CheckCircleLinear, BusLinear, DangerCircleLinear, RefreshLinear } from "solar-icon-set";;
+import { useState, useEffect, Suspense, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { MagniferLinear, BoxLinear, ClockCircleLinear, CheckCircleLinear, BusLinear, DangerCircleLinear, RefreshLinear } from "solar-icon-set";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { format } from 'date-fns';
@@ -19,24 +20,25 @@ const statusMap: any = {
   cancelled: { label: 'Cancelled', icon: DangerCircleLinear, color: 'text-red-500', bg: 'bg-red-50' },
 };
 
-export default function TrackOrderPage() {
-  const [orderNumber, setOrderNumber] = useState('');
+function TrackOrderContent() {
+  const searchParams = useSearchParams();
+  const initialId = searchParams.get('id') || '';
+  const [orderNumber, setOrderNumber] = useState(initialId);
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleTrack = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!orderNumber) return;
-    
+  const executeTrack = useCallback(async (trackingId: string) => {
+    if (!trackingId.trim()) return;
+
     setLoading(true);
     setError('');
     setOrder(null);
-    
+
     try {
-      const res = await fetch(`/api/track/${orderNumber}`);
+      const res = await fetch(`/api/track/${encodeURIComponent(trackingId.trim())}`);
       const data = await res.json();
-      
+
       if (res.ok) {
         setOrder(data);
       } else {
@@ -47,6 +49,18 @@ export default function TrackOrderPage() {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    if (initialId) {
+      setOrderNumber(initialId);
+      executeTrack(initialId);
+    }
+  }, [initialId, executeTrack]);
+
+  const handleTrack = async (e: React.FormEvent) => {
+    e.preventDefault();
+    executeTrack(orderNumber);
   };
 
   return (
@@ -180,5 +194,19 @@ export default function TrackOrderPage() {
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+export default function TrackOrderPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen py-20 px-4 flex items-center justify-center">
+          <RefreshLinear className="w-8 h-8 animate-spin text-muted-foreground" />
+        </div>
+      }
+    >
+      <TrackOrderContent />
+    </Suspense>
   );
 }
