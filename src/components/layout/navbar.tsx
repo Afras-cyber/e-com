@@ -56,22 +56,22 @@ export default function Navbar() {
             : "dark:bg-[#1A1A1A]/60 dark:border-[#2A2A2A]/50 bg-[#FAF9F6]/60 border-[#E8E8EA]/50",
         )}
       >
-        <div className="mx-auto max-w-[1440px] w-full px-5 md:px-8 h-[72px] flex items-center justify-between">
+        <div className="mx-auto max-w-[1440px] w-full px-3.5 sm:px-6 md:px-8 h-[64px] sm:h-[72px] flex items-center justify-between">
           {/* Logo + Desktop Nav */}
-          <div className="flex items-center gap-10">
-            <Link href="/" className="flex items-center group">
+          <div className="flex items-center gap-6 lg:gap-10 min-w-0">
+            <Link href="/" className="flex items-center group shrink-0">
               <span
                 data-nav-tick="0"
-                className="flex items-baseline gap-[6px] select-none shrink-0 cursor-pointer"
+                className="flex items-baseline gap-1 sm:gap-[6px] select-none shrink-0 cursor-pointer"
                 aria-label="Legacy Sports Home"
               >
-                <span className="font-serif font-[900] tracking-[-0.03em] text-[22px] md:text-[24px] dark:text-white text-[#1A1A1A]">
+                <span className="font-serif font-[900] tracking-[-0.03em] text-[18px] sm:text-[22px] md:text-[24px] dark:text-white text-[#1A1A1A]">
                   LEGACY
                 </span>
-                <span className="font-sans font-[300] tracking-[0.32em] text-[11px] md:text-[12px] opacity-70 dark:text-gray-400 text-[#1A1A1A]">
+                <span className="font-sans font-[300] tracking-[0.24em] sm:tracking-[0.32em] text-[10px] sm:text-[11px] md:text-[12px] opacity-70 dark:text-gray-400 text-[#1A1A1A]">
                   SPORTS
                 </span>
-                <span className="ml-1 w-[5px] h-[5px] rounded-full bg-gradient-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] inline-block translate-y-[-6px]"></span>
+                <span className="ml-0.5 sm:ml-1 w-1 sm:w-[5px] h-1 sm:h-[5px] rounded-full bg-gradient-to-br from-[#D4AF37] via-[#B9975B] to-[#C5A880] inline-block translate-y-[-4px] sm:translate-y-[-6px]"></span>
               </span>
             </Link>
 
@@ -96,40 +96,40 @@ export default function Navbar() {
           </div>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2 md:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 shrink-0">
             {/* Theme Toggle */}
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-10 h-10 rounded-full border grid place-items-center transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border grid place-items-center transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white shrink-0"
               aria-label="Toggle dark mode"
               title="Toggle light/dark"
               type="button"
             >
-              <MoonBold className="w-4 h-4" />
+              <MoonBold className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
 
             {/* Search */}
             <Button
               variant="ghost"
               size="icon"
-              className="w-10 h-10 rounded-full border transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white shrink-0"
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
             >
-              <MagniferOutline className="w-4 h-4" />
+              <MagniferOutline className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </Button>
 
             {/* Cart */}
             <Button
               variant="ghost"
               size="icon"
-              className="w-10 h-10 rounded-full border relative transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border relative transition-colors dark:bg-[#2A2A2A] dark:border-[#3A3A3A] dark:text-white dark:hover:bg-white dark:hover:text-[#1A1A1A] bg-white border-[#E8E8EA] hover:bg-[#1A1A1A] hover:text-white shrink-0"
               onClick={openCart}
               aria-label="Cart"
             >
-              <CartBold className="w-4 h-4" />
+              <CartBold className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               {mounted && itemCount() > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-[#D4AF37] text-[10px] font-black `text-[#1A1A1A] flex items-center justify-center border-2 dark:border-[#1A1A1A] border-white">
+                <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-[#D4AF37] text-[9px] sm:text-[10px] font-black text-[#1A1A1A] flex items-center justify-center border-2 dark:border-[#1A1A1A] border-white">
                   {itemCount()}
                 </span>
               )}
@@ -156,10 +156,10 @@ export default function Navbar() {
             {/* Mobile Menu - Mobile Only */}
             <button
               onClick={toggleMobileMenu}
-              className="lg:hidden w-10 h-10 rounded-full grid place-items-center ml-1 dark:bg-white dark:text-[#1A1A1A] bg-[#1A1A1A] text-white transition-colors"
+              className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full grid place-items-center dark:bg-white dark:text-[#1A1A1A] bg-[#1A1A1A] text-white transition-colors shrink-0"
               aria-label="Open menu"
             >
-              <MenuDotsBold className="w-4 h-4" />
+              <MenuDotsBold className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
         </div>

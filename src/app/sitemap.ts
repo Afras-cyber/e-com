@@ -14,12 +14,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .lean()
       .limit(50000);
 
-    const productEntries: MetadataRoute.Sitemap = products.map((product: any) => ({
-      url: `${baseUrl}/shop/${product.slug}`,
-      lastModified: new Date(product.updatedAt || Date.now()),
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    }));
+    const productEntries: MetadataRoute.Sitemap = products.map(
+      (product: any) => ({
+        url: `${baseUrl}/shop/${product.slug}`,
+        lastModified: new Date(product.updatedAt || Date.now()),
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }),
+    );
 
     return [
       // Static pages
@@ -41,18 +43,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "monthly" as const,
         priority: 0.5,
       },
-      {
-        url: `${baseUrl}/about`,
-        lastModified: new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.5,
-      },
-      {
-        url: `${baseUrl}/contact`,
-        lastModified: new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.5,
-      },
+      // {
+      //   url: `${baseUrl}/about`,
+      //   lastModified: new Date(),
+      //   changeFrequency: "monthly" as const,
+      //   priority: 0.5,
+      // },
+      // {
+      //   url: `${baseUrl}/contact`,
+      //   lastModified: new Date(),
+      //   changeFrequency: "monthly" as const,
+      //   priority: 0.5,
+      // },
       // Product pages
       ...productEntries,
     ];

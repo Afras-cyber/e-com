@@ -15,8 +15,8 @@ export const siteConfig = {
     address: process.env.NEXT_PUBLIC_SHOP_ADDRESS || "Mawanella, Sri Lanka",
   },
   social: {
-    instagram: "https://www.instagram.com/legacy_shoes_lanka/?hl=en",
-    // facebook: "https://facebook.com/stepkicks",
+    instagram: "https://www.instagram.com/legacy_sports.lk/?hl=en",
+    facebook: "https://www.facebook.com/Legacysports.lk",
     // tiktok: "https://tiktok.com/@stepkicks",
   },
   business: {
