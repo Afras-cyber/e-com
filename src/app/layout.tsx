@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
-import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/seo";
+import {
+  generateOrganizationSchema,
+  generateLocalBusinessSchema,
+} from "@/lib/seo";
 import { StructuredData } from "@/components/seo/StructuredData";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -18,7 +21,7 @@ export const metadata: Metadata = {
     "sneakers",
     "authentic shoes",
     "Sri Lanka",
-    "Legacy Sports",
+    "Legacy Shoes",
     "premium shoes",
     "online shoe store",
   ],
@@ -40,6 +43,12 @@ export const metadata: Metadata = {
     images: [
       {
         url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+      {
+        url: siteConfig.ogImage2,
         width: 1200,
         height: 630,
         alt: siteConfig.name,
