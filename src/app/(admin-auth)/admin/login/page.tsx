@@ -20,7 +20,7 @@ import { UserLoginSchema, UserLoginInput } from "@/lib/validations/user.schema";
 import { siteConfig } from "@/config/site";
 
 const INPUT_BASE =
-  "w-full h-11 rounded-[10px] pl-10 pr-4 text-sm text-[#121212] dark:text-white " +
+  "w-full h-11 rounded-[10px] pl-10 text-sm text-[#121212] dark:text-white " +
   "bg-[#FAF9F6] dark:bg-zinc-900 outline-none transition-all border";
 
 const INPUT_VALID =
@@ -32,8 +32,8 @@ const INPUT_ERROR =
 const LABEL_CLASS =
   "text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B6B6B] dark:text-zinc-400 block";
 
-function inputClass(hasError?: boolean, extra = "") {
-  return `${INPUT_BASE} ${extra} ${hasError ? INPUT_ERROR : INPUT_VALID}`;
+function inputClass(hasError?: boolean, rightPadding = "pr-4") {
+  return `${INPUT_BASE} ${rightPadding} ${hasError ? INPUT_ERROR : INPUT_VALID}`;
 }
 
 export default function AdminLogin() {
