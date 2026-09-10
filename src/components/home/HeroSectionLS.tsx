@@ -103,7 +103,7 @@ export default function HeroSection() {
 
             <div className="relative z-10 w-[86%] md:w-[84%] max-w-130 h-[72%] md:h-[76%] animate-float drop-shadow-[0_30px_60px_rgba(0,0,0,0.22)]">
               <Image
-                src="/homepage_shoe.png"
+                src="/gold_shoe.png"
                 alt="Aero Running Sneaker"
                 fill
                 priority
