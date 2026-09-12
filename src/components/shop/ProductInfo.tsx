@@ -19,19 +19,39 @@ import QuickOrderModal from "./QuickOrderModal";
 import SizeGuideModal from "./SizeGuideModal";
 import { siteConfig } from "@/config/site";
 
+// Standard UK sizes (from SIZE_CHART in SizeGuideModal)
 const DEFAULT_SHOE_SIZES = [
-  "6",
+  "5.5",
+  "6.0",
   "6.5",
-  "7",
+  "7.0",
   "7.5",
-  "8",
+  "8.0",
   "8.5",
-  "9",
+  "9.0",
   "9.5",
-  "10",
+  "10.0",
   "10.5",
-  "11",
+  "11.0",
 ];
+
+// Known EU sizes from the size chart (38.5 – 46)
+const EU_SIZES = new Set([
+  "38.5", "39.0", "39", "40.0", "40", "40.5",
+  "41.0", "41", "42.0", "42", "42.5",
+  "43.0", "43", "44.0", "44", "44.5",
+  "45.0", "45", "45.5", "46.0", "46",
+]);
+
+// Auto-detect size system: match against known EU values, otherwise UK
+function getSizeTag(size: string): "UK" | "EU" {
+  // Normalise: "42" and "42.0" both match
+  const normalised = parseFloat(size).toString();
+  if (EU_SIZES.has(size) || EU_SIZES.has(normalised + ".0") || EU_SIZES.has(normalised)) {
+    return "EU";
+  }
+  return "UK";
+}
 
 export default function ProductInfo({
   product,
@@ -47,6 +67,11 @@ export default function ProductInfo({
 
   const colorsList =
     product.colors && product.colors.length > 0 ? product.colors : [];
+
+  // No UK/EU tags for bag category products
+  const isBagCategory =
+    typeof product.category === "string" &&
+    product.category.toLowerCase().includes("bag");
 
   const [selectedSize, setSelectedSize] = useState<string>(sizesList[0] || "8");
   const [selectedColor, setSelectedColor] = useState<string>(
@@ -116,7 +141,7 @@ export default function ProductInfo({
 
 Order Ref: *${order.orderNumber}*
 👟 Product: *${product.name}*
-📏 Size: US ${selectedSize}
+📏 Size: ${getSizeTag(selectedSize)} ${selectedSize}
 🎨 Color: ${selectedColor}
 💰 Price: LKR ${price.toLocaleString()}
 🔗 Link: ${productLink}
@@ -245,21 +270,24 @@ Please confirm availability and dispatch details. Thank you!`.trim();
         <div>
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground">
-              SELECT SIZE (US)
+              SELECT SIZE
             </h3>
-            <button
-              type="button"
-              onClick={() => setIsSizeGuideOpen(true)}
-              className="text-xs text-muted-foreground hover:text-foreground font-semibold underline decoration-dotted underline-offset-4 transition-colors"
-            >
-              Size Guide
-            </button>
+            {!isBagCategory && (
+              <button
+                type="button"
+                onClick={() => setIsSizeGuideOpen(true)}
+                className="text-xs text-muted-foreground hover:text-foreground font-semibold underline decoration-dotted underline-offset-4 transition-colors"
+              >
+                Size Guide
+              </button>
+            )}
           </div>
 
-          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-2.5">
+          <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-2.5">
             {sizesList.map((size: string) => {
               const isSelected = selectedSize === size;
               const outOfStock = isOutOfStock(size);
+              const sizeTag = isBagCategory ? null : getSizeTag(size);
 
               return (
                 <button
@@ -268,7 +296,10 @@ Please confirm availability and dispatch details. Thank you!`.trim();
                   disabled={outOfStock}
                   onClick={() => setSelectedSize(size)}
                   className={cn(
-                    "relative py-3 sm:py-3.5 px-2 text-sm sm:text-base font-bold rounded-xl sm:rounded-2xl transition-all duration-200 text-center flex items-center justify-center overflow-hidden cursor-pointer",
+                    "relative px-2 rounded-xl sm:rounded-2xl transition-all duration-200 text-center overflow-hidden cursor-pointer",
+                    sizeTag
+                      ? "py-2.5 sm:py-3 flex flex-col items-center justify-center gap-0.5"
+                      : "py-3 sm:py-3.5 flex items-center justify-center text-sm sm:text-base font-bold",
                     isSelected
                       ? "bg-[#C39A4D] text-white shadow-md shadow-[#C39A4D]/25 border-2 border-[#C39A4D] scale-[1.02]"
                       : outOfStock
@@ -276,7 +307,21 @@ Please confirm availability and dispatch details. Thank you!`.trim();
                         : "bg-background hover:bg-muted/50 border border-border/80 hover:border-[#C39A4D]/60 text-foreground",
                   )}
                 >
-                  <span>{size}</span>
+                  <span className="text-sm sm:text-base font-bold leading-none">{size}</span>
+                  {sizeTag && (
+                    <span
+                      className={cn(
+                        "text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider leading-none",
+                        isSelected
+                          ? "text-white/80"
+                          : outOfStock
+                            ? "text-muted-foreground/30"
+                            : "text-muted-foreground",
+                      )}
+                    >
+                      {sizeTag}
+                    </span>
+                  )}
                   {outOfStock && (
                     <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <span className="w-full h-[1.5px] bg-muted-foreground/40 -rotate-25 origin-center" />
@@ -294,7 +339,7 @@ Please confirm availability and dispatch details. Thank you!`.trim();
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span>
-              Size {selectedSize} in stock •{" "}
+              Size {selectedSize}{!isBagCategory && ` (${getSizeTag(selectedSize)})`} in stock •{" "}
               {product.stock > 0
                 ? `${product.stock} pairs left`
                 : "Ready for fast dispatch"}
